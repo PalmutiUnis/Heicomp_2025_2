@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cards="clr-namespace:Heicomp_2025_2.Views.Cards"
+             x:Class="Heicomp_2025_2.Views.Cards.CardPequeno">
+    <!-- Estrutura geral do card -->
+    <Border Style="{StaticResource CardPadrao}"
+            HeightRequest="120"
+            WidthRequest="160"
+            Padding="10">
+
+        <!-- Layout interno -->
+        <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *" RowSpacing="4">
+
+            <!-- Linha 0: Ícone à esquerda e Indicador à direita -->
+            <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                <!-- Ícone -->
+                <Image Source="{Binding Icone, Source={RelativeSource AncestorType={x:Type cards:CardPequeno}}}"
+                       WidthRequest="28" HeightRequest="28"
+                       HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                <!-- Indicador (ex: +5%) -->
+                <Label Text="{Binding Indicador, Source={RelativeSource AncestorType={x:Type cards:CardPequeno}}}"
+                       FontFamily="InterMedium" FontSize="14"
+                       TextColor="{StaticResource CorPrimaria}"
+                       HorizontalOptions="End" VerticalOptions="Center"/>
+            </Grid>
+
+            <!-- Linha 1: Título -->
+            <Label Grid.Row="1" Grid.ColumnSpan="2"
+                   Text="{Binding Titulo, Source={RelativeSource AncestorType={x:Type cards:CardPequeno}}}"
+                   Style="{StaticResource TextoSubtitulo}"
+                   Margin="0,4,0,0"
+                   VerticalOptions="Center"/>
+
+            <!-- Linha 2: Número em destaque -->
+            <Label Grid.Row="2" Grid.ColumnSpan="2"
+                   Text="{Binding Numero, Source={RelativeSource AncestorType={x:Type cards:CardPequeno}}}"
+                   FontFamily="InterBold" FontSize="26"
+                   TextColor="{StaticResource CorTextoPreto}"
+                   Margin="0,2,0,0"
+                   VerticalOptions="Center"/>
+
+        </Grid>
+    </Border>
+</ContentView>
