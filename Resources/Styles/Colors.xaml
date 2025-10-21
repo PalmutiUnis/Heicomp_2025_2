@@ -91,7 +91,13 @@
         <Color x:Key="CorCardSucesso">#4ADE80</Color>
         <SolidColorBrush x:Key="BrushCorCardSucesso" Color="{StaticResource CorCardSucesso}" />
 
-        <!-- Fundo gradiente usado em cards e gráficos -->
+    <Color x:Key="CorCardFundo">#ffffff</Color>
+    <SolidColorBrush x:Key="BrushCorCardFundo" Color="{StaticResource CorCardFundo}" />
+
+    <Color x:Key="CorSombraCard">#ffffff</Color>
+    <SolidColorBrush x:Key="BrushCorSombraCard" Color="{StaticResource CorSombraCard}" />
+
+    <!-- Fundo gradiente usado em cards e gráficos -->
         <LinearGradientBrush x:Key="CorCardGradiente" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#1E3A8A" Offset="0.0" />
             <GradientStop Color="#031653" Offset="1.0" />
