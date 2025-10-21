@@ -4,6 +4,8 @@ public partial class AlunosPage : ContentPage
 {
 	public AlunosPage()
 	{
+		
 		InitializeComponent();
+
 	}
 }

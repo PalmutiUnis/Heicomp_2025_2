@@ -5,60 +5,6 @@
              x:Class="Heicomp_2025_2.Views.Dashboards.AlunosPage"
              BackgroundColor="#F9FAFB"
              Title="Número de Alunos">
-
-
-      
-
-        <!-- Ex de Layout principal -->
-    <!--Apenas um exemplo de layout com cards para dashboard
-     Obs: Os icones ainda nao estão funcionando-->
-
-    <ScrollView>
-
-
-        <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="10" RowSpacing="10">
-
-            <!-- 🟣 TÍTULO -->
-            <Label Text="Alunos"
-                   Grid.Row="0"
-                   Grid.ColumnSpan="2"
-                   Style="{StaticResource TextoTituloSecao}"
-                   VerticalOptions="Start"
-                   HorizontalOptions="Start" />
-
-            <!-- exemplo ideia card grande -->
-            <cards:CardGrande
-                Grid.ColumnSpan="2"
-                Titulo="Educação Básica"
-                Numero="500"
-                Indicador="+0.1%"
-                Icone="icone_alunos.png" />
-
-            <cards:CardGrande
-                
-                Grid.ColumnSpan="2"
-                Titulo="Homens"
-                Numero="20"
-                Indicador="-5%"
-                Icone="icone_alunos.png" />
-
-            <!-- Exemplo ideia card pequeno -->
-            <cards:CardPequeno
-                Grid.Row="1"
-                Grid.Column="0"
-                Titulo="Mulheres"
-                Numero="480"
-                Indicador="+2%"
-                Icone="icone_alunas.png" />
-
-            <cards:CardPequeno
-                Grid.Row="1"
-                Grid.Column="1"
-                Titulo="Egressos"
-                Numero="35"
-                Indicador="+1%"
-                Icone="icone_egressos.png" />
-
-        </Grid>
-    </ScrollView>
+    
+ 
 </ContentPage>
