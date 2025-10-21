@@ -4,12 +4,18 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp1"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:dashboards="clr-namespace:Heicomp_2025_2.Views.Dashboards"
+    Shell.FlyoutBehavior="Flyout"
     Title="MauiApp1">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <FlyoutItem Title="Painel de Gestao"
+                Icon="icon_painel_gestao.png">
+        <ShellContent
+            Title="Painel de Gestão"
+            ContentTemplate="{DataTemplate dashboards:PainelGestaoPage}"
+            Route="PainelGestaoPage"
+            />
+    </FlyoutItem>
 
+    
 </Shell>
