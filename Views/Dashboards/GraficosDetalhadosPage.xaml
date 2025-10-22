@@ -2,7 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Heicomp_2025_2.Views.Dashboards.GraficosDetalhadosPage"
-             Title="NewPage1">
+             Title=""
+             Shell.FlyoutBehavior="Disabled">
+
+    <!-- Layout do Shell NavBar -->
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="Auto, *">
+            <ImageButton Grid.Column="0"
+                         Source="btn_voltar.png"  HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Clicked="BotaoVoltarPainelGestao"/>
+
+            <Label Grid.Column="1"
+                   Text="Gráficos Detalhados"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   FontSize="Title"
+                   Margin="10,0,0,0"/>
+        </Grid>
+    </Shell.TitleView>
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"
