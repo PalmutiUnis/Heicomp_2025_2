@@ -5,19 +5,26 @@
              Title=""
              Shell.FlyoutBehavior="Disabled">
 
+
     <Shell.TitleView>
-        <Grid ColumnDefinitions="Auto, *">
+        <Grid ColumnDefinitions="Auto, *"
+              Style="{StaticResource TitleViewGridStyle}">
             <ImageButton Grid.Column="0"
-                         Source="btn_voltar.png"  HeightRequest="44"
+                         Source="btn_voltar.png"  
+                         HeightRequest="44"
                          WidthRequest="44"
                          BackgroundColor="Transparent"
-                         Clicked="BotaoVoltarPainelGestao"/>
+                         Clicked="BotaoVoltarPainelGestao"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Center"/>
 
             <Label Grid.Column="1"
                    Text="Colaboradores"
+                   Style="{StaticResource TituloShellStyle}"
                    VerticalOptions="Center"
                    HorizontalOptions="Start"
-                   FontSize="Title"
                    Margin="10,0,0,0"/>
         </Grid>
     </Shell.TitleView>

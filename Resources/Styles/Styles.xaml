@@ -423,9 +423,20 @@
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
-    
-    
-    
+
+
+    <Style x:Key="TitleViewGridStyle" TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Tertiary},Dark={StaticResource Black}}"/>
+    </Style>
+
+    <!-- Cores da LABEL do <Shell.TitleView> -->
+    <Style x:Key="TituloShellStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White},Dark={StaticResource SecondaryDarkText}}" />
+        <Setter Property="FontFamily" Value="OpenSansBold"/>
+    </Style>
+
     <!-- alguns estilos que haviamos definido mas nao sao definitivos e finais ainda-->
     <!--NOVO 
  Título da seção do menu (ex: "Unis Insights" (MENU HAMBURGUER) -->
