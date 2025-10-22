@@ -55,6 +55,15 @@
             />
     </FlyoutItem>
 
+    <FlyoutItem Title="Indicadores de Diversidade"
+                Icon="icone_organizacao_branco.png">
+        <ShellContent
+            Title="Indicadores de Diversidadde"
+            ContentTemplate="{DataTemplate dashboards:DiversidadePage}"
+            Route="DiversidadePage"
+            />
+    </FlyoutItem>
+
 
     <FlyoutItem Title="Gráficos Detalhados"
                 Icon="icone_grafico_barras_branco.png">
