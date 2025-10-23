@@ -29,6 +29,16 @@
                    Style="{StaticResource TituloShellStyle}"
                    VerticalOptions="Center"
                    HorizontalOptions="Fill"/>
+
+            <ImageButton Grid.Column="2"
+                     Source="icone_menu.png"  
+                     HeightRequest="44"
+                     WidthRequest="44"
+                     BackgroundColor="Transparent"
+                     Margin="0"
+                     Padding="0"
+                     HorizontalOptions="End"
+                     VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
     

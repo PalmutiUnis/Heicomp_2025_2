@@ -33,6 +33,17 @@ namespace MauiApp1
                 System.Diagnostics.Debug.WriteLine("🔥 Task Exception: " + e.Exception.ToString());
             };
 
+
+            // Handler para remover espaço lateral do Shell.TitleView no ANDROID
+
+            #if ANDROID
+                Microsoft.Maui.Handlers.ToolbarHandler.Mapper.AppendToMapping("CustomNavigationView", (handler, view) =>
+                        {
+                            handler.PlatformView.ContentInsetStartWithNavigation = 0;
+                            handler.PlatformView.SetContentInsetsAbsolute(0, 0);
+                        });
+            #endif
+
             return app;
         }
     }
