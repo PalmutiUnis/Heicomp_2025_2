@@ -8,10 +8,11 @@
     xmlns:configuracoes="clr-namespace:Heicomp_2025_2.Views.Configuracoes"
     xmlns:administrativa="clr-namespace:Heicomp_2025_2.Views.Administrativa"
     Shell.FlyoutBehavior="Flyout"
+    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Black}}"
     Title="MauiApp1">
 
     <FlyoutItem Title="Painel de Gestao"
-                Icon="icon_painel_gestao.png">
+                Icon="icone_grafico_pizza.png">
         <ShellContent
             Title="Painel de Gestão"
             ContentTemplate="{DataTemplate dashboards:PainelGestaoPage}"
@@ -29,7 +30,7 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Colaboradores"
-                Icon="icon_colaboradores.png">
+                Icon="icone_pessoas_branco.png">
         <ShellContent
             Title="Colaboradores"
             ContentTemplate="{DataTemplate dashboards:ColaboradoresPage}"

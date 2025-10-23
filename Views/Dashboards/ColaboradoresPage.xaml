@@ -10,7 +10,7 @@
         <Grid ColumnDefinitions="Auto, *"
               Style="{StaticResource TitleViewGridStyle}">
             <ImageButton Grid.Column="0"
-                         Source="btn_voltar.png"  
+                         Source="seta_direita.png"  
                          HeightRequest="44"
                          WidthRequest="44"
                          BackgroundColor="Transparent"

@@ -436,7 +436,7 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White},Dark={StaticResource SecondaryDarkText}}" />
         <Setter Property="FontFamily" Value="OpenSansBold"/>
     </Style>
-
+    
     <!-- alguns estilos que haviamos definido mas nao sao definitivos e finais ainda-->
     <!--NOVO 
  Título da seção do menu (ex: "Unis Insights" (MENU HAMBURGUER) -->

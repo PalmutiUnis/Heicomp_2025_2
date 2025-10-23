@@ -53,7 +53,7 @@
             Clicked="BotaoLogin"
             BackgroundColor="#5E0A4986"
             TextColor="White"
-            ImageSource="logomarca_google.png"
+            ImageSource="icone_google.png"
             HeightRequest="80"
             WidthRequest="270"
             ContentLayout="Left, 10"/>
