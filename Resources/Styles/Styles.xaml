@@ -434,6 +434,7 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontAttributes" Value="Bold"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White},Dark={StaticResource SecondaryDarkText}}" />
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="OpenSansBold"/>
     </Style>
 

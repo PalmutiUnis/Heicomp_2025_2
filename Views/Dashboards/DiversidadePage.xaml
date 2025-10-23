@@ -6,22 +6,32 @@
              Shell.FlyoutBehavior="Disabled">
 
     <!-- Layout do Shell NavBar -->
-    <Shell.TitleView>
-        <Grid ColumnDefinitions="Auto, *">
+    <Shell.TitleView >
+        <Grid ColumnDefinitions="Auto, *"
+              Style="{StaticResource TitleViewGridStyle}"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill"
+              Margin="0"
+              Padding="0">
             <ImageButton Grid.Column="0"
-                         Source="btn_voltar.png"  HeightRequest="44"
+                         Source="seta_direita.png"  
+                         HeightRequest="44"
                          WidthRequest="44"
                          BackgroundColor="Transparent"
-                         Clicked="BotaoVoltarPainelGestao"/>
+                         Clicked="BotaoVoltarPainelGestao"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Center"/>
 
             <Label Grid.Column="1"
                    Text="Indicadores de Diversidade"
+                   Style="{StaticResource TituloShellStyle}"
                    VerticalOptions="Center"
-                   HorizontalOptions="Start"
-                   FontSize="Title"
-                   Margin="10,0,0,0"/>
+                   HorizontalOptions="Fill"/>
         </Grid>
     </Shell.TitleView>
+    
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"

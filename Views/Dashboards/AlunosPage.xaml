@@ -4,7 +4,35 @@
              xmlns:cards="clr-namespace:Heicomp_2025_2.Views.Cards"
              x:Class="Heicomp_2025_2.Views.Dashboards.AlunosPage"
              BackgroundColor="#F9FAFB"
-             Title="Número de Alunos">
+             Title=""
+             Shell.FlyoutBehavior="Disabled">
+
+
+    <Shell.TitleView >
+        <Grid ColumnDefinitions="Auto, *"
+          Style="{StaticResource TitleViewGridStyle}"
+          HorizontalOptions="Fill"
+          VerticalOptions="Fill"
+          Margin="0"
+          Padding="0">
+            <ImageButton Grid.Column="0"
+                     Source="seta_direita.png"  
+                     HeightRequest="44"
+                     WidthRequest="44"
+                     BackgroundColor="Transparent"
+                     Clicked="BotaoVoltarPainelGestao"
+                     Margin="0"
+                     Padding="0"
+                     HorizontalOptions="Start"
+                     VerticalOptions="Center"/>
+
+            <Label Grid.Column="1"
+               Text="Alunos"
+               Style="{StaticResource TituloShellStyle}"
+               VerticalOptions="Center"
+               HorizontalOptions="Fill"/>
+        </Grid>
+    </Shell.TitleView>
 
 
     <ScrollView>
@@ -20,40 +48,6 @@
                    Style="{StaticResource TextoTituloSecao}"
                    VerticalOptions="Start"
                    HorizontalOptions="Start" />
-
-            <!-- 🟣 TÍTULO -->
-            <cards:CardGrande
-                Grid.ColumnSpan="2"
-                Titulo="Educação Básica"
-                Numero="500"
-                Indicador="+0.1%"
-                Icone="icone_alunos.png" />
-
-            <!-- exemplo ideia card grande -->
-            <cards:CardGrande
-                Grid.ColumnSpan="2"
-                Titulo="Homens"
-                Numero="20"
-                Indicador="-5%"
-                Icone="icone_alunos.png" />
-
-            <!-- Exemplo ideia card pequeno -->
-            <cards:CardPequeno
-                Grid.Row="1"
-                Grid.Column="0"
-                Titulo="Mulheres"
-                Numero="480"
-                Indicador="+2%"
-                Icone="icone_alunas.png" />
-
-            <cards:CardPequeno
-                Grid.Row="1"
-                Grid.Column="1"
-                Titulo="Egressos"
-                Numero="35"
-                Indicador="+1%"
-                Icone="icone_egressos.png" />
-
 
         </Grid>
     </ScrollView>
