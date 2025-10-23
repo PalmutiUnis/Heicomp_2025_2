@@ -170,4 +170,5 @@
     <!-- Roxo usado em gráficos de roscas -->
         <Color x:Key="CorGraficoCinza">#6B7280</Color>
         <SolidColorBrush x:Key="BrushCorGraficoCinza" Color="{StaticResource CorGraficoCinza}" />
+
 </ResourceDictionary>

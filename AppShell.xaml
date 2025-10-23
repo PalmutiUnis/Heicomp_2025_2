@@ -11,6 +11,44 @@
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Black}}"
     Title="MauiApp1">
 
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="10" ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                <!-- Ícone -->
+                <Image Source="{Binding Icon}" WidthRequest="24" HeightRequest="24"
+                   VerticalOptions="Center" />
+
+                <!-- Título -->
+                <Label Grid.Column="1"
+                   Text="{Binding Title}"
+                   Style="{StaticResource FlyoutItemLabelStyle}" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <Shell.FlyoutHeader>
+        <HorizontalStackLayout 
+            HeightRequest="140" 
+            Padding="10" Spacing="10"
+            VerticalOptions="Center" 
+            HorizontalOptions="Fill">
+            <Image Source="icone_capelo.png"
+               VerticalOptions="Center" />
+
+            <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                <Label
+                    Text="Unis Insights"
+                    FontSize="Title"
+                    TextColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource White}}"/>
+                <Label
+                Text="Gestão Educacional"
+                FontSize="Subtitle"
+                    TextColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource White}}"/>
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+    </Shell.FlyoutHeader>
+
     <FlyoutItem Title="Painel de Gestao"
                 Icon="icone_grafico_pizza.png">
         <ShellContent
