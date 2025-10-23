@@ -14,31 +14,23 @@
             WidthRequest="206"
             Margin="50"
             SemanticProperties.Description="Logo do Grupo Unis"/>
-        <Border
-            Background="#5E0A4986"
-            Stroke="#5E0A4986"
-            StrokeShape="RoundRectangle 20"
-            Padding="16,8"
-            HorizontalOptions="Center"
-            >
-            <VerticalStackLayout>
-                <Label
+        <VerticalStackLayout>
+            <Label
                     Text="Bem-Vindo!"
                     VerticalOptions="Center" 
                     HorizontalOptions="Center"
                     FontAttributes="Bold"
                     FontSize="Title"/>
-                <Label
+            <Label
                     Text="Agora ficou fácil acompanhar os dados da empresa em um só lugar."
                     VerticalOptions="Center" 
                     HorizontalOptions="Center"/>
-                <Label
+            <Label
                     Text="Explore e aproveite"
                     VerticalOptions="Center" 
                     HorizontalOptions="Center"
                     FontSize="Subtitle"/>
-            </VerticalStackLayout>
-        </Border>
+        </VerticalStackLayout>
         <Label
             Text="Bem-vindo de volta"
             VerticalOptions="Center" 
@@ -51,8 +43,6 @@
         <Button
             Text="Continue com Google"
             Clicked="BotaoLogin"
-            BackgroundColor="#5E0A4986"
-            TextColor="White"
             ImageSource="icone_google.png"
             HeightRequest="80"
             WidthRequest="270"

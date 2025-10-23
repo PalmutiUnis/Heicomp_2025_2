@@ -8,18 +8,17 @@
     xmlns:configuracoes="clr-namespace:Heicomp_2025_2.Views.Configuracoes"
     xmlns:administrativa="clr-namespace:Heicomp_2025_2.Views.Administrativa"
     Shell.FlyoutBehavior="Flyout"
-    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Black}}"
+    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource Black}}"
     Title="MauiApp1">
 
 
     <Shell.ItemTemplate>
         <DataTemplate>
-            <Grid Padding="10" ColumnDefinitions="Auto,*" ColumnSpacing="12">
-                <!-- Ícone -->
+            <Grid Padding="12" ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                
                 <Image Source="{Binding Icon}" WidthRequest="24" HeightRequest="24"
                    VerticalOptions="Center" />
 
-                <!-- Título -->
                 <Label Grid.Column="1"
                    Text="{Binding Title}"
                    Style="{StaticResource FlyoutItemLabelStyle}" />
