@@ -129,5 +129,23 @@
             />
     </FlyoutItem>
 
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <HorizontalStackLayout HeightRequest="140" Spacing="10"
+                               VerticalOptions="Center" HorizontalOptions="Fill">
+                <Image Source="icone_saida_rosa.png"
+                       VerticalOptions="Center" />
+
+                <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                    <Label
+                        Text="Sair"
+                        TextColor="#FCA5A5"
+                        FontSize="16"
+                            FontFamily="OpenSansRegular"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+
 
 </Shell>
