@@ -1,4 +1,6 @@
-﻿namespace MauiApp1
+﻿using Heicomp_2025_2.Views.Auth;
+
+namespace MauiApp1
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new LoginPage();
         }
     }
 }
