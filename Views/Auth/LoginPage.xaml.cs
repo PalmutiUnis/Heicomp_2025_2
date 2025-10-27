@@ -21,7 +21,7 @@ public partial class LoginPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erro", $"Falha na autentica��o com o Google: {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Falha na autentição com o Google: {ex.Message}", "OK");
         }
     }
 }
