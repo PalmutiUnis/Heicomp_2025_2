@@ -1,56 +1,50 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Heicomp_2025_2.Views.Auth.LoginPage">
+             x:Class="Heicomp_2025_2.Views.Auth.LoginPage"
+             NavigationPage.HasNavigationBar="False">
 
-    <VerticalStackLayout
-        Padding="30,0"
-        Spacing="25"
-        >
-        <Image
-            Source="logomarca_grupo_unis.png"
-            Aspect="AspectFill"
-            HeightRequest="91"
-            WidthRequest="206"
-            Margin="50"
-            SemanticProperties.Description="Logo do Grupo Unis"/>
-        <VerticalStackLayout>
-            <Label
-                    Text="Bem-Vindo!"
-                    VerticalOptions="Center" 
-                    HorizontalOptions="Center"
-                    FontAttributes="Bold"
-                    FontSize="Title"/>
-            <Label
-                    Text="Agora ficou fácil acompanhar os dados da empresa em um só lugar."
-                    VerticalOptions="Center" 
-                    HorizontalOptions="Center"/>
-            <Label
-                    Text="Explore e aproveite"
-                    VerticalOptions="Center" 
-                    HorizontalOptions="Center"
-                    FontSize="Subtitle"/>
-        </VerticalStackLayout>
-        <Label
-            Text="Bem-vindo de volta"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" 
-            FontSize="Subtitle"/>
-        <Label
-             Text="Faça login para acessar sua conta"
-              VerticalOptions="Center" 
-              HorizontalOptions="Center"/>
-        <Button
-            Text="Continue com Google"
-            Clicked="BotaoLogin"
-            ImageSource="icone_google.png"
-            HeightRequest="80"
-            WidthRequest="270"
-            ContentLayout="Left, 10"/>
-        <Label
-            Text="@2025 Grupo Unis. Todos os direitos reservados."
-            VerticalOptions="Center" 
-            HorizontalOptions="Center"
-            FontSize="Micro"/>
-    </VerticalStackLayout>
+        <Grid RowDefinitions="*, Auto">
+            <Image Grid.RowSpan="2" Source="unis2.png" Aspect="AspectFill" ZIndex="2" />
+
+            <BoxView Grid.RowSpan="2" Color="Black" Opacity="0.6" ZIndex="1" />
+
+            <ScrollView Grid.Row="0" ZIndex="2">
+                <VerticalStackLayout Padding="35,40" Spacing="51">
+
+                    <Image Source="logounis.png" HeightRequest="80" HorizontalOptions="Center" Margin="0,0,0,50" />
+
+                    <Border StrokeShape="RoundRectangle 20" BackgroundColor="#A0191970" Padding="10" StrokeThickness="0">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Bem-vindo!" TextColor="White" FontSize="49" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            <Label Text="Agora ficou fácil acompanhar os dados da empresa em um só lugar." TextColor="White" FontSize="16" HorizontalTextAlignment="Center" />
+                            <Label Text="Explore e aproveite!" TextColor="White" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="0,10,0,0"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    <VerticalStackLayout Spacing="15" Padding="20,0">
+                        <Label Text="Bem-vindo de volta" TextColor="White" FontSize="28" FontAttributes="Bold" HorizontalTextAlignment="Start"/>
+                        <Label Text="Faça login para acessar sua conta" TextColor="White" FontSize="19" HorizontalTextAlignment="Start" Margin="0,0,0,10"/>
+
+                    </VerticalStackLayout>
+
+                    <Border x:Name="BotaoGoogle" StrokeShape="RoundRectangle 30" BackgroundColor="#A0191970" HeightRequest="70" Padding="10,0" StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnGoogleLoginClicked" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                            <Image Source="logogoogle.png" HeightRequest="63"/>
+                            <Label Text="Continue com o Google" TextColor="White" FontSize="19" FontAttributes="Bold" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <Label Grid.Row="1" ZIndex="2"
+               Text="© 2025 Grupo Unis. Todos os direitos reservados."
+               TextColor="White" 
+               FontSize="12" 
+               HorizontalOptions="Center"
+               Padding="0,0,0,20"/>
+        </Grid>
 </ContentPage>

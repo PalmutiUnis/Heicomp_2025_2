@@ -8,11 +8,20 @@ public partial class LoginPage : ContentPage
     {
         InitializeComponent();
     }
-    private async void BotaoLogin(object sender, EventArgs e)
+    private async void OnGoogleLoginClicked(object sender, EventArgs e)
     {
+        try
+        {
+            //Colocar a API do Google para fazer a autentica��o com um simples toque no bot�o
+            // ... L�gica de autentica��o do Google ...
 
-        App.Current.MainPage = new AppShell();
-
-        await Shell.Current.GoToAsync("//PainelGestaoPage");
+            // Se o login for BEM-SUCEDIDO:
+            // Isso substitui a LoginPage (e sua NavigationPage) pelo AppShell
+            Application.Current.MainPage = new AppShell();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erro", $"Falha na autentição com o Google: {ex.Message}", "OK");
+        }
     }
 }
