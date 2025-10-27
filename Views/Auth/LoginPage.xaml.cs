@@ -12,8 +12,8 @@ public partial class LoginPage : ContentPage
     {
         try
         {
-            //Colocar a API do Google para fazer a autenticação com um simples toque no botão
-            // ... Lógica de autenticação do Google ...
+            //Colocar a API do Google para fazer a autenticaï¿½ï¿½o com um simples toque no botï¿½o
+            // ... Lï¿½gica de autenticaï¿½ï¿½o do Google ...
 
             // Se o login for BEM-SUCEDIDO:
             // Isso substitui a LoginPage (e sua NavigationPage) pelo AppShell
@@ -21,7 +21,7 @@ public partial class LoginPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Erro", $"Falha na autenticação com o Google: {ex.Message}", "OK");
+            await DisplayAlert("Erro", $"Falha na autenticaï¿½ï¿½o com o Google: {ex.Message}", "OK");
         }
     }
 }
