@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Heicomp_2025_2.Views.Dashboards.PainelGestaoPage"
+             BackgroundColor="#F9FAFB"
+             Title="Painel de Gestão">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Título da Página -->
+            <Label Text="Painel de Gestão"
+                   Style="{StaticResource TextoTituloSecao}" />
+
+            <!-- Seção de Alunos -->
+            <Label Text="Alunos"
+                   Style="{StaticResource TextoTituloSecao}" />
+
+            <HorizontalStackLayout Spacing="10">
+                <Border Style="{StaticResource CardPadrao}" WidthRequest="193" HeightRequest="102">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Ed. Básica" Style="{StaticResource TextoSubtitulo}" />
+                        <Label Text="1,247" FontAttributes="Bold" FontSize="24" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardPadrao}" WidthRequest="193" HeightRequest="102">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Ed. Superior" Style="{StaticResource TextoSubtitulo}" />
+                        <Label Text="892" FontAttributes="Bold" FontSize="24" />
+                    </VerticalStackLayout>
+                </Border>
+            </HorizontalStackLayout>
+
+            <!-- Seção de Colaboradores -->
+            <Label Text="Colaboradores"
+                   Style="{StaticResource TextoTituloSecao}" />
+
+            <HorizontalStackLayout Spacing="10">
+                <Border Style="{StaticResource CardPadrao}" WidthRequest="193" HeightRequest="102">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Homens" Style="{StaticResource TextoSubtitulo}" />
+                        <Label Text="156" FontAttributes="Bold" FontSize="24" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardPadrao}" WidthRequest="193" HeightRequest="102">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Mulheres" Style="{StaticResource TextoSubtitulo}" />
+                        <Label Text="198" FontAttributes="Bold" FontSize="24" />
+                    </VerticalStackLayout>
+                </Border>
+            </HorizontalStackLayout>
+
+            <!-- Gráficos -->
+            <Label Text="Distribuição de Cargos"
+                   Style="{StaticResource TextoTituloSecao}" />
+
+            <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="226">
+                <!-- Aqui entra o componente de gráfico -->
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

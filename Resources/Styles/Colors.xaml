@@ -42,4 +42,126 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+    <!-- =========================================================
+         GUIA DE CORES — HEICOMP BASE
+         Este arquivo define todas as cores e brushes do projeto.
+         ========================================================= -->
+
+    <!-- 
+        Observação:
+        Cada cor tem duas versões:
+        1. Color — Usada em propriedades que esperam um valor de cor simples (ex: BackgroundColor)
+        2. SolidColorBrush — Usada em propriedades que esperam um Brush (ex: Background)
+    -->
+
+    <!-- =========================================================
+         LAYOUT PRINCIPAL
+         ========================================================= -->
+
+        <!-- Fundo do menu lateral, cabeçalho superior e botões -->
+        <Color x:Key="CorFundoLayout">#1E3A8A</Color>
+        <SolidColorBrush x:Key="BrushCorFundoLayout" Color="{StaticResource CorFundoLayout}" />
+
+        <!-- Texto principal sobre fundo escuro -->
+        <Color x:Key="CorTextoBranco">#FFFFFF</Color>
+        <SolidColorBrush x:Key="BrushCorTextoBranco" Color="{StaticResource CorTextoBranco}" />
+
+        <!-- Texto padrão sobre fundo claro (preto levemente acinzentado) -->
+        <Color x:Key="CorTextoPreto">#111827</Color>
+        <SolidColorBrush x:Key="BrushCorTextoPreto" Color="{StaticResource CorTextoPreto}" />
+
+        <!-- Texto secundário / detalhes em cinza -->
+        <Color x:Key="CorTextoCinza">#6B7280</Color>
+        <SolidColorBrush x:Key="BrushCorTextoCinza" Color="{StaticResource CorTextoCinza}" />
+
+        <!-- =========================================================
+         CARDS
+         ========================================================= -->
+       
+        <!-- Texto de card neutro / informativo -->
+        <Color x:Key="CorCardNeutra">#6B7280</Color>
+        <SolidColorBrush x:Key="BrushCorCardNeutra" Color="{StaticResource CorCardNeutra}" />
+
+        <!-- Texto de card rosa de destaque -->
+        <Color x:Key="CorCardRosa">#EC4899</Color>
+        <SolidColorBrush x:Key="BrushCorCardRosa" Color="{StaticResource CorCardRosa}" />
+
+        <!-- Indicador positivo (ex: +5%) -->
+        <Color x:Key="CorCardSucesso">#4ADE80</Color>
+        <SolidColorBrush x:Key="BrushCorCardSucesso" Color="{StaticResource CorCardSucesso}" />
+
+        <!-- Fundo gradiente usado em cards e gráficos -->
+        <LinearGradientBrush x:Key="CorCardGradiente" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1E3A8A" Offset="0.0" />
+            <GradientStop Color="#031653" Offset="1.0" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="BrushCorCardGradiente" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1E3A8A" Offset="0.0" />
+            <GradientStop Color="#031653" Offset="1.0" />
+        </LinearGradientBrush>
+
+        <!-- Borda opcional para padronização de cards -->
+        <Color x:Key="CorCardBorda">#D1D5DB</Color>
+        <SolidColorBrush x:Key="BrushCorCardBorda" Color="{StaticResource CorCardBorda}" />
+
+        <!-- =========================================================
+         GRÁFICOS
+         ========================================================= -->
+
+        <!-- Cor principal dos gráficos (colunas e barras) 
+             Também é utilizada em TEXTOS DE CARDS-->
+        <Color x:Key="CorGraficoPrimaria">#1E3A8A</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoPrimaria" Color="{StaticResource CorGraficoPrimaria}" />
+
+        <!-- Azul claro usado em gráficos de barras
+          Também é utilizada em TEXTOS DE CARDS -->
+    <Color x:Key="CorGraficoAzulClaro3">#3B82F6</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoAzulClaro3" Color="{StaticResource CorGraficoAzulClaro3}" />
+
+
+        <!-- Azul claro usado em gráficos de barras -->
+            <Color x:Key="CorGraficoAzulClaro1">#60A5FA</Color>
+            <SolidColorBrush x:Key="BrushCorGraficoAzulClaro1" Color="{StaticResource CorGraficoAzulClaro1}" />
+
+        <!-- Azul claro usado em gráficos de rosca -->
+        <Color x:Key="CorGraficoAzulClaro2">#93C5FD</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoAzulClaro2" Color="{StaticResource CorGraficoAzulClaro2}" />
+
+        <!-- Rosa usado em gráficos de rosca / destaque feminino -->
+        <Color x:Key="CorGraficoRosa">#EC4899</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoRosa" Color="{StaticResource CorGraficoRosa}" />
+
+        <!-- Verde usado em gráficos de rosca (valores positivos) -->
+        <Color x:Key="CorGraficoVerde">#10B981</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoVerde" Color="{StaticResource CorGraficoVerde}" />
+
+        <!-- Verde claro usado como indicador de crescimento -->
+        <Color x:Key="CorGraficoVerdeClaro">#4ADE80</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoVerdeClaro" Color="{StaticResource CorGraficoVerdeClaro}" />
+
+        <!-- Laranja usado em gráficos de rosca (alerta leve) -->
+        <Color x:Key="CorGraficoLaranja">#F59E0B</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoLaranja" Color="{StaticResource CorGraficoLaranja}" />
+
+        <!-- Laranja escuro usado para alertas leves -->
+        <Color x:Key="CorGraficoLaranjaEscuro">#EA580C</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoLaranjaEscuro" Color="{StaticResource CorGraficoLaranjaEscuro}" />
+
+        <!-- Vermelho usado para indicar erro ou queda -->
+        <Color x:Key="CorGraficoVermelho">#EF4444</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoVermelho" Color="{StaticResource CorGraficoVermelho}" />
+
+        
+        <!-- Cinza usado como cor neutra de fundo ou detalhes de gráficos -->
+    <Color x:Key="CorGraficoRoxo">#7C3AED</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoRoxo" Color="{StaticResource CorGraficoRoxo}" />
+    <!-- Verde usado em gráficos de roscas -->
+    <Color x:Key="CorGraficoVerde2">#059669</Color>
+        <SolidColorBrush x:Key="BrushCorGraficVerde2" Color="{StaticResource CorGraficoVerde2}" />
+
+
+    <!-- Roxo usado em gráficos de roscas -->
+        <Color x:Key="CorGraficoCinza">#6B7280</Color>
+        <SolidColorBrush x:Key="BrushCorGraficoCinza" Color="{StaticResource CorGraficoCinza}" />
 </ResourceDictionary>
