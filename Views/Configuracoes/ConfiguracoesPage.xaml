@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Heicomp_2025_2.Views.Configuracoes.ConfiguracoesPage"
+             BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark=#0F172A}"
+             Title="Configurações">
+
+
+    <ScrollView>
+        <VerticalStackLayout Padding="0" Spacing="0">
+
+            <!-- CABEÇALHO -->
+            <Grid BackgroundColor="{AppThemeBinding Light=#2B4C9E, Dark=#1E293B}" 
+                  Padding="20,50,20,30"
+                  RowDefinitions="Auto,Auto"
+                  ColumnDefinitions="Auto,*">
+
+                <!-- Botão Voltar -->
+                <ImageButton Grid.Row="0" Grid.Column="0"
+                            Source="arrow_back.png"
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            BackgroundColor="Transparent"
+                            VerticalOptions="Start"
+                            HorizontalOptions="Start"
+                            Clicked="OnVoltarClicked"/>
+
+                <!-- Título -->
+                <Label Grid.Row="0" Grid.Column="1"
+                       Text="Configurações"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="24"
+                       TextColor="White"
+                       Margin="10,0,0,0"
+                       VerticalOptions="Center"/>
+            </Grid>
+
+            <!-- PERFIL -->
+            <VerticalStackLayout Padding="20,30,20,20" Spacing="15">
+
+                <!-- Avatar e Info do Usuário -->
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                    <!-- Avatar -->
+                    <Border Grid.Column="0"
+                            WidthRequest="60"
+                            HeightRequest="60"
+                            BackgroundColor="{AppThemeBinding Light=#3B82F6, Dark=#2563EB}"
+                            StrokeThickness="0"
+                            VerticalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="30"/>
+                        </Border.StrokeShape>
+                        <Label Text="JS"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="22"
+                               TextColor="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Border>
+
+                    <!-- Nome e Email -->
+                    <VerticalStackLayout Grid.Column="1" 
+                                        VerticalOptions="Center"
+                                        Spacing="4">
+                        <Label Text="João Silva"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="18"
+                               TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                        <Label Text="joao.silva@email.com"
+                               FontFamily="OpenSansRegular"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+            </VerticalStackLayout>
+
+            <!-- NOTIFICAÇÕES -->
+            <VerticalStackLayout Padding="20,10,20,10" Spacing="0">
+                <Label Text="Notificações"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                       Margin="0,0,0,10"
+                       TextTransform="Uppercase"/>
+
+                <!-- Notificações em Push -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                        Padding="15"
+                        Margin="0,0,0,1"
+                        StrokeThickness="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <!-- Ícone -->
+                        <Border Grid.Column="0"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light=#DBEAFE, Dark=#1E3A8A}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="🔔"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Texto -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                            <Label Text="Push Notifications"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Text="Receber notificações no dispositivo"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Switch -->
+                        <Switch Grid.Column="2"
+                                x:Name="SwitchPushNotif"
+                                IsToggled="True"
+                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
+                                ThumbColor="White"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Notificações por Email -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                        Padding="15"
+                        StrokeThickness="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <!-- Ícone -->
+                        <Border Grid.Column="0"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light=#DBEAFE, Dark=#1E3A8A}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="📧"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Texto -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                            <Label Text="Email Notifications"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Text="Receber emails sobre atualizações"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Switch -->
+                        <Switch Grid.Column="2"
+                                x:Name="SwitchEmailNotif"
+                                IsToggled="False"
+                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
+                                ThumbColor="White"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- PREFERÊNCIAS -->
+            <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
+                <Label Text="Preferências"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                       Margin="0,0,0,10"
+                       TextTransform="Uppercase"/>
+
+                <!-- Tema Escuro -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                        Padding="15"
+                        Margin="0,0,0,1"
+                        StrokeThickness="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <!-- Ícone -->
+                        <Border Grid.Column="0"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light=#FEF3C7, Dark=#78350F}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="🌙"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Texto -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                            <Label Text="Tema Escuro"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Text="Alternar modo escuro"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Switch -->
+                        <Switch Grid.Column="2"
+                                x:Name="SwitchTemaEscuro"
+                                IsToggled="{Binding TemaEscuroEnabled}"
+                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
+                                ThumbColor="White"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Idioma -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                        Padding="15"
+                        StrokeThickness="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnIdiomaClicked"/>
+                        </Grid.GestureRecognizers>
+
+                        <!-- Ícone -->
+                        <Border Grid.Column="0"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light=#FED7AA, Dark=#9A3412}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="🌐"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Texto -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                            <Label Text="Idioma"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Text="Selecione seu idioma"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Valor Selecionado -->
+                        <HorizontalStackLayout Grid.Column="2" 
+                                              VerticalOptions="Center"
+                                              Spacing="5">
+                            <Label Text="Português"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                                   VerticalOptions="Center"/>
+                            <Label Text="›"
+                                   FontSize="20"
+                                   TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+                                   VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- SOBRE -->
+            <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
+                <Label Text="Sobre"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                       Margin="0,0,0,10"
+                       TextTransform="Uppercase"/>
+
+                <!-- Ajuda e Suporte -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                        Padding="15"
+                        Margin="0,0,0,1"
+                        StrokeThickness="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnAjudaClicked"/>
+                        </Grid.GestureRecognizers>
+
+                        <!-- Ícone -->
+                        <Border Grid.Column="0"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light=#E0E7FF, Dark=#312E81}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="❓"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Texto -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                            <Label Text="Ajuda e Suporte"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Text="Central de ajuda e FAQ"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Seta -->
+                        <Label Grid.Column="2"
+                               Text="›"
+                               FontSize="20"
+                               TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+                               VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Termos de Uso -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                        Padding="15"
+                        StrokeThickness="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTermosClicked"/>
+                        </Grid.GestureRecognizers>
+
+                        <!-- Ícone -->
+                        <Border Grid.Column="0"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light=#F3E8FF, Dark=#581C87}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="📄"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Texto -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                            <Label Text="Termos de Uso"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Text="Políticas e termos"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Seta -->
+                        <Label Grid.Column="2"
+                               Text="›"
+                               FontSize="20"
+                               TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+                               VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- BOTÃO SALVAR -->
+            <Border Padding="20,30,20,40">
+                <Button Text="Salvar Alterações"
+                        BackgroundColor="{AppThemeBinding Light=#1E3A8A, Dark=#3B82F6}"
+                        TextColor="White"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        CornerRadius="10"
+                        Clicked="OnSalvarClicked"/>
+            </Border>
+
+            <!-- Versão -->
+            <Label Text="Versão 0.0.0 (Pre-Alpha)"
+                   FontFamily="OpenSansRegular"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,30"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

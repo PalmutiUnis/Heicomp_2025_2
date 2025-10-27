@@ -4,8 +4,16 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp1"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:pages="clr-namespace:Heicomp_2025_2.Views.Configuracoes"
+    Shell.FlyoutBehavior="Flyout"
     Title="MauiApp1">
+    
+    <FlyoutItem Title="Configurações" FlyoutIcon="⚙️">
+        <ShellContent
+            Title="Configurações"
+            ContentTemplate="{DataTemplate pages:ConfiguracoesPage}"
+            Route="ConfiguracoesPage" />
+    </FlyoutItem>
 
     <ShellContent
         Title="Home"
