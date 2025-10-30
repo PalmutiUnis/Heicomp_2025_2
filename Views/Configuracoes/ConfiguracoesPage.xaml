@@ -2,40 +2,53 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Heicomp_2025_2.Views.Configuracoes.ConfiguracoesPage"
+             Title=""
              BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark=#0F172A}"
-             Title="Configurações">
+             Shell.FlyoutBehavior="Disabled">
 
+    <!-- Layout do Shell NavBar -->
+    <Shell.TitleView>
+        <Grid BackgroundColor="{AppThemeBinding Light=#2B4C9E, Dark=#1E293B}"
+              ColumnDefinitions="Auto, *, Auto"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill"
+              Padding="10,0"
+              HeightRequest="60">
+
+            <!-- Botão Voltar -->
+            <ImageButton Grid.Column="0"
+                         Source="seta_direita.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Clicked="BotaoVoltarPainelGestao"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Center"/>
+
+            <!-- Título -->
+            <Label Grid.Column="1"
+                   Text="Configurações"
+                   FontFamily="OpenSansSemibold"
+                   FontSize="20"
+                   TextColor="White"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"/>
+
+            <!-- Menu -->
+            <ImageButton Grid.Column="2"
+                         Source="icone_menu.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="End"
+                         VerticalOptions="Center"/>
+        </Grid>
+    </Shell.TitleView>
 
     <ScrollView>
         <VerticalStackLayout Padding="0" Spacing="0">
 
-            <!-- CABEÇALHO -->
-            <Grid BackgroundColor="{AppThemeBinding Light=#2B4C9E, Dark=#1E293B}" 
-                  Padding="20,50,20,30"
-                  RowDefinitions="Auto,Auto"
-                  ColumnDefinitions="Auto,*">
-
-                <!-- Botão Voltar -->
-                <ImageButton Grid.Row="0" Grid.Column="0"
-                            Source="arrow_back.png"
-                            WidthRequest="24"
-                            HeightRequest="24"
-                            BackgroundColor="Transparent"
-                            VerticalOptions="Start"
-                            HorizontalOptions="Start"
-                            Clicked="OnVoltarClicked"/>
-
-                <!-- Título -->
-                <Label Grid.Row="0" Grid.Column="1"
-                       Text="Configurações"
-                       FontFamily="OpenSansSemibold"
-                       FontSize="24"
-                       TextColor="White"
-                       Margin="10,0,0,0"
-                       VerticalOptions="Center"/>
-            </Grid>
-
-            <!-- PERFIL -->
+            <!-- PERFIL DO USUÁRIO -->
             <VerticalStackLayout Padding="20,30,20,20" Spacing="15">
 
                 <!-- Avatar e Info do Usuário -->
@@ -50,7 +63,7 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="30"/>
                         </Border.StrokeShape>
-                        <Label Text="JS"
+                        <Label Text="{Binding InitialsUsuario}"
                                FontFamily="OpenSansSemibold"
                                FontSize="22"
                                TextColor="White"
@@ -62,11 +75,11 @@
                     <VerticalStackLayout Grid.Column="1" 
                                         VerticalOptions="Center"
                                         Spacing="4">
-                        <Label Text="João Silva"
+                        <Label Text="{Binding NomeUsuario}"
                                FontFamily="OpenSansSemibold"
                                FontSize="18"
                                TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
-                        <Label Text="joao.silva@email.com"
+                        <Label Text="{Binding EmailUsuario}"
                                FontFamily="OpenSansRegular"
                                FontSize="14"
                                TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
@@ -75,14 +88,13 @@
 
             </VerticalStackLayout>
 
-            <!-- NOTIFICAÇÕES -->
+            <!-- SEÇÃO: NOTIFICAÇÕES -->
             <VerticalStackLayout Padding="20,10,20,10" Spacing="0">
-                <Label Text="Notificações"
+                <Label Text="NOTIFICAÇÕES"
                        FontFamily="OpenSansSemibold"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
-                       Margin="0,0,0,10"
-                       TextTransform="Uppercase"/>
+                       Margin="0,0,0,10"/>
 
                 <!-- Notificações em Push -->
                 <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
@@ -122,8 +134,7 @@
 
                         <!-- Switch -->
                         <Switch Grid.Column="2"
-                                x:Name="SwitchPushNotif"
-                                IsToggled="True"
+                                IsToggled="{Binding PushNotificationsEnabled}"
                                 OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
                                 ThumbColor="White"
                                 VerticalOptions="Center"/>
@@ -133,6 +144,7 @@
                 <!-- Notificações por Email -->
                 <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
                         Padding="15"
+                        Margin="0,0,0,1"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
                         <!-- Ícone -->
@@ -167,8 +179,51 @@
 
                         <!-- Switch -->
                         <Switch Grid.Column="2"
-                                x:Name="SwitchEmailNotif"
-                                IsToggled="False"
+                                IsToggled="{Binding EmailNotificationsEnabled}"
+                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
+                                ThumbColor="White"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Marketing -->
+                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                        Padding="15"
+                        StrokeThickness="0">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <!-- Ícone -->
+                        <Border Grid.Column="0"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light=#FEF3C7, Dark=#78350F}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="📢"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Texto -->
+                        <VerticalStackLayout Grid.Column="1" 
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                            <Label Text="Marketing"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Text="Ofertas e promoções especiais"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Switch -->
+                        <Switch Grid.Column="2"
+                                IsToggled="{Binding MarketingEnabled}"
                                 OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
                                 ThumbColor="White"
                                 VerticalOptions="Center"/>
@@ -176,14 +231,13 @@
                 </Border>
             </VerticalStackLayout>
 
-            <!-- PREFERÊNCIAS -->
+            <!-- SEÇÃO: PREFERÊNCIAS -->
             <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
-                <Label Text="Preferências"
+                <Label Text="PREFERÊNCIAS"
                        FontFamily="OpenSansSemibold"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
-                       Margin="0,0,0,10"
-                       TextTransform="Uppercase"/>
+                       Margin="0,0,0,10"/>
 
                 <!-- Tema Escuro -->
                 <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
@@ -223,7 +277,6 @@
 
                         <!-- Switch -->
                         <Switch Grid.Column="2"
-                                x:Name="SwitchTemaEscuro"
                                 IsToggled="{Binding TemaEscuroEnabled}"
                                 OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
                                 ThumbColor="White"
@@ -274,7 +327,7 @@
                         <HorizontalStackLayout Grid.Column="2" 
                                               VerticalOptions="Center"
                                               Spacing="5">
-                            <Label Text="Português"
+                            <Label Text="{Binding IdiomaAtual}"
                                    FontFamily="OpenSansRegular"
                                    FontSize="14"
                                    TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
@@ -288,14 +341,13 @@
                 </Border>
             </VerticalStackLayout>
 
-            <!-- SOBRE -->
+            <!-- SEÇÃO: SOBRE -->
             <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
-                <Label Text="Sobre"
+                <Label Text="SOBRE"
                        FontFamily="OpenSansSemibold"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
-                       Margin="0,0,0,10"
-                       TextTransform="Uppercase"/>
+                       Margin="0,0,0,10"/>
 
                 <!-- Ajuda e Suporte -->
                 <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
@@ -396,7 +448,7 @@
             </VerticalStackLayout>
 
             <!-- BOTÃO SALVAR -->
-            <Border Padding="20,30,20,40">
+            <Border Padding="20,30,20,20">
                 <Button Text="Salvar Alterações"
                         BackgroundColor="{AppThemeBinding Light=#1E3A8A, Dark=#3B82F6}"
                         TextColor="White"

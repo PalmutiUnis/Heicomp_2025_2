@@ -30,9 +30,9 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
     }
 
     // Evento: Botão Voltar
-    private async void OnVoltarClicked(object sender, EventArgs e)
+    private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
     {
-        await DisplayAlert("Voltar", "Voltando para a tela anterior...", "OK");
+        await Shell.Current.GoToAsync(".."); ;
         // await Navigation.PopAsync(); // Descomente quando tiver navegação configurada
     }
 
@@ -40,17 +40,17 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
     private async void OnSalvarClicked(object sender, EventArgs e)
     {
         // Captura os valores dos outros switches
-        bool pushNotif = SwitchPushNotif.IsToggled;
-        bool emailNotif = SwitchEmailNotif.IsToggled;
-        
+    //    bool pushNotif = SwitchPushNotif.IsToggled;
+    //    bool emailNotif = SwitchEmailNotif.IsToggled;
+
         // A lógica do tema escuro não é mais necessária aqui, pois é aplicada instantaneamente.
 
-        string mensagem = $"Configurações salvas!\n\n" +
-                         $"Push Notifications: {(pushNotif ? "Ativado" : "Desativado")}\n" +
-                         $"Email Notifications: {(emailNotif ? "Ativado" : "Desativado")}\n" +
-                         $"Tema Escuro: {(TemaEscuroEnabled ? "Ativado" : "Desativado")}";
+    //    string mensagem = $"Configurações salvas!\n\n" +
+    //                     $"Push Notifications: {(pushNotif ? "Ativado" : "Desativado")}\n" +
+    //                     $"Email Notifications: {(emailNotif ? "Ativado" : "Desativado")}\n" +
+    //                     $"Tema Escuro: {(TemaEscuroEnabled ? "Ativado" : "Desativado")}";
 
-        await DisplayAlert("Sucesso", mensagem, "OK");
+    //    await DisplayAlert("Sucesso", mensagem, "OK");
     }
 
     // Evento: Idioma
