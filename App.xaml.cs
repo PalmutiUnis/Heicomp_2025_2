@@ -1,39 +1,14 @@
-﻿namespace MauiApp1; // ← MUDE para o nome do seu projeto!
+﻿using Heicomp_2025_2.Views.Auth;
 
-public partial class App : Application
+namespace MauiApp1
 {
-    public App()
+    public partial class App : Application
     {
-        InitializeComponent();
-
-        // Carrega o tema salvo
-        CarregarTema();
-
-        MainPage = new AppShell();
-    }
-
-    private void CarregarTema()
-    {
-        try
+        public App()
         {
-            if (Preferences.ContainsKey("TemaEscuro"))
-            {
-                bool temaEscuro = Preferences.Get("TemaEscuro", false);
+            InitializeComponent();
 
-                if (temaEscuro)
-                {
-                    UserAppTheme = AppTheme.Dark;
-                }
-                else
-                {
-                    UserAppTheme = AppTheme.Light;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Erro: {ex.Message}");
-            UserAppTheme = AppTheme.Light;
+            MainPage = new LoginPage();
         }
     }
 }

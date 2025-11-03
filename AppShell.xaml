@@ -4,20 +4,148 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp1"
-    xmlns:pages="clr-namespace:Heicomp_2025_2.Views.Configuracoes"
+    xmlns:dashboards="clr-namespace:Heicomp_2025_2.Views.Dashboards"
+    xmlns:configuracoes="clr-namespace:Heicomp_2025_2.Views.Configuracoes"
+    xmlns:administrativa="clr-namespace:Heicomp_2025_2.Views.Administrativa"
     Shell.FlyoutBehavior="Flyout"
+    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource Black}}"
     Title="MauiApp1">
-    
-    <FlyoutItem Title="Configurações" FlyoutIcon="⚙️">
+
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="12" ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                
+                <Image Source="{Binding Icon}" WidthRequest="24" HeightRequest="24"
+                   VerticalOptions="Center" />
+
+                <Label Grid.Column="1"
+                   Text="{Binding Title}"
+                   Style="{StaticResource FlyoutItemLabelStyle}" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <Shell.FlyoutHeader>
+        <HorizontalStackLayout 
+            HeightRequest="140" 
+            Padding="10" Spacing="10"
+            VerticalOptions="Center" 
+            HorizontalOptions="Fill">
+            <Image Source="icone_capelo.png"
+               VerticalOptions="Center" />
+
+            <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                <Label
+                    Text="Unis Insights"
+                    FontSize="Title"
+                    TextColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource White}}"/>
+                <Label
+                Text="Gestão Educacional"
+                FontSize="Subtitle"
+                    TextColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource White}}"/>
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <FlyoutItem Title="Painel de Gestao"
+                Icon="icone_grafico_pizza.png">
         <ShellContent
-            Title="Configurações"
-            ContentTemplate="{DataTemplate pages:ConfiguracoesPage}"
-            Route="ConfiguracoesPage" />
+            Title="Painel de Gestão"
+            ContentTemplate="{DataTemplate dashboards:PainelGestaoPage}"
+            Route="PainelGestaoPage"
+            />
     </FlyoutItem>
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <FlyoutItem Title="Alunos"
+                Icon="icone_formatura_branco.png">
+        <ShellContent
+            Title="Alunos"
+            ContentTemplate="{DataTemplate dashboards:AlunosPage}"
+            Route="AlunosPage"
+            />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Colaboradores"
+                Icon="icone_pessoas_branco.png">
+        <ShellContent
+            Title="Colaboradores"
+            ContentTemplate="{DataTemplate dashboards:ColaboradoresPage}"
+            Route="ColaboradoresPage"
+            />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Cargos"
+                Icon="icone_maleta_branco.png">
+        <ShellContent
+            Title="Cargos"
+            ContentTemplate="{DataTemplate dashboards:CargosPage}"
+            Route="CargosPage"
+            />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Rotatividade"
+                Icon="icone_atualizar_branco.png">
+        <ShellContent
+            Title="Rotatividade"
+            ContentTemplate="{DataTemplate dashboards:RotatividadePage}"
+            Route="RotatividadePage"
+            />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Indicadores de Diversidade"
+                Icon="icone_organizacao_branco.png">
+        <ShellContent
+            Title="Indicadores de Diversidadde"
+            ContentTemplate="{DataTemplate dashboards:DiversidadePage}"
+            Route="DiversidadePage"
+            />
+    </FlyoutItem>
+
+
+    <FlyoutItem Title="Gráficos Detalhados"
+                Icon="icone_grafico_barras_branco.png">
+        <ShellContent
+            Title="Gráficos Detalhados"
+            ContentTemplate="{DataTemplate dashboards:GraficosDetalhadosPage}"
+            Route="GraficosDetalhadosPage"
+            />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Configurações"
+                Icon="icone_engrenagem_branco.png">
+        <ShellContent
+            Title="Configurações"
+            ContentTemplate="{DataTemplate configuracoes:ConfiguracoesPage}"
+            Route="ConfiguracoesPage"
+            />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Área Administrativa"
+                Icon="icone_usuario_admin_branco.png">
+        <ShellContent
+            Title="Área Administrativa"
+            ContentTemplate="{DataTemplate administrativa:AdminPage}"
+            />
+    </FlyoutItem>
+
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <HorizontalStackLayout HeightRequest="140" Spacing="10"
+                               VerticalOptions="Center" HorizontalOptions="Fill">
+                <Image Source="icone_saida_rosa.png"
+                       VerticalOptions="Center" />
+
+                <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                    <Label
+                        Text="Sair"
+                        TextColor="#FCA5A5"
+                        FontSize="16"
+                            FontFamily="OpenSansRegular"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+
 
 </Shell>
