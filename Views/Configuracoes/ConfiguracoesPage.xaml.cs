@@ -2,6 +2,7 @@ namespace Heicomp_2025_2.Views.Configuracoes;
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Plugin.LocalNotification;
 
 public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
 {
@@ -24,6 +25,7 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
     public ConfiguracoesPage()
     {
         InitializeComponent();
+        LocalNotificationCenter.Current.RequestNotificationPermission();
         // Carrega a preferência salva e define o estado inicial do Switch
         TemaEscuroEnabled = Preferences.Get("TemaEscuro", false);
         BindingContext = this; // Conecta a UI (XAML) com este código
@@ -91,11 +93,32 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         );
     }
 
-    // PushNotificationsEnabled
-    private void OnPushNotificationsToggled(object sender, ToggledEventArgs e)
+    // *************************** Evento: Notificações em Push ***************************
+    private async void OnPushNotificationsToggled(object sender, ToggledEventArgs e)
     {
         bool isEnabled = e.Value;
         Preferences.Set("PushNotificationsEnabled", isEnabled);
+
+        // 4. Se o botão foi LIGADO, envia a notificação
+        if (isEnabled)
+        {
+            // Cria a notificação
+            var request = new NotificationRequest
+            {
+                NotificationId = 1337, // Um ID único para esta notificação
+                Title = "Notificações Ativadas!",
+                Description = "Você agora receberá alertas e promoções.",
+                BadgeNumber = 1, // Número que aparece no ícone do app
+                Schedule = new NotificationRequestSchedule
+                {
+                    // Dispara a notificação 1 segundo após ligar o switch
+                    NotifyTime = DateTime.Now.AddSeconds(1)
+                }
+            };
+
+            // Envia a notificação
+            await LocalNotificationCenter.Current.Show(request);
+        }
     }
 
 
