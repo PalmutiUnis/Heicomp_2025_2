@@ -27,6 +27,7 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         // Carrega a preferência salva e define o estado inicial do Switch
         TemaEscuroEnabled = Preferences.Get("TemaEscuro", false);
         BindingContext = this; // Conecta a UI (XAML) com este código
+            
     }
 
     // Evento: Botão Voltar
@@ -90,6 +91,15 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         );
     }
 
+    // PushNotificationsEnabled
+    private void OnPushNotificationsToggled(object sender, ToggledEventArgs e)
+    {
+        bool isEnabled = e.Value;
+        Preferences.Set("PushNotificationsEnabled", isEnabled);
+    }
+
+
+    // Aplica o tema escuro ou claro
     private void AplicarTema(bool temaEscuro)
     {
         try
