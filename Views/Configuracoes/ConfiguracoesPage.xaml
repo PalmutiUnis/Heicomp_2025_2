@@ -112,8 +112,10 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8"/>
                             </Border.StrokeShape>
-                            <Label Text="🔔"
-                                   FontSize="20"
+                            <Image Source="icone_sino_verde.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
                         </Border>
@@ -157,8 +159,10 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8"/>
                             </Border.StrokeShape>
-                            <Label Text="📧"
-                                   FontSize="20"
+                            <Image Source="icone_mensagem.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
                         </Border>
@@ -201,8 +205,10 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8"/>
                             </Border.StrokeShape>
-                            <Label Text="📢"
-                                   FontSize="20"
+                            <Image Source="icone_avisos.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
                         </Border>
@@ -255,10 +261,12 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8"/>
                             </Border.StrokeShape>
-                            <Label Text="🌙"
-                                   FontSize="20"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
+                            <Image Source="icone_modo_escuro.png.png"
+                                  WidthRequest="40"
+                                  HeightRequest="40"
+                                  Aspect="AspectFit"
+                                  HorizontalOptions="Center"
+                                  VerticalOptions="Center"/>
                         </Border>
 
                         <!-- Texto -->
@@ -279,7 +287,7 @@
                         <Switch Grid.Column="2"
                                 IsToggled="{Binding TemaEscuroEnabled}"
                                 OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
-                                ThumbColor="White"
+                                ThumbColor="Blue"
                                 VerticalOptions="Center"/>
                     </Grid>
                 </Border>
@@ -303,10 +311,13 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8"/>
                             </Border.StrokeShape>
-                            <Label Text="🌐"
-                                   FontSize="20"
+                            <Image Source="icone_mundial.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Aspect="AspectFit"
                                    HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
+                                   VerticalOptions="Center"
+                                />
                         </Border>
 
                         <!-- Texto -->
@@ -369,8 +380,10 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8"/>
                             </Border.StrokeShape>
-                            <Label Text="❓"
-                                   FontSize="20"
+                            <Image Source="icone_duvidas.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
                         </Border>
@@ -413,12 +426,15 @@
                                 HeightRequest="40"
                                 BackgroundColor="{AppThemeBinding Light=#F3E8FF, Dark=#581C87}"
                                 StrokeThickness="0"
-                                VerticalOptions="Center">
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8"/>
                             </Border.StrokeShape>
-                            <Label Text="📄"
-                                   FontSize="20"
+                            <Image Source="icone_documentos.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
                         </Border>

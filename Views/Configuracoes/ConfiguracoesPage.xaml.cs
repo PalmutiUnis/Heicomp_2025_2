@@ -32,8 +32,7 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
     // Evento: Botão Voltar
     private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(".."); ;
-        // await Navigation.PopAsync(); // Descomente quando tiver navegação configurada
+        await Shell.Current.GoToAsync("//PainelGestaoPage");
     }
 
     // Evento: Salvar Alterações
@@ -53,7 +52,7 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         //    await DisplayAlert("Sucesso", mensagem, "OK");
     }
 
-    // Evento: Idioma
+    // *************************** Evento: Idioma ***************************
     private async void OnIdiomaClicked(object sender, EventArgs e)
     {
         string resultado = await DisplayActionSheet(
@@ -71,7 +70,7 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         }
     }
 
-    // Evento: Ajuda e Suporte
+    // *************************** Evento: Ajuda e Suporte ***************************
     private async void OnAjudaClicked(object sender, EventArgs e)
     {
         await DisplayAlert(
@@ -81,7 +80,7 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         );
     }
 
-    // Evento: Termos de Uso
+    // *************************** Evento: Termos de Uso ***************************
     private async void OnTermosClicked(object sender, EventArgs e)
     {
         await DisplayAlert(
