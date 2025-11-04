@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Plugin.LocalNotification;
 
-public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
+public partial class ConfiguracoesPage : ContentPage
 {
     private bool _temaEscuroEnabled;
 
@@ -22,15 +22,15 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         }
     }
 
-    public ConfiguracoesPage()
-    {
-        InitializeComponent();
+	public ConfiguracoesPage()
+	{
+		InitializeComponent();
         LocalNotificationCenter.Current.RequestNotificationPermission();
         // Carrega a preferência salva e define o estado inicial do Switch
         TemaEscuroEnabled = Preferences.Get("TemaEscuro", false);
         BindingContext = this; // Conecta a UI (XAML) com este código
             
-    }
+	}
 
     // Evento: Botão Voltar
     private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
@@ -143,12 +143,14 @@ public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
         }
     }
 
-    #region INotifyPropertyChanged Implementation
-    public event PropertyChangedEventHandler PropertyChanged;
+    // <summary>
+    // /#region INotifyPropertyChanged Implementation
+    // </summary>
+    // public event PropertyChangedEventHandler PropertyChanged;
 
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    #endregion
+    //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    //{
+    //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    //}
+    //#endregion
 }

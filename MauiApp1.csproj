@@ -60,7 +60,11 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="Plugin.LocalNotification" Version="12.0.2" />
+        <PackageReference Include="MySqlConnector" Version="2.3.7" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\Rotatividade\" />
 	</ItemGroup>
 
 	<ItemGroup>

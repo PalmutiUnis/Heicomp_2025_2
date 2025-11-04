@@ -9,10 +9,11 @@
     <!-- Layout do Shell NavBar -->
     <Shell.TitleView>
         <Grid BackgroundColor="{AppThemeBinding Light=#2B4C9E, Dark=#1E293B}"
-              ColumnDefinitions="Auto, *, Auto"
+              ColumnDefinitions="Auto, *"
               HorizontalOptions="Fill"
               VerticalOptions="Fill"
-              Padding="10,0"
+              Margin="0"
+              Padding="0,0"
               HeightRequest="60">
 
             <!-- Botão Voltar -->
@@ -22,26 +23,28 @@
                          WidthRequest="44"
                          BackgroundColor="Transparent"
                          Clicked="BotaoVoltarPainelGestao"
+                         Margin="0"
+                         Padding="0"
                          HorizontalOptions="Start"
                          VerticalOptions="Center"/>
 
             <!-- Título -->
             <Label Grid.Column="1"
                    Text="Configurações"
-                   FontFamily="OpenSansSemibold"
-                   FontSize="20"
-                   TextColor="White"
+                   Style="{StaticResource TituloShellStyle}"
                    VerticalOptions="Center"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Fill"/>
 
             <!-- Menu -->
             <ImageButton Grid.Column="2"
-                         Source="icone_menu.png"  
-                         HeightRequest="44"
-                         WidthRequest="44"
-                         BackgroundColor="Transparent"
-                         HorizontalOptions="End"
-                         VerticalOptions="Center"/>
+                     Source="icone_menu.png"  
+                     HeightRequest="44"
+                     WidthRequest="44"
+                     BackgroundColor="Transparent"
+                     Margin="0"
+                     Padding="0"
+                     HorizontalOptions="End"
+                     VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
 
@@ -63,10 +66,7 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="30"/>
                         </Border.StrokeShape>
-                        <Label Text="{Binding InitialsUsuario}"
-                               FontFamily="OpenSansSemibold"
-                               FontSize="22"
-                               TextColor="White"
+                        <Label Style="{StaticResource TituloShellStyle}"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"/>
                     </Border>
@@ -76,13 +76,9 @@
                                         VerticalOptions="Center"
                                         Spacing="4">
                         <Label Text="{Binding NomeUsuario}"
-                               FontFamily="OpenSansSemibold"
-                               FontSize="18"
-                               TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                               Style="{StaticResource TituloShellStyle}"/>
                         <Label Text="{Binding EmailUsuario}"
-                               FontFamily="OpenSansRegular"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                               Style="{StaticResource TituloShellStyle}"/>
                     </VerticalStackLayout>
                 </Grid>
 
@@ -91,9 +87,7 @@
             <!-- SEÇÃO: NOTIFICAÇÕES -->
             <VerticalStackLayout Padding="20,10,20,10" Spacing="0">
                 <Label Text="NOTIFICAÇÕES"
-                       FontFamily="OpenSansSemibold"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                       Style="{StaticResource TituloShellStyle}"
                        Margin="0,0,0,10"/>
 
                 <!-- Notificações em Push -->
@@ -125,13 +119,9 @@
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Push Notifications"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                                   Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Receber notificações no dispositivo"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                                   Style="{StaticResource TituloShellStyle}"/>
                         </VerticalStackLayout>
 
                         <!-- Switch -->
@@ -171,14 +161,9 @@
                         <VerticalStackLayout Grid.Column="1" 
                                             VerticalOptions="Center"
                                             Spacing="2">
-                            <Label Text="Email Notifications"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                            <Label Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Receber emails sobre atualizações"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                                  Style="{StaticResource TituloShellStyle}"/>
                         </VerticalStackLayout>
 
                         <!-- Switch -->
@@ -218,13 +203,9 @@
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Marketing"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                                  Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Ofertas e promoções especiais"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                                   Style="{StaticResource TituloShellStyle}"/>
                         </VerticalStackLayout>
 
                         <!-- Switch -->
@@ -240,9 +221,7 @@
             <!-- SEÇÃO: PREFERÊNCIAS -->
             <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
                 <Label Text="PREFERÊNCIAS"
-                       FontFamily="OpenSansSemibold"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+Style="{StaticResource TituloShellStyle}"
                        Margin="0,0,0,10"/>
 
                 <!-- Tema Escuro -->
@@ -274,13 +253,9 @@
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Tema Escuro"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Alternar modo escuro"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+Style="{StaticResource TituloShellStyle}"/>
                         </VerticalStackLayout>
 
                         <!-- Switch -->
@@ -325,13 +300,9 @@
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Idioma"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Selecione seu idioma"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+Style="{StaticResource TituloShellStyle}"/>
                         </VerticalStackLayout>
 
                         <!-- Valor Selecionado -->
@@ -344,8 +315,7 @@
                                    TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
                                    VerticalOptions="Center"/>
                             <Label Text="›"
-                                   FontSize="20"
-                                   TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+Style="{StaticResource TituloShellStyle}"
                                    VerticalOptions="Center"/>
                         </HorizontalStackLayout>
                     </Grid>
@@ -355,9 +325,7 @@
             <!-- SEÇÃO: SOBRE -->
             <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
                 <Label Text="SOBRE"
-                       FontFamily="OpenSansSemibold"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                       Style="{StaticResource TituloShellStyle}"
                        Margin="0,0,0,10"/>
 
                 <!-- Ajuda e Suporte -->
@@ -393,9 +361,7 @@
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Ajuda e Suporte"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                                   Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Central de ajuda e FAQ"
                                    FontFamily="OpenSansRegular"
                                    FontSize="13"
@@ -441,16 +407,12 @@
 
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
-                                            VerticalOptions="Center"
+            VerticalOptions="Center" 
                                             Spacing="2">
                             <Label Text="Termos de Uso"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light=#111827, Dark=#F9FAFB}"/>
+                                   Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Políticas e termos"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                                   Style="{StaticResource TituloShellStyle}""/>
                         </VerticalStackLayout>
 
                         <!-- Seta -->
@@ -468,8 +430,7 @@
                 <Button Text="Salvar Alterações"
                         BackgroundColor="{AppThemeBinding Light=#1E3A8A, Dark=#3B82F6}"
                         TextColor="White"
-                        FontFamily="OpenSansSemibold"
-                        FontSize="16"
+                        Style="{StaticResource TituloShellStyle}"
                         HeightRequest="50"
                         CornerRadius="10"
                         Clicked="OnSalvarClicked"/>
@@ -483,6 +444,6 @@
                    HorizontalOptions="Center"
                    Margin="0,0,0,30"/>
 
-        </VerticalStackLayout>
+    </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
