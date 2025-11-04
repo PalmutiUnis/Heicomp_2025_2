@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
              x:Class="Heicomp_2025_2.Views.Configuracoes.ConfiguracoesPage"
              Title=""
-             BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark=#0F172A}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Shell.FlyoutBehavior="Disabled">
 
     <!-- Layout do Shell NavBar -->
     <Shell.TitleView>
-        <Grid BackgroundColor="{AppThemeBinding Light=#2B4C9E, Dark=#1E293B}"
+        <Grid Style="{StaticResource TitleViewGridStyle}"
               ColumnDefinitions="Auto, *"
               HorizontalOptions="Fill"
               VerticalOptions="Fill"
@@ -37,14 +38,14 @@
 
             <!-- Menu -->
             <ImageButton Grid.Column="2"
-                     Source="icone_menu.png"  
-                     HeightRequest="44"
-                     WidthRequest="44"
-                     BackgroundColor="Transparent"
-                     Margin="0"
-                     Padding="0"
-                     HorizontalOptions="End"
-                     VerticalOptions="Center"/>
+                         Source="icone_menu.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="End"
+                         VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
 
@@ -60,13 +61,16 @@
                     <Border Grid.Column="0"
                             WidthRequest="60"
                             HeightRequest="60"
-                            BackgroundColor="{AppThemeBinding Light=#3B82F6, Dark=#2563EB}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoPrimaria}}"
                             StrokeThickness="0"
                             VerticalOptions="Center">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="30"/>
                         </Border.StrokeShape>
-                        <Label Style="{StaticResource TituloShellStyle}"
+                        <Label Text="{Binding InitialsUsuario}"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="22"
+                               TextColor="{StaticResource CorTextoBranco}"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"/>
                     </Border>
@@ -76,9 +80,13 @@
                                         VerticalOptions="Center"
                                         Spacing="4">
                         <Label Text="{Binding NomeUsuario}"
-                               Style="{StaticResource TituloShellStyle}"/>
+                               FontFamily="OpenSansSemibold"
+                               FontSize="18"
+                               TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                         <Label Text="{Binding EmailUsuario}"
-                               Style="{StaticResource TituloShellStyle}"/>
+                               FontFamily="OpenSansRegular"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                     </VerticalStackLayout>
                 </Grid>
 
@@ -87,132 +95,116 @@
             <!-- SEÇÃO: NOTIFICAÇÕES -->
             <VerticalStackLayout Padding="20,10,20,10" Spacing="0">
                 <Label Text="NOTIFICAÇÕES"
-                       Style="{StaticResource TituloShellStyle}"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"
                        Margin="0,0,0,10"/>
 
                 <!-- Notificações em Push -->
-                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
                         Padding="15"
                         Margin="0,0,0,1"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
                         <!-- Ícone -->
-                        <Border Grid.Column="0"
-                                WidthRequest="40"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#DBEAFE, Dark=#1E3A8A}"
-                                StrokeThickness="0"
-                                VerticalOptions="Center">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8"/>
-                            </Border.StrokeShape>
-                            <Image Source="icone_sino_verde.png"
+                        <Image Source="icone_sino_verde.png"
                                    WidthRequest="40"
                                    HeightRequest="40"
                                    Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
-                        </Border>
 
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
                                             VerticalOptions="Center"
                                             Spacing="2">
-                            <Label Text="Push Notifications"
-                                   Style="{StaticResource TituloShellStyle}"/>
-                            <Label Text="Receber notificações no dispositivo"
-                                   Style="{StaticResource TituloShellStyle}"/>
+                            <Label Text="Notificações em Push"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
+                            <Label Text="Receba notificações flutuantes no seu dispositivo"
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                         </VerticalStackLayout>
 
                         <!-- Switch -->
-                        <Switch Grid.Column="2"
+                        <Switch Grid.Column="2"    
+                                windows:Switch.OnContent=""
+                                windows:Switch.OffContent=""
                                 IsToggled="{Binding PushNotificationsEnabled}"
-                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
-                                ThumbColor="White"
+                                OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
+                                ThumbColor="{StaticResource White}"
                                 VerticalOptions="Center"/>
                     </Grid>
                 </Border>
 
                 <!-- Notificações por Email -->
-                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
                         Padding="15"
                         Margin="0,0,0,1"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
                         <!-- Ícone -->
-                        <Border Grid.Column="0"
-                                WidthRequest="40"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#DBEAFE, Dark=#1E3A8A}"
-                                StrokeThickness="0"
-                                VerticalOptions="Center">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8"/>
-                            </Border.StrokeShape>
-                            <Image Source="icone_mensagem.png"
+                        <Image Source="icone_mensagem.png"
                                    WidthRequest="40"
                                    HeightRequest="40"
                                    Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
-                        </Border>
-
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
                                             VerticalOptions="Center"
                                             Spacing="2">
-                            <Label Style="{StaticResource TituloShellStyle}"/>
+                            <Label Text="Email Notifications"
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                             <Label Text="Receber emails sobre atualizações"
-                                  Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                         </VerticalStackLayout>
 
                         <!-- Switch -->
                         <Switch Grid.Column="2"
                                 IsToggled="{Binding EmailNotificationsEnabled}"
-                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
-                                ThumbColor="White"
+                                OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
+                                ThumbColor="{StaticResource White}"
                                 VerticalOptions="Center"/>
                     </Grid>
                 </Border>
 
                 <!-- Marketing -->
-                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
                         Padding="15"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
                         <!-- Ícone -->
-                        <Border Grid.Column="0"
-                                WidthRequest="40"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#FEF3C7, Dark=#78350F}"
-                                StrokeThickness="0"
-                                VerticalOptions="Center">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8"/>
-                            </Border.StrokeShape>
-                            <Image Source="icone_avisos.png"
+                        <Image Source="icone_avisos.png"
                                    WidthRequest="40"
                                    HeightRequest="40"
                                    Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
-                        </Border>
-
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Marketing"
-                                  Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                             <Label Text="Ofertas e promoções especiais"
-                                   Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                         </VerticalStackLayout>
-
                         <!-- Switch -->
                         <Switch Grid.Column="2"
                                 IsToggled="{Binding MarketingEnabled}"
-                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
-                                ThumbColor="White"
+                                OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
+                                ThumbColor="{StaticResource White}"
                                 VerticalOptions="Center"/>
                     </Grid>
                 </Border>
@@ -221,54 +213,50 @@
             <!-- SEÇÃO: PREFERÊNCIAS -->
             <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
                 <Label Text="PREFERÊNCIAS"
-Style="{StaticResource TituloShellStyle}"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"
                        Margin="0,0,0,10"/>
 
                 <!-- Tema Escuro -->
-                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
                         Padding="15"
                         Margin="0,0,0,1"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
                         <!-- Ícone -->
-                        <Border Grid.Column="0"
-                                WidthRequest="40"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#FEF3C7, Dark=#78350F}"
-                                StrokeThickness="0"
-                                VerticalOptions="Center">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8"/>
-                            </Border.StrokeShape>
-                            <Image Source="icone_modo_escuro.png.png"
-                                  WidthRequest="40"
-                                  HeightRequest="40"
-                                  Aspect="AspectFit"
-                                  HorizontalOptions="Center"
-                                  VerticalOptions="Center"/>
-                        </Border>
+                        <Image Source="icone_modo_escuro.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Aspect="AspectFit"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
 
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Tema Escuro"
-Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                             <Label Text="Alternar modo escuro"
-Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                         </VerticalStackLayout>
 
                         <!-- Switch -->
                         <Switch Grid.Column="2"
                                 IsToggled="{Binding TemaEscuroEnabled}"
-                                OnColor="{AppThemeBinding Light=#3B82F6, Dark=#60A5FA}"
-                                ThumbColor="White"
+                                OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
+                                ThumbColor="{StaticResource White}"
                                 VerticalOptions="Center"/>
                     </Grid>
                 </Border>
 
                 <!-- Idioma -->
-                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
                         Padding="15"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
@@ -277,32 +265,25 @@ Style="{StaticResource TituloShellStyle}"/>
                         </Grid.GestureRecognizers>
 
                         <!-- Ícone -->
-                        <Border Grid.Column="0"
-                                WidthRequest="40"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#FED7AA, Dark=#9A3412}"
-                                StrokeThickness="0"
-                                VerticalOptions="Center">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8"/>
-                            </Border.StrokeShape>
-                            <Image Source="icone_mundial.png"
+                        <Image Source="icone_mundial.png"
                                    WidthRequest="40"
                                    HeightRequest="40"
                                    Aspect="AspectFit"
                                    HorizontalOptions="Center"
-                                   VerticalOptions="Center"
-                                />
-                        </Border>
+                                   VerticalOptions="Center"/>
 
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Idioma"
-Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                             <Label Text="Selecione seu idioma"
-Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                         </VerticalStackLayout>
 
                         <!-- Valor Selecionado -->
@@ -312,10 +293,11 @@ Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="{Binding IdiomaAtual}"
                                    FontFamily="OpenSansRegular"
                                    FontSize="14"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"
                                    VerticalOptions="Center"/>
                             <Label Text="›"
-Style="{StaticResource TituloShellStyle}"
+                                   FontSize="20"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}"
                                    VerticalOptions="Center"/>
                         </HorizontalStackLayout>
                     </Grid>
@@ -325,11 +307,13 @@ Style="{StaticResource TituloShellStyle}"
             <!-- SEÇÃO: SOBRE -->
             <VerticalStackLayout Padding="20,20,20,10" Spacing="0">
                 <Label Text="SOBRE"
-                       Style="{StaticResource TituloShellStyle}"
+                       FontFamily="OpenSansSemibold"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"
                        Margin="0,0,0,10"/>
 
                 <!-- Ajuda e Suporte -->
-                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
                         Padding="15"
                         Margin="0,0,0,1"
                         StrokeThickness="0">
@@ -339,46 +323,37 @@ Style="{StaticResource TituloShellStyle}"
                         </Grid.GestureRecognizers>
 
                         <!-- Ícone -->
-                        <Border Grid.Column="0"
-                                WidthRequest="40"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#E0E7FF, Dark=#312E81}"
-                                StrokeThickness="0"
-                                VerticalOptions="Center">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8"/>
-                            </Border.StrokeShape>
-                            <Image Source="icone_duvidas.png"
+                        <Image Source="icone_duvidas.png"
                                    WidthRequest="40"
                                    HeightRequest="40"
                                    Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
-                        </Border>
-
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
                                             VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Ajuda e Suporte"
-                                   Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                             <Label Text="Central de ajuda e FAQ"
                                    FontFamily="OpenSansRegular"
                                    FontSize="13"
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                         </VerticalStackLayout>
 
                         <!-- Seta -->
                         <Label Grid.Column="2"
                                Text="›"
                                FontSize="20"
-                               TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}"
                                VerticalOptions="Center"/>
                     </Grid>
                 </Border>
 
                 <!-- Termos de Uso -->
-                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E293B}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
                         Padding="15"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
@@ -387,39 +362,32 @@ Style="{StaticResource TituloShellStyle}"
                         </Grid.GestureRecognizers>
 
                         <!-- Ícone -->
-                        <Border Grid.Column="0"
-                                WidthRequest="40"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#F3E8FF, Dark=#581C87}"
-                                StrokeThickness="0"
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8"/>
-                            </Border.StrokeShape>
-                            <Image Source="icone_documentos.png"
+                        <Image Source="icone_documentos.png"
                                    WidthRequest="40"
                                    HeightRequest="40"
                                    Aspect="AspectFit"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"/>
-                        </Border>
 
                         <!-- Texto -->
                         <VerticalStackLayout Grid.Column="1" 
-            VerticalOptions="Center" 
+                                            VerticalOptions="Center"
                                             Spacing="2">
                             <Label Text="Termos de Uso"
-                                   Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansSemibold"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                             <Label Text="Políticas e termos"
-                                   Style="{StaticResource TituloShellStyle}"/>
+                                   FontFamily="OpenSansRegular"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
                         </VerticalStackLayout>
 
                         <!-- Seta -->
                         <Label Grid.Column="2"
                                Text="›"
                                FontSize="20"
-                               TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}"
                                VerticalOptions="Center"/>
                     </Grid>
                 </Border>
@@ -428,9 +396,10 @@ Style="{StaticResource TituloShellStyle}"
             <!-- BOTÃO SALVAR -->
             <Border Padding="20,30,20,20">
                 <Button Text="Salvar Alterações"
-                        BackgroundColor="{AppThemeBinding Light=#1E3A8A, Dark=#3B82F6}"
-                        TextColor="White"
-                        Style="{StaticResource TituloShellStyle}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource CorGraficoAzulClaro3}}"
+                        TextColor="{StaticResource White}"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="16"
                         HeightRequest="50"
                         CornerRadius="10"
                         Clicked="OnSalvarClicked"/>
@@ -440,10 +409,10 @@ Style="{StaticResource TituloShellStyle}"
             <Label Text="Versão 0.0.0 (Pre-Alpha)"
                    FontFamily="OpenSansRegular"
                    FontSize="12"
-                   TextColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"
+                   TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}"
                    HorizontalOptions="Center"
                    Margin="0,0,0,30"/>
 
-    </VerticalStackLayout>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
