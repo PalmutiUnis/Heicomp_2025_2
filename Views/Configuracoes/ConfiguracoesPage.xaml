@@ -412,7 +412,7 @@ Style="{StaticResource TituloShellStyle}"
                             <Label Text="Termos de Uso"
                                    Style="{StaticResource TituloShellStyle}"/>
                             <Label Text="Políticas e termos"
-                                   Style="{StaticResource TituloShellStyle}""/>
+                                   Style="{StaticResource TituloShellStyle}"/>
                         </VerticalStackLayout>
 
                         <!-- Seta -->
