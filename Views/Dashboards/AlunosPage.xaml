@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cards="clr-namespace:Heicomp_2025_2.Views.Cards"
              x:Class="Heicomp_2025_2.Views.Dashboards.AlunosPage"
-             BackgroundColor="#F9FAFB"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Title=""
              Shell.FlyoutBehavior="Disabled">
 
