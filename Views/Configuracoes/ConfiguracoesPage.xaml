@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
              x:Class="Heicomp_2025_2.Views.Configuracoes.ConfiguracoesPage"
              Title=""
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
@@ -67,23 +66,28 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="30"/>
                         </Border.StrokeShape>
+                        <Image Source="icone_perfil.png" 
+                               Aspect="AspectFill"/> 
+                        <!--  ***Se não tiver imagem vai ser isso (Não implantado)***  
                         <Label Text="{Binding InitialsUsuario}"
                                FontFamily="OpenSansSemibold"
                                FontSize="22"
                                TextColor="{StaticResource CorTextoBranco}"
                                HorizontalOptions="Center"
-                               VerticalOptions="Center"/>
+                               VerticalOptions="Center"/> -->
                     </Border>
 
                     <!-- Nome e Email -->
                     <VerticalStackLayout Grid.Column="1" 
                                         VerticalOptions="Center"
                                         Spacing="4">
-                        <Label Text="{Binding NomeUsuario}"
+                        <!--Substituir para Text="{Binding NomeUsuario}"-->
+                        <Label Text="João da Silva"
                                FontFamily="OpenSansSemibold"
                                FontSize="18"
                                TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
-                        <Label Text="{Binding EmailUsuario}"
+                        <!--Substituir para Text="{Binding EmailUsuario}"-->
+                        <Label Text="JoaoDaSilva@email.unis"
                                FontFamily="OpenSansRegular"
                                FontSize="14"
                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
@@ -130,8 +134,6 @@
 
                         <!-- Switch -->
                         <Switch Grid.Column="2"    
-                                windows:Switch.OnContent=""
-                                windows:Switch.OffContent=""
                                 IsToggled="{Binding PushNotificationsEnabled}"
                                 OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
                                 ThumbColor="{StaticResource White}"
@@ -416,3 +418,5 @@
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
+    
+    <!--Comentário só pra ter certeza que estou envia-->
