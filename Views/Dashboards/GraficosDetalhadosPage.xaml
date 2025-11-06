@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
              x:Class="Heicomp_2025_2.Views.Dashboards.GraficosDetalhadosPage"
              Title=""
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, 
+                                               Dark={StaticResource FundoPaginaEscuro}}"
              Shell.FlyoutBehavior="Disabled">
-
-    <!-- Layout do Shell NavBar -->
-    <Shell.TitleView >
+    <Shell.TitleView>
         <Grid ColumnDefinitions="Auto, *"
               Style="{StaticResource TitleViewGridStyle}"
               HorizontalOptions="Fill"
@@ -32,20 +32,279 @@
                    HorizontalOptions="Fill"/>
 
             <ImageButton Grid.Column="2"
-                     Source="icone_menu.png"  
-                     HeightRequest="44"
-                     WidthRequest="44"
-                     BackgroundColor="Transparent"
-                     Margin="0"
-                     Padding="0"
-                     HorizontalOptions="End"
-                     VerticalOptions="Center"/>
+                       Source="icone_menu.png"  
+                       HeightRequest="44"
+                       WidthRequest="44"
+                       BackgroundColor="Transparent"
+                       Margin="0"
+                       Padding="0"
+                       HorizontalOptions="End"
+                       VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, 
+                                                     Dark={StaticResource FundoCardEscuro}}"
+                   CornerRadius="12"
+                   Padding="20"
+                   HasShadow="True">
+ <!--************INÍCIO DO GRÁFICO COLABORADORES POR UNIDADE*************-->
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Colaboradores por Unidade"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Start"
+                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, 
+                                                       Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <HorizontalStackLayout Spacing="20" HorizontalOptions="End">
+                        <HorizontalStackLayout Spacing="5">
+                            <BoxView Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
+                                                             Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                     WidthRequest="15" 
+                                     HeightRequest="15" 
+                                     CornerRadius="3"/>
+                            <Label Text="Homens" 
+                                   FontSize="12" 
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                               Dark={StaticResource CorTextoBranco}}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="5">
+                            <BoxView Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
+                                                             Dark={StaticResource CorGraficoRosa}}"  
+                                     WidthRequest="15" 
+                                     HeightRequest="15" 
+                                     CornerRadius="3"/>
+                            <Label Text="Mulheres" 
+                                   FontSize="12" 
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                               Dark={StaticResource CorTextoBranco}}"/>
+                        </HorizontalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <Grid HeightRequest="250" Margin="0,10,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Text="200" 
+                               Grid.Row="0" 
+                               FontSize="10" 
+                               Margin="0,-10,0,0"
+                               TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                           Dark={StaticResource CorTextoBranco}}" 
+                               VerticalOptions="Start"/>
+
+                        <Label Text="150" 
+                               Grid.Row="1" 
+                               FontSize="10" 
+                               Margin="0,-10,0,0"
+                               TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                           Dark={StaticResource CorTextoBranco}}" 
+                               VerticalOptions="Start"/>
+                        <Label 
+                            Text="100" 
+                            Grid.Row="2" 
+                            FontSize="10" 
+                            Margin="0,-10,0,0"
+                            TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                        Dark={StaticResource CorTextoBranco}}" 
+                            VerticalOptions="Start"/>
+                        <Label 
+                            Text="50" 
+                            Grid.Row="3"
+                            FontSize="10"
+                            Margin="3,-10,0,0"
+                            TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                        Dark={StaticResource CorTextoBranco}}" 
+                            VerticalOptions="Start"/>
+                        <Label 
+                            Text="0" 
+                            Grid.Row="4"
+                            FontSize="10" 
+                            Margin="6,-10,0,0"
+                            TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                        Dark={StaticResource CorTextoBranco}}"
+                            VerticalOptions="Start"/>
+
+                        <shapes:Line Grid.Row="0" VerticalOptions="Start" Margin="30,0,0,0"
+                            StrokeDashArray="5,5" StrokeThickness="1"
+                            Stroke="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                     Dark={StaticResource CorTextoCinza}}"
+                            X2="2000" />
+                        <shapes:Line Grid.Row="1" VerticalOptions="Start" Margin="30,0,0,0"
+                            StrokeDashArray="5,5" StrokeThickness="1"
+                            Stroke="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                     Dark={StaticResource CorTextoCinza}}"
+                            X2="2000" />
+                        <shapes:Line Grid.Row="2" VerticalOptions="Start" Margin="30,0,0,0"
+                            StrokeDashArray="5,5" StrokeThickness="1"
+                            Stroke="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                     Dark={StaticResource CorTextoCinza}}"
+                            X2="2000" />
+                        <shapes:Line Grid.Row="3" VerticalOptions="Start" Margin="30,0,0,0"
+                            StrokeDashArray="5,5" StrokeThickness="1"
+                            Stroke="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                     Dark={StaticResource CorTextoCinza}}"
+                            X2="2000" />
+                        <shapes:Line Grid.Row="4" VerticalOptions="Start" Margin="30,0,0,0"
+                            StrokeThickness="1"
+                            Stroke="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                     Dark={StaticResource CorTextoCinza}}"
+                            X2="2000" />
+                        <Grid Grid.Row="0" Grid.RowSpan="6" Margin="30,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <VerticalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
+                                <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, 
+                                                                Dark={StaticResource CorGraficoAzulClaro3}}"
+                                        WidthRequest="25" 
+                                        HeightRequest="120" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"/>
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
+                                                                Dark={StaticResource CorGraficoRosa}}" 
+                                        WidthRequest="25" 
+                                        HeightRequest="50" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"
+                                        />
+                                </HorizontalStackLayout>
+                                <Label 
+                                    Text="Cidade Universitária" 
+                                    FontSize="11" 
+                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                                Dark={StaticResource CorTextoBranco}}" 
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"  
+
+                                    Margin="0, -5, 0, 0"
+                                    HeightRequest="30"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="Center"
+                                    />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
+                                <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, 
+                                                                Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                        WidthRequest="25" 
+                                        HeightRequest="95" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"
+                                        />
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
+                                                                Dark={StaticResource CorGraficoRosa}}" 
+                                        WidthRequest="25" 
+                                        HeightRequest="25" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"
+                                        />
+                                </HorizontalStackLayout>
+                                <Label 
+                                    Text="FATEPS" 
+                                    FontSize="11" 
+                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                                Dark={StaticResource CorTextoBranco}}"  
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Margin="0, -5, 0, 0"
+                                    HeightRequest="30"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="Center"
+                                    
+                                    />
+
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
+                                <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
+                                                                Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                        WidthRequest="25" 
+                                        HeightRequest="110" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"
+                                        />
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
+                                                                Dark={StaticResource CorGraficoRosa}}"  
+                                        WidthRequest="25"
+                                        HeightRequest="75" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"
+                                        />
+                                </HorizontalStackLayout>
+                                <Label 
+                                    Text="UNIS EXPERIENCE" 
+                                    FontSize="11" 
+                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, 
+                                                                Dark={StaticResource CorTextoBranco}}"  
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Margin="0, -5, 0, 0"
+                                    HeightRequest="30"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="Center"
+                                    />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="3" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
+                                <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
+                                                                Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                        WidthRequest="25" 
+                                        HeightRequest="80" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"
+                                        />
+                                    <BoxView 
+                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
+                                                                Dark={StaticResource CorGraficoRosa}}" 
+                                        WidthRequest="25" 
+                                        HeightRequest="90" 
+                                        CornerRadius="3"
+                                        VerticalOptions="End"
+                                        />
+                                </HorizontalStackLayout>
+                                <Label 
+                                    Text="UNISEPE Educacional" 
+                                    FontSize="11" 
+                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                                Dark={StaticResource CorTextoBranco}}"  
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Margin="0, -5, 0, 0"
+                                    HeightRequest="30"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="Center"
+                                    />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Grid>
+                </VerticalStackLayout>
+<!--************FIM DO GRÁFICO COLABORADORES POR UNIDADE*************-->
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
