@@ -1,7 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true"></application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.companyname.projetounis">
+
+	<!-- 
+      CORREÇÃO: 
+      Permissões juntas dos dois arquivos. 
+      Elas DEVEM ficar fora da tag <application>.
+    -->
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
+	<!-- 
+      CORREÇÃO: 
+      A tag <application> ABRE aqui... 
+    -->
+	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true">
+
+		<!-- Sua MainActivity (correta) -->
+		<activity android:configChanges="orientation|screenSize"
+                  android:exported="true"
+                  android:name="crc64d3f572c6762391c4.MainActivity"
+                  android:theme="@style/Maui.SplashTheme">
+			<!-- Outras configurações da activity aqui... -->
+		</activity>
+
+		<!-- 
+          CORREÇÃO:
+          O bloco <activity> duplicado do Google foi REMOVIDO daqui.
+          Seu arquivo C# "WebAuthenticatorCallbackActivity.cs" já cuida disso.
+          Manter os dois causa o erro.
+        -->
+
+	</application>
+	<!-- ...e FECHA aqui -->
+
 </manifest>
