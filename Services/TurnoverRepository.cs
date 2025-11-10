@@ -14,20 +14,20 @@ namespace MauiApp1.Services
         public async Task<TurnoverCompleto> GetTurnoverCompletoAsync()
         {
             string query = @"
-                WITH 
+                WITH
                 data_limite AS (
                     SELECT DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AS data_um_ano_atras
                 ),
                 dados_processados AS (
-                    SELECT 
+                    SELECT
                         `CPF`,
                         `Descrição (Situação)`,
-                        CASE 
+                        CASE
                             WHEN `Admissão` IS NOT NULL AND `Admissão` != ''
                             THEN STR_TO_DATE(`Admissão`, '%d/%m/%Y')
                             ELSE NULL
                         END as admissao_date,
-                        CASE 
+                        CASE
                             WHEN `Data Afastamento` IS NOT NULL AND `Data Afastamento` != ''
                             THEN STR_TO_DATE(`Data Afastamento`, '%d/%m/%Y')
                             ELSE NULL
@@ -35,24 +35,24 @@ namespace MauiApp1.Services
                     FROM rhsenior_heicomp.rhdataset
                 ),
                 metricas_turnover AS (
-                    SELECT 
+                    SELECT
                         COUNT(*) as total_colaboradores,
-                        SUM(CASE 
+                        SUM(CASE
                             WHEN admissao_date >= (SELECT data_um_ano_atras FROM data_limite)
-                            THEN 1 ELSE 0 
+                            THEN 1 ELSE 0
                         END) as admissoes_ultimo_ano,
-                        SUM(CASE 
+                        SUM(CASE
                             WHEN `Descrição (Situação)` LIKE 'Dem%'
                                  AND afastamento_date >= (SELECT data_um_ano_atras FROM data_limite)
-                            THEN 1 ELSE 0 
+                            THEN 1 ELSE 0
                         END) as desligamentos_ultimo_ano
                     FROM dados_processados
                     WHERE admissao_date IS NOT NULL
                 )
-                SELECT 
+                SELECT
                     ROUND(
-                        ((admissoes_ultimo_ano + desligamentos_ultimo_ano) / 2) 
-                        / total_colaboradores 
+                        ((admissoes_ultimo_ano + desligamentos_ultimo_ano) / 2)
+                        / total_colaboradores
                         * 100, 2
                     ) AS Turnover,
                     admissoes_ultimo_ano AS Admissoes,
@@ -62,9 +62,20 @@ namespace MauiApp1.Services
 
             await using var connection = await _factory.OpenConnectionAsync();
             await using var command = new MySqlCommand(query, connection);
-            var result = await command.ExecuteScalarAsync();
-            
-            return result != DBNull.Value && result != null ? Convert.ToDecimal(result) : 0;
+            await using var reader = await command.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return new TurnoverCompleto
+                {
+                    Turnover = reader["Turnover"] != DBNull.Value ? Convert.ToDecimal(reader["Turnover"]) : 0,
+                    Admissoes = reader["Admissoes"] != DBNull.Value ? Convert.ToInt32(reader["Admissoes"]) : 0,
+                    Desligamentos = reader["Desligamentos"] != DBNull.Value ? Convert.ToInt32(reader["Desligamentos"]) : 0,
+                    TotalColaboradores = reader["TotalColaboradores"] != DBNull.Value ? Convert.ToInt32(reader["TotalColaboradores"]) : 0
+                };
+            }
+
+            return new TurnoverCompleto();
         }
 
         // Métodos individuais mantidos para compatibilidade (agora mais rápidos)
@@ -74,38 +85,22 @@ namespace MauiApp1.Services
             return resultado.Turnover;
         }
 
-            await using var connection = await _factory.OpenConnectionAsync();
-            await using var command = new MySqlCommand(query, connection);
-            var result = await command.ExecuteScalarAsync();
-            return result != null ? Convert.ToInt32(result) : 0;
+        public async Task<int> GetAdmissoesUltimoAnoAsync()
+        {
+            var resultado = await GetTurnoverCompletoAsync();
+            return resultado.Admissoes;
         }
 
         public async Task<int> GetDesligamentosUltimoAnoAsync()
         {
-            string query = @"
-                SELECT COUNT(*) 
-                FROM rhsenior_heicomp.rhdataset
-                WHERE `Descrição (Situação)` LIKE 'Dem%'
-                  AND `Data Afastamento` IS NOT NULL
-                  AND `Data Afastamento` != ''
-                  AND STR_TO_DATE(`Data Afastamento`, '%d/%m/%Y') >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
-
-            await using var connection = await _factory.OpenConnectionAsync();
-            await using var command = new MySqlCommand(query, connection);
-            var result = await command.ExecuteScalarAsync();
-            return result != null ? Convert.ToInt32(result) : 0;
+            var resultado = await GetTurnoverCompletoAsync();
+            return resultado.Desligamentos;
         }
 
         public async Task<int> GetTotalColaboradoresAsync()
         {
             var resultado = await GetTurnoverCompletoAsync();
             return resultado.TotalColaboradores;
-        }
-
-            await using var connection = await _factory.OpenConnectionAsync();
-            await using var command = new MySqlCommand(query, connection);
-            var result = await command.ExecuteScalarAsync();
-            return result?.ToString();
         }
 
         public async Task<string?> QueryVersionAsync()
