@@ -1,4 +1,6 @@
-﻿namespace MauiApp1
+﻿ 
+
+namespace MauiApp1
 {
     public partial class MainPage : ContentPage
     {
@@ -8,6 +10,8 @@
         {
             InitializeComponent();
         }
+
+        // Removido teste de conexão no Appearing conforme solicitação.
 
         private void OnCounterClicked(object sender, EventArgs e)
         {

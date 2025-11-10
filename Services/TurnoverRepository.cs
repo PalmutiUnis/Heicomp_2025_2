@@ -62,20 +62,9 @@ namespace MauiApp1.Services
 
             await using var connection = await _factory.OpenConnectionAsync();
             await using var command = new MySqlCommand(query, connection);
-            await using var reader = await command.ExecuteReaderAsync();
-
-            if (await reader.ReadAsync())
-            {
-                return new TurnoverCompleto
-                {
-                    Turnover = reader["Turnover"] != DBNull.Value ? Convert.ToDecimal(reader["Turnover"]) : 0,
-                    Admissoes = reader["Admissoes"] != DBNull.Value ? Convert.ToInt32(reader["Admissoes"]) : 0,
-                    Desligamentos = reader["Desligamentos"] != DBNull.Value ? Convert.ToInt32(reader["Desligamentos"]) : 0,
-                    TotalColaboradores = reader["TotalColaboradores"] != DBNull.Value ? Convert.ToInt32(reader["TotalColaboradores"]) : 0
-                };
-            }
-
-            return new TurnoverCompleto();
+            var result = await command.ExecuteScalarAsync();
+            
+            return result != DBNull.Value && result != null ? Convert.ToDecimal(result) : 0;
         }
 
         // Métodos individuais mantidos para compatibilidade (agora mais rápidos)
@@ -85,22 +74,38 @@ namespace MauiApp1.Services
             return resultado.Turnover;
         }
 
-        public async Task<int> GetAdmissoesUltimoAnoAsync()
-        {
-            var resultado = await GetTurnoverCompletoAsync();
-            return resultado.Admissoes;
+            await using var connection = await _factory.OpenConnectionAsync();
+            await using var command = new MySqlCommand(query, connection);
+            var result = await command.ExecuteScalarAsync();
+            return result != null ? Convert.ToInt32(result) : 0;
         }
 
         public async Task<int> GetDesligamentosUltimoAnoAsync()
         {
-            var resultado = await GetTurnoverCompletoAsync();
-            return resultado.Desligamentos;
+            string query = @"
+                SELECT COUNT(*) 
+                FROM rhsenior_heicomp.rhdataset
+                WHERE `Descrição (Situação)` LIKE 'Dem%'
+                  AND `Data Afastamento` IS NOT NULL
+                  AND `Data Afastamento` != ''
+                  AND STR_TO_DATE(`Data Afastamento`, '%d/%m/%Y') >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
+
+            await using var connection = await _factory.OpenConnectionAsync();
+            await using var command = new MySqlCommand(query, connection);
+            var result = await command.ExecuteScalarAsync();
+            return result != null ? Convert.ToInt32(result) : 0;
         }
 
         public async Task<int> GetTotalColaboradoresAsync()
         {
             var resultado = await GetTurnoverCompletoAsync();
             return resultado.TotalColaboradores;
+        }
+
+            await using var connection = await _factory.OpenConnectionAsync();
+            await using var command = new MySqlCommand(query, connection);
+            var result = await command.ExecuteScalarAsync();
+            return result?.ToString();
         }
 
         public async Task<string?> QueryVersionAsync()

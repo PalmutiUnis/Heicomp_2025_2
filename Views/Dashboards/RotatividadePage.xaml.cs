@@ -9,4 +9,9 @@ public partial class RotatividadePage : ContentPage
 		InitializeComponent();
 		BindingContext = viewModel;
 	}
+
+    private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//PainelGestaoPage");
+    }
 }

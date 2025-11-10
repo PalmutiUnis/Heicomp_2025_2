@@ -50,16 +50,10 @@ namespace MauiApp1
             builder.Services.AddSingleton<TurnoverRepository>();
             // Register CargosService via interface
             builder.Services.AddTransient<ICargosService, CargosService>();
-
-            // Register ViewModels
-            builder.Services.AddTransient<Heicomp_2025_2.ViewModels.Dashboards.RotatividadeViewModel>();
-
-            // Register Pages
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.PainelGestaoPage>();
-            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.RotatividadePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
@@ -67,8 +61,7 @@ namespace MauiApp1
 
             // Cria o app
             var app = builder.Build();
-
-            // 🔥 Captura exceções não tratadas (inclusive XAML)
+          
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
                 System.Diagnostics.Debug.WriteLine("🔥 Unhandled Exception: " + e.ExceptionObject.ToString());

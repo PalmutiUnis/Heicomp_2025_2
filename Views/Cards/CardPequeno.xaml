@@ -2,7 +2,8 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cards="clr-namespace:Heicomp_2025_2.Views.Cards"
-             x:Class="Heicomp_2025_2.Views.Cards.CardPequeno">
+             x:Class="Heicomp_2025_2.Views.Cards.CardPequeno"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}">
     <!-- Estrutura geral do card -->
     <Border Style="{StaticResource CardPadrao}"
             HeightRequest="120"
