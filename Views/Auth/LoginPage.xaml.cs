@@ -16,8 +16,9 @@ public partial class LoginPage : ContentPage
             // ... L�gica de autentica��o do Google ...
 
             // Se o login for BEM-SUCEDIDO:
-            // Isso substitui a LoginPage (e sua NavigationPage) pelo AppShell
-            Application.Current.MainPage = new AppShell();
+            // Resolve AppShell via DI se disponível e substitui a MainPage
+            var shell = this.Handler?.MauiContext?.Services?.GetService<AppShell>() ?? new AppShell();
+            Application.Current!.MainPage = shell;
         }
         catch (Exception ex)
         {

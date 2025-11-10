@@ -4,11 +4,11 @@ namespace MauiApp1.Services
 {
     public class TurnoverRepository
     {
-        private readonly string _connectionString;
+        private readonly IMySqlConnectionFactory _factory;
 
-        public TurnoverRepository(string connectionString)
+        public TurnoverRepository(IMySqlConnectionFactory factory)
         {
-            _connectionString = connectionString;
+            _factory = factory;
         }
 
         public async Task<decimal> GetTurnoverAsync()
@@ -43,10 +43,8 @@ namespace MauiApp1.Services
                         * 100
                     , 2) AS Turnover";
 
-            await using var connection = new MySqlConnection(_connectionString);
+            await using var connection = await _factory.OpenConnectionAsync();
             await using var command = new MySqlCommand(query, connection);
-            
-            await connection.OpenAsync();
             var result = await command.ExecuteScalarAsync();
             
             return result != DBNull.Value && result != null ? Convert.ToDecimal(result) : 0;
@@ -61,10 +59,8 @@ namespace MauiApp1.Services
                   AND `Admissão` != ''
                   AND STR_TO_DATE(`Admissão`, '%d/%m/%Y') >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
 
-            await using var connection = new MySqlConnection(_connectionString);
+            await using var connection = await _factory.OpenConnectionAsync();
             await using var command = new MySqlCommand(query, connection);
-            
-            await connection.OpenAsync();
             var result = await command.ExecuteScalarAsync();
             return result != null ? Convert.ToInt32(result) : 0;
         }
@@ -79,10 +75,8 @@ namespace MauiApp1.Services
                   AND `Data Afastamento` != ''
                   AND STR_TO_DATE(`Data Afastamento`, '%d/%m/%Y') >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
 
-            await using var connection = new MySqlConnection(_connectionString);
+            await using var connection = await _factory.OpenConnectionAsync();
             await using var command = new MySqlCommand(query, connection);
-            
-            await connection.OpenAsync();
             var result = await command.ExecuteScalarAsync();
             return result != null ? Convert.ToInt32(result) : 0;
         }
@@ -95,12 +89,18 @@ namespace MauiApp1.Services
                 WHERE `Admissão` IS NOT NULL
                   AND `Admissão` != ''";
 
-            await using var connection = new MySqlConnection(_connectionString);
+            await using var connection = await _factory.OpenConnectionAsync();
             await using var command = new MySqlCommand(query, connection);
-            
-            await connection.OpenAsync();
             var result = await command.ExecuteScalarAsync();
             return result != null ? Convert.ToInt32(result) : 0;
+        }
+
+        public async Task<string?> QueryVersionAsync()
+        {
+            await using var connection = await _factory.OpenConnectionAsync();
+            await using var command = new MySqlCommand("SELECT VERSION();", connection);
+            var result = await command.ExecuteScalarAsync();
+            return result?.ToString();
         }
     }
 }
