@@ -2,11 +2,190 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Heicomp_2025_2.Views.Dashboards.RotatividadePage"
-             Title="NewPage1">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title=""
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
+             Shell.FlyoutBehavior="Disabled">
+
+    <!-- Layout do Shell NavBar -->
+    <Shell.TitleView >
+        <Grid ColumnDefinitions="Auto, *"
+              Style="{StaticResource TitleViewGridStyle}"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill"
+              Margin="0"
+              Padding="0">
+            <ImageButton Grid.Column="0"
+                         Source="seta_direita.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Clicked="BotaoVoltarPainelGestao"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Center"/>
+
+            <Label Grid.Column="1"
+                   Text="Rotatividade"
+                   Style="{StaticResource TituloShellStyle}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Fill"/>
+
+            <ImageButton Grid.Column="2"
+                     Source="icone_menu.png"  
+                     HeightRequest="44"
+                     WidthRequest="44"
+                     BackgroundColor="Transparent"
+                     Margin="0"
+                     Padding="0"
+                     HorizontalOptions="End"
+                     VerticalOptions="Center"/>
+        </Grid>
+    </Shell.TitleView>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Indicador de carregamento -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                             IsVisible="{Binding IsLoading}"
+                             Color="{StaticResource Primary}"
+                             HeightRequest="50" />
+
+            <!-- Título da seção -->
+            <Label Text="Indicadores de Rotatividade"
+                   Style="{StaticResource TextoTituloSecao}"
+                   IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
+
+            <!-- Card principal: Taxa de Turnover -->
+            <Border Style="{StaticResource CardPadrao}"
+                    WidthRequest="398"
+                    HeightRequest="140"
+                    Padding="20"
+                    IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}">
+                <Grid RowDefinitions="Auto, Auto, Auto" RowSpacing="8">
+                    <!-- Ícone e título -->
+                    <Grid Grid.Row="0">
+                        <Image Source="icone_atualizar_branco.png"
+                               WidthRequest="32"
+                               HeightRequest="32"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center"/>
+                    </Grid>
+
+                    <!-- Título -->
+                    <Label Grid.Row="1"
+                           Text="Taxa de Rotatividade"
+                           Style="{StaticResource TextoSubtitulo}"/>
+
+                    <!-- Valor do Turnover -->
+                    <Label Grid.Row="2"
+                           Text="{Binding Turnover}"
+                           FontFamily="InterBold"
+                           FontSize="36"
+                           TextColor="{StaticResource CorGraficoPrimaria}"/>
+                </Grid>
+            </Border>
+
+            <!-- Seção de métricas detalhadas -->
+            <Label Text="Métricas (últimos 12 meses)"
+                   Style="{StaticResource TextoTituloSecao}"
+                   Margin="0,10,0,0"
+                   IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
+
+            <!-- Grid com os 3 cards de métricas -->
+            <Grid ColumnDefinitions="*, *"
+                  RowDefinitions="Auto, Auto"
+                  ColumnSpacing="10"
+                  RowSpacing="10"
+                  IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}">
+
+                <!-- Card Admissões -->
+                <Border Grid.Column="0"
+                        Grid.Row="0"
+                        Style="{StaticResource CardPadrao}"
+                        HeightRequest="120"
+                        Padding="15">
+                    <Grid RowDefinitions="Auto, Auto, Auto" RowSpacing="4">
+                        <Image Grid.Row="0"
+                               Source="icone_check_verde.png"
+                               WidthRequest="28"
+                               HeightRequest="28"
+                               HorizontalOptions="Start"/>
+                        <Label Grid.Row="1"
+                               Text="Admissões"
+                               Style="{StaticResource TextoSubtitulo}"
+                               Margin="0,4,0,0"/>
+                        <Label Grid.Row="2"
+                               Text="{Binding Admissoes}"
+                               FontFamily="InterBold"
+                               FontSize="26"
+                               TextColor="{StaticResource CorTextoPreto}"
+                               Margin="0,2,0,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- Card Desligamentos -->
+                <Border Grid.Column="1"
+                        Grid.Row="0"
+                        Style="{StaticResource CardPadrao}"
+                        HeightRequest="120"
+                        Padding="15">
+                    <Grid RowDefinitions="Auto, Auto, Auto" RowSpacing="4">
+                        <Image Grid.Row="0"
+                               Source="icone_excluir.png"
+                               WidthRequest="28"
+                               HeightRequest="28"
+                               HorizontalOptions="Start"/>
+                        <Label Grid.Row="1"
+                               Text="Desligamentos"
+                               Style="{StaticResource TextoSubtitulo}"
+                               Margin="0,4,0,0"/>
+                        <Label Grid.Row="2"
+                               Text="{Binding Desligamentos}"
+                               FontFamily="InterBold"
+                               FontSize="26"
+                               TextColor="{StaticResource CorTextoPreto}"
+                               Margin="0,2,0,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- Card Total de Colaboradores (ocupa 2 colunas) -->
+                <Border Grid.Column="0"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Style="{StaticResource CardPadrao}"
+                        HeightRequest="120"
+                        Padding="15">
+                    <Grid RowDefinitions="Auto, Auto, Auto" RowSpacing="4">
+                        <Image Grid.Row="0"
+                               Source="icone_pessoas_branco.png"
+                               WidthRequest="28"
+                               HeightRequest="28"
+                               HorizontalOptions="Start"/>
+                        <Label Grid.Row="1"
+                               Text="Total de Colaboradores"
+                               Style="{StaticResource TextoSubtitulo}"
+                               Margin="0,4,0,0"/>
+                        <Label Grid.Row="2"
+                               Text="{Binding TotalColaboradores}"
+                               FontFamily="InterBold"
+                               FontSize="26"
+                               TextColor="{StaticResource CorTextoPreto}"
+                               Margin="0,2,0,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Informação sobre o período -->
+            <Label Text="* Dados calculados com base nos últimos 12 meses"
+                   FontFamily="InterRegular"
+                   FontSize="12"
+                   TextColor="{StaticResource Gray600}"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,0"
+                   IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
