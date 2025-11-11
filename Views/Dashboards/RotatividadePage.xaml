@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             xmlns:controls="clr-namespace:Heicomp_2025_2.Controls"
              x:Class="Heicomp_2025_2.Views.Dashboards.RotatividadePage"
              Title=""
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
@@ -55,41 +57,89 @@
             <!-- Conteúdo principal (visível quando não está loading) -->
             <VerticalStackLayout IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" Spacing="15">
 
-                <!-- Card de Turnover (destaque) -->
+                <!-- Card de Turnover (destaque com gráfico circular) -->
                 <Label Text="Taxa de Rotatividade"
                        Style="{StaticResource TextoTituloSecao}" />
 
-                <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="120">
-                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label Text="Turnover" Style="{StaticResource TextoSubtitulo}" HorizontalOptions="Center" />
-                        <Label Text="{Binding Turnover}"
-                               FontAttributes="Bold"
-                               FontSize="36"
-                               HorizontalOptions="Center"
-                               TextColor="{StaticResource Primary}" />
-                    </VerticalStackLayout>
+                <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="220">
+                    <Grid Padding="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Gráfico Circular (Gauge) -->
+                        <Grid Grid.Column="0"
+                              HorizontalOptions="Center"
+                              VerticalOptions="Center">
+
+                            <!-- Gráfico Circular Dinâmico -->
+                            <controls:CircularGaugeView
+                                Progress="{Binding TurnoverValue}"
+                                ProgressColor="{StaticResource Primary}"
+                                TrackColor="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+                                StrokeWidth="20"
+                                WidthRequest="150"
+                                HeightRequest="150"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                            <!-- Valor central -->
+                            <VerticalStackLayout HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                                <Label Text="{Binding Turnover}"
+                                       FontAttributes="Bold"
+                                       FontSize="21"
+                                       HorizontalOptions="Center"
+                                       TextColor="{StaticResource Primary}" />
+                                <Label Text="Turnover"
+                                       FontSize="11"
+                                       HorizontalOptions="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!-- Legenda e informações -->
+                        <VerticalStackLayout Grid.Column="1"
+                                           Spacing="15"
+                                           VerticalOptions="Center">
+
+                            <VerticalStackLayout Spacing="5">
+                                <HorizontalStackLayout Spacing="8">
+                                    <BoxView Color="{StaticResource CorGraficoVerde}"
+                                             WidthRequest="15"
+                                             HeightRequest="15"
+                                             CornerRadius="3" />
+                                    <Label Text="Admissões"
+                                           FontSize="14"
+                                           TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" />
+                                </HorizontalStackLayout>
+                                <Label Text="{Binding Admissoes}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       Margin="23,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="5">
+                                <HorizontalStackLayout Spacing="8">
+                                    <BoxView Color="{StaticResource CorGraficoVermelho}"
+                                             WidthRequest="15"
+                                             HeightRequest="15"
+                                             CornerRadius="3" />
+                                    <Label Text="Desligamentos"
+                                           FontSize="14"
+                                           TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" />
+                                </HorizontalStackLayout>
+                                <Label Text="{Binding Desligamentos}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       Margin="23,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Grid>
                 </Border>
-
-                <!-- Cards de Métricas -->
-                <Label Text="Métricas de Movimentação"
-                       Style="{StaticResource TextoTituloSecao}"
-                       Margin="0,10,0,0" />
-
-                <HorizontalStackLayout Spacing="10">
-                    <Border Style="{StaticResource CardPadrao}" WidthRequest="193" HeightRequest="102">
-                        <VerticalStackLayout VerticalOptions="Center">
-                            <Label Text="Admissões" Style="{StaticResource TextoSubtitulo}" />
-                            <Label Text="{Binding Admissoes}" FontAttributes="Bold" FontSize="24" />
-                        </VerticalStackLayout>
-                    </Border>
-
-                    <Border Style="{StaticResource CardPadrao}" WidthRequest="193" HeightRequest="102">
-                        <VerticalStackLayout VerticalOptions="Center">
-                            <Label Text="Desligamentos" Style="{StaticResource TextoSubtitulo}" />
-                            <Label Text="{Binding Desligamentos}" FontAttributes="Bold" FontSize="24" />
-                        </VerticalStackLayout>
-                    </Border>
-                </HorizontalStackLayout>
 
                 <!-- Card de Total de Colaboradores -->
                 <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="102">

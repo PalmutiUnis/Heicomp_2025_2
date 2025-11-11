@@ -9,6 +9,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
         private readonly TurnoverRepository _turnoverRepository;
         private bool _isLoading;
         private string _turnover = "0";
+        private double _turnoverValue = 0;
         private string _admissoes = "0";
         private string _desligamentos = "0";
         private string _totalColaboradores = "0";
@@ -42,6 +43,19 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 if (_turnover != value)
                 {
                     _turnover = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public double TurnoverValue
+        {
+            get => _turnoverValue;
+            set
+            {
+                if (_turnoverValue != value)
+                {
+                    _turnoverValue = value;
                     OnPropertyChanged();
                 }
             }
@@ -94,6 +108,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
 
                 var dados = await _turnoverRepository.GetTurnoverCompletoAsync();
 
+                TurnoverValue = (double)dados.Turnover;
                 Turnover = $"{dados.Turnover:F2}%";
                 Admissoes = dados.Admissoes.ToString();
                 Desligamentos = dados.Desligamentos.ToString();
@@ -102,6 +117,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Erro ao carregar dados de rotatividade: {ex.Message}");
+                TurnoverValue = 0;
                 Turnover = "Erro";
                 Admissoes = "Erro";
                 Desligamentos = "Erro";
