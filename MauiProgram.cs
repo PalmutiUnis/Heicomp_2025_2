@@ -54,6 +54,8 @@ namespace MauiApp1
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.PainelGestaoPage>();
+            builder.Services.AddTransient<Heicomp_2025_2.ViewModels.Dashboards.RotatividadeViewModel>();
+            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.RotatividadePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
