@@ -1,12 +1,15 @@
 using Duende.IdentityModel.OidcClient;
 using System.Diagnostics;
 
+// Precisamos disso para "new AppShell()" e "Application.Current"
+using MauiApp1;
+
 namespace Heicomp_2025_2.Views.Auth
 {
     public partial class LoginPage : ContentPage
     {
-        private const string GoogleClientId = "636539891129-ldsv7n2hf9sv5bt0t8n566hggaau3qhr.apps.googleusercontent.com";
-        private const string GoogleClientSecret = "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";
+        private const string GoogleClientId = "692804257983-4tk2efdcu97scvcrj3ajftbn35hqc6cf.apps.googleusercontent.com";
+        //private const string GoogleClientSecret = "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"; // ✅ CORRETO (comentado)
         private OidcClient _oidcClient;
 
         public LoginPage()
@@ -15,11 +18,26 @@ namespace Heicomp_2025_2.Views.Auth
 
             var options = new OidcClientOptions
             {
-                Authority = "https://oauth2.googleapis.com/device/code",//"https://accounts.google.com",
+                Authority = "https://accounts.google.com",
                 ClientId = GoogleClientId,
-                ClientSecret = GoogleClientSecret,
+                // ClientSecret = GoogleClientSecret, // ✅ CORRETO (comentado)
                 Scope = "openid profile email",
-                Browser = new MauiWebBrowser()
+
+                // 🛑 CORREÇÃO FEITA AQUI
+                // Trocamos a barra "/" por dois-pontos ":"
+                RedirectUri = "com.googleusercontent.apps.692804257983-4tk2efdcu97scvcrj3ajftbn35hqc6cf:/oauth2redirect",
+
+                Browser = new MauiWebBrowser(),
+
+                // ✅ CORRETO: Use Policy (não DiscoveryPolicy)
+                Policy = new Policy
+                {
+                    Discovery = new Duende.IdentityModel.Client.DiscoveryPolicy
+                    {
+                        ValidateIssuerName = false,
+                        ValidateEndpoints = false
+                    }
+                }
             };
 
             _oidcClient = new OidcClient(options);
@@ -29,25 +47,44 @@ namespace Heicomp_2025_2.Views.Auth
         {
             try
             {
+                Debug.WriteLine("[Login] Iniciando autenticação...");
+
                 var loginResult = await _oidcClient.LoginAsync(new LoginRequest());
 
                 if (loginResult.IsError)
                 {
                     Debug.WriteLine($"[Login Erro] {loginResult.Error}");
-                    await DisplayAlert("Erro", loginResult.Error, "OK");
+                    Debug.WriteLine($"[Login Erro Descrição] {loginResult.ErrorDescription}");
+                    await DisplayAlert("Erro", $"{loginResult.Error}\n\n{loginResult.ErrorDescription}", "OK");
                     return;
                 }
 
                 var accessToken = loginResult.AccessToken;
                 var userEmail = loginResult.User?.FindFirst(c => c.Type == "email")?.Value;
+                var userName = loginResult.User?.FindFirst(c => c.Type == "name")?.Value;
 
-                Debug.WriteLine($"[Login Sucesso] Access Token: {accessToken}");
-                UserInfoLabel.Text = $"Logado como: {userEmail}";
+                Debug.WriteLine($"[Login Sucesso] Email: {userEmail}");
+
+                // Supondo que você tenha um Label com x:Name="UserInfoLabel" no seu XAML
+                // UserInfoLabel.Text = $"Logado como: {userName ?? userEmail}";
+
+                await DisplayAlert("Sucesso", $"Bem-vindo, {userName ?? userEmail}!", "OK");
+
+                // 🛑 MUDANÇA AQUI: Corrigindo o erro "Object reference..."
+                // A linha 'await Shell.Current.GoToAsync...' causa o erro que você viu na imagem,
+                // porque o Shell ainda não existe.
+
+                // A forma correta é definir o AppShell (que contém sua "PainelGestaoPage") 
+                // como a nova página principal do aplicativo.
+                Debug.WriteLine("[Login] Sucesso! Carregando o AppShell...");
+                Application.Current.MainPage = new AppShell();
             }
             catch (Exception ex)
             {
+                Debug.WriteLine($"[Login Exceção] {ex.GetType().Name}");
                 Debug.WriteLine($"[Login Exceção] {ex.Message}");
-                await DisplayAlert("Erro", "Ocorreu um erro inesperado.", "OK");
+                Debug.WriteLine($"[Login Stack] {ex.StackTrace}");
+                await DisplayAlert("Erro", $"Erro ao fazer login:\n{ex.Message}", "OK");
             }
         }
     }

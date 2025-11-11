@@ -5,30 +5,6 @@
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true">
 
-		<!-- A tag activity padrão do MAUI (pode ter um nome diferente, mas a estrutura é a mesma) -->
-		<activity android:configChanges="orientation|screenSize" android:exported="true" android:name="crc64d3f572c6762391c4.MainActivity" android:theme="@style/Maui.SplashTheme">
-			<!-- Outras configurações da activity aqui... -->
-		</activity>
-
-		<!-- 
-        *** IMPORTANTE: CONFIGURAÇÃO PARA AUTENTICAÇÃO DO GOOGLE (OAuth) *** Esta activity é necessária para que o WebAuthenticator intercepte o redirecionamento.
-        -->
-		<activity android:name="microsoft.maui.essentials.WebAuthenticatorCallbackActivity"
-                  android:exported="true">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-
-				<!-- 
-                    CRÍTICO: SUBSTITUA O VALOR "com.googleusercontent.apps.SEU_CLIENT_ID_INVERTIDO"
-                    pelo esquema de URL do seu Client ID Google. 
-                    (É o seu Client ID invertido, SEM o '/oauth2redirect' final).
-                -->
-				<data android:scheme="com.googleusercontent.apps.mfhnjsfgp3bbfk93vgkpsaaolng8rh6o-3371135215601" />
-			</intent-filter>
-		</activity>
-
 	</application>
 
 
