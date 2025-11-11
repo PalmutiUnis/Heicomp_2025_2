@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using MauiApp1.Services;
 using Microsoft.Maui.Storage;
 using Heicomp_2025_2.Views.Auth;
+using CommunityToolkit.Maui;
 
 namespace MauiApp1
 {
@@ -14,6 +15,7 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
