@@ -1,66 +1,205 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:cards="clr-namespace:Heicomp_2025_2.Views.Cards"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+            xmlns:forms="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:viewmodels="clr-namespace:Heicomp_2025_2.ViewModels.Dashboards"
              x:Class="Heicomp_2025_2.Views.Dashboards.AlunosPage"
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
-             Title=""
+             Title="Dashboard Alunos"
              Shell.FlyoutBehavior="Disabled">
+    
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="Auto, *, Auto"
+              Style="{StaticResource TitleViewGridStyle}"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill"
+              Margin="0"
+              Padding="0">
 
-
-    <Shell.TitleView >
-        <Grid ColumnDefinitions="Auto, *"
-          Style="{StaticResource TitleViewGridStyle}"
-          HorizontalOptions="Fill"
-          VerticalOptions="Fill"
-          Margin="0"
-          Padding="0">
+            <!-- Botão Voltar -->
             <ImageButton Grid.Column="0"
-                     Source="seta_direita.png"  
-                     HeightRequest="44"
-                     WidthRequest="44"
-                     BackgroundColor="Transparent"
-                     Clicked="BotaoVoltarPainelGestao"
-                     Margin="0"
-                     Padding="0"
-                     HorizontalOptions="Start"
-                     VerticalOptions="Center"/>
+                         Source="seta_direita.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Clicked="BotaoVoltarPainelGestao"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Center"/>
 
+            <!-- Título -->
             <Label Grid.Column="1"
-               Text="Alunos"
-               Style="{StaticResource TituloShellStyle}"
-               VerticalOptions="Center"
-               HorizontalOptions="Fill"/>
+                   Text="Alunos"
+                   Style="{StaticResource TituloShellStyle}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Fill"/>
 
+            <!-- Menu -->
             <ImageButton Grid.Column="2"
-                     Source="icone_menu.png"  
-                     HeightRequest="44"
-                     WidthRequest="44"
-                     BackgroundColor="Transparent"
-                     Margin="0"
-                     Padding="0"
-                     HorizontalOptions="End"
-                     VerticalOptions="Center"/>
+                         Source="icone_menu.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="End"
+                         VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
 
-
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
     <ScrollView>
-        <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="10" RowSpacing="10">
+        <VerticalStackLayout Padding="20" Spacing="20">
 
+            <!-- ========== FILTROS DRILL-DOWN ========== -->
+            <Frame CornerRadius="15"
+                   Padding="15"
+                   HasShadow="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}">
 
-            <!-- Ex de Layout principal -->
-            <!--Apenas um exemplo de layout com cards para dashboard
-            Obs: Os icones ainda nao estão funcionando-->
-            <Label Text="Alunos"
-                   Grid.Row="0"
-                   Grid.ColumnSpan="2"
-                   Style="{StaticResource TextoTituloSecao}"
-                   VerticalOptions="Start"
-                   HorizontalOptions="Start" />
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Filtros" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
-        </Grid>
+                    <!-- Nível 1: Unidades -->
+                    <Picker Title="Selecione a Unidade"
+                            ItemsSource="{Binding Unidades}"
+                            SelectedItem="{Binding UnidadeSelecionada}"
+                            IsVisible="{Binding MostrarUnidades}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
+                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                    <!-- Nível 2: Cursos -->
+                    <Picker Title="Selecione o Curso"
+                            ItemsSource="{Binding Cursos}"
+                            SelectedItem="{Binding CursoSelecionado}"
+                            IsVisible="{Binding MostrarCursos}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
+                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                    <!-- Nível 3: Turnos -->
+                    <Picker Title="Selecione o Turno"
+                            ItemsSource="{Binding Turnos}"
+                            SelectedItem="{Binding TurnoSelecionado}"
+                            IsVisible="{Binding MostrarTurnos}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
+                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                    <!-- Nível 4: Modalidades -->
+                    <Picker Title="Selecione a Modalidade"
+                            ItemsSource="{Binding Modalidades}"
+                            SelectedItem="{Binding ModalidadeSelecionada}"
+                            IsVisible="{Binding MostrarModalidades}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
+                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ========== CARD GRANDE: TOTAL DE ALUNOS ========== -->
+            <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   BackgroundColor="#4A69BD">
+
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                    <!-- Título -->
+                    <Label Text="Total de Alunos"
+                           FontSize="18"
+                           TextColor="White"
+                           Grid.Row="0"
+                           Grid.Column="0"/>
+
+                    <!-- Ícone -->
+                    <Image Source="icone_capelo.png"
+                       WidthRequest="60"
+                       HeightRequest="60"
+                       Grid.Row="0"
+                       Grid.RowSpan="2"
+                       Grid.Column="1"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End"/>
+                    <!-- Número grande -->
+                    <Label Text="{Binding TotalAlunos, StringFormat='{0:N0}'}"
+                           FontSize="42"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="0,5,0,0"/>
+                </Grid>
+            </Frame>
+
+            <!-- ========== CARDS PEQUENOS ========== -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+
+                <!-- Card: Educação Básica -->
+                <Frame CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}"
+                       Grid.Column="0">
+
+                    <VerticalStackLayout Spacing="5">
+                        <Image Source="icone_documentos.png"
+                       WidthRequest="40"
+                       HeightRequest="40"
+                       HorizontalOptions="Start"/>
+                        <Label Text="Educação Básica"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
+                        <Label Text="{Binding EducacaoBasica, StringFormat='{0:N0}'}"
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Card: Educação Superior -->
+                <Frame CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}"
+                       Grid.Column="1">
+
+                    <VerticalStackLayout Spacing="5">
+                        <Image Source="icone_formatura_azul.png"
+                               WidthRequest="40"
+                               HeightRequest="40"
+                               HorizontalOptions="Start"/>
+                        <Label Text="Educação Superior"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
+                        <Label Text="{Binding EducacaoSuperior, StringFormat='{0:N0}'}"
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- ========== GRÁFICO ========== -->
+            <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Distribuição"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                    <skia:SKCanvasView x:Name="GraficoAlunos"
+                                       HeightRequest="300"
+                                       PaintSurface="OnCanvasPaintSurface"/>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
     </ScrollView>
-
-
 </ContentPage>

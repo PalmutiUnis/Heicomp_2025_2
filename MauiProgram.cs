@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace MauiApp1
 {
@@ -10,6 +11,8 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp() // ← ADICIONEI ESTA LINHA
+
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
