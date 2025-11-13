@@ -1,5 +1,5 @@
 using Microsoft.Maui.Controls;
-using Heicomp_2025_2.ViewModels.Dashboards;
+using MauiApp1.ViewModels.Dashboards;
 
 namespace Heicomp_2025_2.Views.Dashboards
 {

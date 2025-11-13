@@ -3,8 +3,9 @@ using Plugin.LocalNotification;
 using Microsoft.Extensions.Configuration;
 using MauiApp1.Services;
 using Microsoft.Maui.Storage;
-using Heicomp_2025_2.Views.Auth;
+using MauiApp1.Views.Auth;
 using Heicomp_2025_2.Services;
+using MauiApp1.ViewModels.Dashboards;
 using Heicomp_2025_2.ViewModels.Dashboards;
 
 namespace MauiApp1
