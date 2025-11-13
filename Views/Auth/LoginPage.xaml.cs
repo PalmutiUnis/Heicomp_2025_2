@@ -4,7 +4,7 @@ using System.Diagnostics;
 // Precisamos disso para "new AppShell()" e "Application.Current"
 using MauiApp1;
 
-namespace Heicomp_2025_2.Views.Auth
+namespace MauiApp1.Views.Auth
 {
     public partial class LoginPage : ContentPage
     {
