@@ -1,8 +1,9 @@
-namespace Heicomp_2025_2.Views.Configuracoes;
+namespace MauiApp1.Views.Configuracoes;
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Plugin.LocalNotification;
+using Microsoft.Maui.Controls;
 
 public partial class ConfiguracoesPage : ContentPage
 {

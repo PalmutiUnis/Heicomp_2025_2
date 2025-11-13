@@ -16,6 +16,8 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp()
+                .UseMauiCommunityToolkit() // Agora reconhecido
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
@@ -41,10 +43,12 @@ namespace MauiApp1
 
             // Register CargosService via interface
             builder.Services.AddTransient<ICargosService, CargosService>();
+            builder.Services.AddTransient<CargosViewModel>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
-            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.PainelGestaoPage>();
+            builder.Services.AddTransient<MauiApp1.Views.Dashboards.PainelGestaoPage>();
+            builder.Services.AddTransient<CargosPage>();
 
             // ✅ Adições específicas para o módulo de Colaboradores
             builder.Services.AddSingleton<ColaboradoresService>();            // camada de acesso ao banco
@@ -54,6 +58,7 @@ namespace MauiApp1
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
 
             // Cria o app
             var app = builder.Build();
@@ -77,6 +82,7 @@ namespace MauiApp1
                 handler.PlatformView.SetContentInsetsAbsolute(0, 0);
             });
 #endif
+
 
             return app;
         }
