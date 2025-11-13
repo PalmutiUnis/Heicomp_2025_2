@@ -2,13 +2,13 @@ namespace MauiApp1.Views.Dashboards;
 
 public partial class DiversidadePage : ContentPage
 {
-	public DiversidadePage()
-	{
-		InitializeComponent();
-	}
+    public DiversidadePage()
+    {
+        InitializeComponent();
+    }
 
     private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//PainelGestaoPage");
+        await Shell.Current.GoToAsync("//DiversidadePage");
     }
 }
