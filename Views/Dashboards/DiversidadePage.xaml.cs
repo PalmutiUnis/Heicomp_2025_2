@@ -9,6 +9,6 @@ public partial class DiversidadePage : ContentPage
 
     private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//PainelGestaoPage");
+        await Shell.Current.GoToAsync("//DiversidadePage");
     }
 }
