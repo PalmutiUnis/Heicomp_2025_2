@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              x:Class="Heicomp_2025_2.Views.Dashboards.PainelGestaoPage"
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Title="Painel de Gestão">
@@ -57,7 +58,14 @@
                    Style="{StaticResource TextoTituloSecao}" />
 
             <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="226">
-                <!-- Aqui entra o componente de gráfico -->
+                <microcharts:ChartView x:Name="CargosChart" Chart="{Binding Chart}" />
+            </Border>
+
+            <Label Text="Distribuição por Gênero"
+                   Style="{StaticResource TextoTituloSecao}" />
+
+            <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="226">
+                <microcharts:ChartView x:Name="GenderChart" Chart="{Binding GenderChart}" />
             </Border>
 
         </VerticalStackLayout>

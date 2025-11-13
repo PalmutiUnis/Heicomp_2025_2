@@ -77,7 +77,6 @@ namespace MauiApp1.Services
 
             return new TurnoverCompleto();
         }
-
         // Métodos individuais mantidos para compatibilidade (agora mais rápidos)
         public async Task<decimal> GetTurnoverAsync()
         {
@@ -111,7 +110,6 @@ namespace MauiApp1.Services
             return result?.ToString();
         }
     }
-
     // DTO para retornar todos os dados de uma vez
     public class TurnoverCompleto
     {

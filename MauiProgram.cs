@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using MauiApp1.Services;
 using Microsoft.Maui.Storage;
 using Heicomp_2025_2.Views.Auth;
+using Microcharts.Maui;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace MauiApp1
 {
@@ -14,21 +16,19 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMicrocharts()
+                .UseSkiaSharp()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
-            // Load appsettings.json embedded in Resources/Raw
-            // Load JSON configuration via stream manually (AddJsonStream not available in this target)
             try
             {
                 using var stream = FileSystem.OpenAppPackageFileAsync("appsettings.json").Result;
                 using var reader = new StreamReader(stream);
                 var json = reader.ReadToEnd();
-                // Parse JSON manually and add keys under MySql section
                 var doc = System.Text.Json.JsonDocument.Parse(json);
                 var root = doc.RootElement;
                 var configBuilder = new ConfigurationBuilder();
@@ -45,15 +45,15 @@ namespace MauiApp1
                 System.Diagnostics.Debug.WriteLine($"Failed to load appsettings.json: {ex.Message}");
             }
 
-            // Register MySQL connection factory & repository
             builder.Services.AddSingleton<IMySqlConnectionFactory, MySqlConnectionFactory>();
             builder.Services.AddSingleton<TurnoverRepository>();
-            // Register CargosService via interface
             builder.Services.AddTransient<ICargosService, CargosService>();
+            builder.Services.AddTransient<IDiversidadeService, DiversidadeService>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.PainelGestaoPage>();
+            builder.Services.AddTransient<Heicomp_2025_2.ViewModels.Dashboards.PainelGestaoViewModel>();
             builder.Services.AddTransient<Heicomp_2025_2.ViewModels.Dashboards.RotatividadeViewModel>();
             builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.RotatividadePage>();
 

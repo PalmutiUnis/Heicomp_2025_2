@@ -16,6 +16,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        
         public RotatividadeViewModel(TurnoverRepository turnoverRepository)
         {
             _turnoverRepository = turnoverRepository;
