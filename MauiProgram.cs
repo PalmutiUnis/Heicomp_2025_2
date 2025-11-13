@@ -3,12 +3,9 @@ using Plugin.LocalNotification;
 using Microsoft.Extensions.Configuration;
 using MauiApp1.Services;
 using Microsoft.Maui.Storage;
-using MauiApp1.Views.Auth;
-using CommunityToolkit.Maui;
-using MauiApp1.Views.Dashboards;
-using MauiApp1.ViewModels;
-using SkiaSharp.Views.Maui.Controls.Hosting;
-using MauiApp1.Views.Dashboards;
+using Heicomp_2025_2.Views.Auth;
+using Heicomp_2025_2.Services;
+using Heicomp_2025_2.ViewModels.Dashboards;
 
 namespace MauiApp1
 {
@@ -28,34 +25,23 @@ namespace MauiApp1
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // Load appsettings.json embedded in Resources/Raw
-            // Load JSON configuration via stream manually (AddJsonStream not available in this target)
+            // ✅ Carrega corretamente o appsettings.json
             try
             {
                 using var stream = FileSystem.OpenAppPackageFileAsync("appsettings.json").Result;
-                using var reader = new StreamReader(stream);
-                var json = reader.ReadToEnd();
-                // Parse JSON manually and add keys under MySql section
-                var doc = System.Text.Json.JsonDocument.Parse(json);
-                var root = doc.RootElement;
-                var configBuilder = new ConfigurationBuilder();
-                if (root.TryGetProperty("MySql", out var mySqlSection))
-                {
-                    foreach (var prop in mySqlSection.EnumerateObject())
-                    {
-                        builder.Configuration[prop.Name.StartsWith("MySql:") ? prop.Name : $"MySql:{prop.Name}"] = prop.Value.ToString();
-                    }
-                }
+                builder.Configuration.AddJsonStream(stream);
+                System.Diagnostics.Debug.WriteLine("✅ appsettings.json carregado com sucesso!");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Failed to load appsettings.json: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"❌ Falha ao carregar appsettings.json: {ex.Message}");
             }
 
             // Register MySQL connection factory & repository
             builder.Services.AddSingleton<IMySqlConnectionFactory, MySqlConnectionFactory>();
             builder.Services.AddSingleton<TurnoverRepository>();
-            // Register CargosService + ViewModel via DI
+
+            // Register CargosService via interface
             builder.Services.AddTransient<ICargosService, CargosService>();
             builder.Services.AddTransient<CargosViewModel>();
             builder.Services.AddTransient<MainPage>();
@@ -63,6 +49,11 @@ namespace MauiApp1
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<MauiApp1.Views.Dashboards.PainelGestaoPage>();
             builder.Services.AddTransient<CargosPage>();
+
+            // ✅ Adições específicas para o módulo de Colaboradores
+            builder.Services.AddSingleton<ColaboradoresService>();            // camada de acesso ao banco
+            builder.Services.AddTransient<ColaboradoresViewModel>();          // ViewModel principal (dashboard)
+            builder.Services.AddTransient<ListaColaboradoresViewModel>();     // ViewModel da lista completa
 
 #if DEBUG
             builder.Logging.AddDebug();
@@ -83,16 +74,14 @@ namespace MauiApp1
                 System.Diagnostics.Debug.WriteLine("🔥 Task Exception: " + e.Exception.ToString());
             };
 
-
+#if ANDROID
             // Handler para remover espaço lateral do Shell.TitleView no ANDROID
-
-            #if ANDROID
-                Microsoft.Maui.Handlers.ToolbarHandler.Mapper.AppendToMapping("CustomNavigationView", (handler, view) =>
-                        {
-                            handler.PlatformView.ContentInsetStartWithNavigation = 0;
-                            handler.PlatformView.SetContentInsetsAbsolute(0, 0);
-                        });
-            #endif
+            Microsoft.Maui.Handlers.ToolbarHandler.Mapper.AppendToMapping("CustomNavigationView", (handler, view) =>
+            {
+                handler.PlatformView.ContentInsetStartWithNavigation = 0;
+                handler.PlatformView.SetContentInsetsAbsolute(0, 0);
+            });
+#endif
 
 
             return app;
