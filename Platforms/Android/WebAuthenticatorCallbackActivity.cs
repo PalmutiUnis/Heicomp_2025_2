@@ -3,8 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 
-// Certifique-se que este namespace corresponde ao seu projeto
-namespace Heicomp_2025_2.Plataforms.Android;
+namespace MauiApp1.Plataforms.Android;
 
 [Activity(NoHistory = true, LaunchMode = LaunchMode.SingleTop, Exported = true)]
 [IntentFilter(new[] { Intent.ActionView },

@@ -1,4 +1,4 @@
-﻿namespace Heicomp_2025_2
+﻿namespace MauiApp1
 {
 
 

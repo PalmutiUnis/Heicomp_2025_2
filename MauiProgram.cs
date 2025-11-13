@@ -3,8 +3,12 @@ using Plugin.LocalNotification;
 using Microsoft.Extensions.Configuration;
 using MauiApp1.Services;
 using Microsoft.Maui.Storage;
-using Heicomp_2025_2.Views.Auth;
+using MauiApp1.Views.Auth;
 using CommunityToolkit.Maui;
+using MauiApp1.Views.Dashboards;
+using MauiApp1.ViewModels;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using MauiApp1.Views.Dashboards;
 
 namespace MauiApp1
 {
@@ -15,7 +19,8 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
+                .UseSkiaSharp()
+                .UseMauiCommunityToolkit() // Agora reconhecido
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
@@ -50,16 +55,19 @@ namespace MauiApp1
             // Register MySQL connection factory & repository
             builder.Services.AddSingleton<IMySqlConnectionFactory, MySqlConnectionFactory>();
             builder.Services.AddSingleton<TurnoverRepository>();
-            // Register CargosService via interface
+            // Register CargosService + ViewModel via DI
             builder.Services.AddTransient<ICargosService, CargosService>();
+            builder.Services.AddTransient<CargosViewModel>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
-            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.PainelGestaoPage>();
+            builder.Services.AddTransient<MauiApp1.Views.Dashboards.PainelGestaoPage>();
+            builder.Services.AddTransient<CargosPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
 
             // Cria o app
             var app = builder.Build();
@@ -85,6 +93,7 @@ namespace MauiApp1
                             handler.PlatformView.SetContentInsetsAbsolute(0, 0);
                         });
             #endif
+
 
             return app;
         }

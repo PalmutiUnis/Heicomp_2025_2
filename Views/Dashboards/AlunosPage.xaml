@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:cards="clr-namespace:Heicomp_2025_2.Views.Cards"
-             x:Class="Heicomp_2025_2.Views.Dashboards.AlunosPage"
+             xmlns:cards="clr-namespace:MauiApp1.Views.Cards"
+             x:Class="MauiApp1.Views.Dashboards.AlunosPage"
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Title=""
              Shell.FlyoutBehavior="Disabled">
