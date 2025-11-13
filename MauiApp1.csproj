@@ -85,4 +85,18 @@
 	  <Folder Include="Resources\Images\icones\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiAsset Include="Resources\Raw\appsettings.json" LogicalName="appsettings.json" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\Dashboards\ColaboradoresPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Dashboards\ListaColaboradores\ListaColaboradoresPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>
