@@ -1,4 +1,4 @@
-﻿using Heicomp_2025_2.Views.Auth;
+﻿using MauiApp1.Views.Auth;
 
 
 namespace MauiApp1
@@ -10,6 +10,7 @@ namespace MauiApp1
             InitializeComponent();
 
             Routing.RegisterRoute("LoginPage", typeof(LoginPage));
+            Routing.RegisterRoute("ListaColaboradoresPage", typeof(Heicomp_2025_2.Views.Dashboards.ListaColaboradores.ListaColaboradoresPage));
         }
     }
 }

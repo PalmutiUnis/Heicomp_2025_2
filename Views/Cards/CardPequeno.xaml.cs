@@ -1,4 +1,4 @@
-namespace Heicomp_2025_2.Views.Cards;
+namespace MauiApp1.Views.Cards;
 
 public partial class CardPequeno : ContentView
 {    // Propriedades que você pode passar pelo XAML da página

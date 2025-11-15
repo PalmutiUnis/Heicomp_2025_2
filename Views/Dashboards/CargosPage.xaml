@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Heicomp_2025_2.Views.Dashboards.CargosPage"
-             Title=""
+             xmlns:conv="clr-namespace:MauiApp1.Converters"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             x:Class="MauiApp1.Views.Dashboards.CargosPage"
+             Title="Cargos"
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Shell.FlyoutBehavior="Disabled">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:CategoriaTotalSumConverter x:Key="CategoriaTotalSumConverter" />
+            <conv:CategoriaCorConverter x:Key="CategoriaCorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <!-- Layout do Shell NavBar -->
     <Shell.TitleView >
@@ -42,10 +51,63 @@
                      VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+            <!-- Card de Distribuição de Cargos -->
+            <Frame CornerRadius="12" Padding="16" HasShadow="True" BackgroundColor="White">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Distribuição de Cargos" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding TotalColaboradores, StringFormat='Total: {0}'}" 
+                               Margin="8,0,0,0"
+                               BackgroundColor="#F0F1F6"
+                               Padding="6,2"
+                               FontSize="12"
+                               TextColor="#4A5A6A"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <!-- Gráfico (Microcharts) -->
+                    <microcharts:ChartView Chart="{Binding PieChart}" HeightRequest="160" Margin="0,8,0,8"/>
+                    <CollectionView ItemsSource="{Binding CategoriaTotais}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <HorizontalStackLayout Spacing="8" Margin="0,2,0,2">
+                                    <BoxView WidthRequest="12" HeightRequest="12" 
+                                             Color="{Binding Categoria, Converter={StaticResource CategoriaCorConverter}}"
+                                             VerticalOptions="Center"/>
+                                    <Label Text="{Binding Categoria}" FontSize="14"/>
+                                    <Label Text="{Binding Total}" FontAttributes="Bold" FontSize="14"/>
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Card de Cargos Cadastrados -->
+            <HorizontalStackLayout>
+                <Label Text="Cargos Cadastrados" FontAttributes="Bold" FontSize="16"/>
+                <Label Text="{Binding CargoCategorias.Count, StringFormat='{0} cargos'}" 
+                       FontSize="12" TextColor="#4A5A6A" Margin="8,0,0,0" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+            <CollectionView ItemsSource="{Binding CargoCategorias}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="8" Padding="12" Margin="0,4,0,4" HasShadow="False" BorderColor="#E0E0E0">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Cargo}" FontAttributes="Bold" FontSize="15"/>
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label Text="{Binding Colaboradores, StringFormat='{0} colaboradores'}"
+                                           FontSize="13"
+                                           TextColor="{Binding Categoria, Converter={StaticResource CategoriaCorConverter}}"/>
+                                    <Label Text="•" FontSize="13" TextColor="#B0B0B0"/>
+                                    <Label Text="{Binding Categoria}" FontSize="13" TextColor="#4A5A6A"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

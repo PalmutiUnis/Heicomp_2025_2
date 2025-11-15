@@ -1,4 +1,4 @@
-namespace Heicomp_2025_2.Views.Administrativa;
+namespace MauiApp1.Views.Administrativa;
 
 public partial class AdminPage : ContentPage
 {

@@ -1,15 +1,21 @@
-namespace Heicomp_2025_2.Views.Dashboards;
+using Microsoft.Maui.Controls;
+using MauiApp1.ViewModels.Dashboards;
 
-public partial class ColaboradoresPage : ContentPage
+namespace Heicomp_2025_2.Views.Dashboards
 {
-    public ColaboradoresPage()
+    public partial class ColaboradoresPage : ContentPage
     {
-        InitializeComponent();
-    }
+        private readonly ColaboradoresViewModel _viewModel;
+        public ColaboradoresPage()
+        {
+            InitializeComponent();
+            _viewModel = new ColaboradoresViewModel();
+            BindingContext = _viewModel;
+        }
 
-
-    private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//PainelGestaoPage");
+        private async void OnBackClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//PainelGestaoPage");
+        }
     }
 }
