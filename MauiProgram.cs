@@ -1,12 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-using Plugin.LocalNotification;
-using Microsoft.Extensions.Configuration;
-using MauiApp1.Services;
-using Microsoft.Maui.Storage;
-using MauiApp1.Views.Auth;
+﻿using CommunityToolkit.Maui;
 using Heicomp_2025_2.Services;
-using MauiApp1.ViewModels.Dashboards;
 using Heicomp_2025_2.ViewModels.Dashboards;
+using MauiApp1.Services;
+using MauiApp1.ViewModels.Dashboards;
+using MauiApp1.Views.Auth;
+using MauiApp1.Views.Dashboards;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
+using Plugin.LocalNotification;
 
 namespace MauiApp1
 {
@@ -17,14 +19,14 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseSkiaSharp()
-                .UseMauiCommunityToolkit() // Agora reconhecido
+                .UseMauiCommunityToolkit()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+        {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+        });
+
 
             // ✅ Carrega corretamente o appsettings.json
             try
