@@ -1,14 +1,31 @@
-namespace MauiApp1.Views.Dashboards;
+using MauiApp1.ViewModels.Dashboards;
 
-public partial class DiversidadePage : ContentPage
+namespace MauiApp1.Views.Dashboards
 {
-    public DiversidadePage()
+    public partial class DiversidadePage : ContentPage
     {
-        InitializeComponent();
-    }
+        public DiversidadePage(DiversidadeViewModel viewModel)
+        {
+            InitializeComponent();
+            BindingContext = viewModel;
+        }
 
-    private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//DiversidadePage");
+        private void OnAnoSelecionado(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            if (picker.SelectedItem != null &&
+                int.TryParse(picker.SelectedItem.ToString(), out int ano))
+            {
+                if (BindingContext is DiversidadeViewModel vm)
+                {
+                    vm.AnoSelecionado = ano;
+                }
+            }
+        }
+
+        private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("..");
+        }
     }
 }

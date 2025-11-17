@@ -1,12 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-using Plugin.LocalNotification;
-using Microsoft.Extensions.Configuration;
-using MauiApp1.Services;
-using Microsoft.Maui.Storage;
-using MauiApp1.Views.Auth;
+﻿using CommunityToolkit.Maui;
 using Heicomp_2025_2.Services;
-using MauiApp1.ViewModels.Dashboards;
 using Heicomp_2025_2.ViewModels.Dashboards;
+using MauiApp1.Services;
+using MauiApp1.ViewModels.Dashboards;
+using MauiApp1.Views.Auth;
+using MauiApp1.Views.Dashboards;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
+using Plugin.LocalNotification;
 
 namespace MauiApp1
 {
@@ -17,8 +19,7 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseSkiaSharp()
-                .UseMauiCommunityToolkit() // Agora reconhecido
+                .UseMauiCommunityToolkit()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
@@ -44,7 +45,7 @@ namespace MauiApp1
 
             // Register CargosService via interface
             builder.Services.AddTransient<ICargosService, CargosService>();
-            builder.Services.AddTransient<CargosViewModel>();
+          
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
@@ -56,6 +57,15 @@ namespace MauiApp1
             builder.Services.AddTransient<ColaboradoresViewModel>();          // ViewModel principal (dashboard)
             builder.Services.AddTransient<ListaColaboradoresViewModel>();     // ViewModel da lista completa
 
+            // Adiciona View e ViewModel de Diversidade
+            // ✅ Registrar serviços específicos
+            builder.Services.AddTransient<DiversidadeService>();
+
+            // ✅ Registrar ViewModels
+            builder.Services.AddTransient<DiversidadeViewModel>();
+
+            // ✅ Registrar Pages
+            builder.Services.AddTransient<DiversidadePage>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
