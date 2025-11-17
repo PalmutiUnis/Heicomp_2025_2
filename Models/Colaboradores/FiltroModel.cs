@@ -1,4 +1,4 @@
-﻿namespace Heicomp_2025_2.Models.Colaboradores
+﻿namespace MauiApp1.Models.Colaboradores
 {
     public class FiltroModel
     {

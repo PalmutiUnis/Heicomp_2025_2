@@ -2,7 +2,7 @@
 using System.Globalization;
 using Microsoft.Maui.Controls;
 
-namespace Heicomp_2025_2.Converters
+namespace MauiApp1.Converters
 {
     public class PercentToProgressConverter : IValueConverter
     {

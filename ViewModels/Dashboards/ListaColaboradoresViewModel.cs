@@ -1,5 +1,4 @@
-﻿using Heicomp_2025_2.Models.Colaboradores;
-using Heicomp_2025_2.Services;
+﻿using MauiApp1.Models.Colaboradores;
 using MauiApp1.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls;
@@ -11,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Heicomp_2025_2.ViewModels.Dashboards
+namespace MauiApp1.ViewModels.Dashboards
 {
     [QueryProperty(nameof(Unidade), "unidade")]
     [QueryProperty(nameof(Ano), "ano")]

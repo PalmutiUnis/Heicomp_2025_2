@@ -3,7 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 
-namespace MauiApp1.Plataforms.Android;
+namespace MauiApp1.Platforms.Android;
 
 [Activity(NoHistory = true, LaunchMode = LaunchMode.SingleTop, Exported = true)]
 [IntentFilter(new[] { Intent.ActionView },

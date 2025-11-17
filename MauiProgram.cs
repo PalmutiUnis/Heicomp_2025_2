@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Maui;
-using Heicomp_2025_2.Services;
-using Heicomp_2025_2.ViewModels.Dashboards;
 using MauiApp1.Services;
 using MauiApp1.ViewModels.Dashboards;
 using MauiApp1.Views.Auth;
