@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Maui;
-using Heicomp_2025_2.Services;
-using Heicomp_2025_2.ViewModels.Dashboards;
 using MauiApp1.Services;
 using MauiApp1.ViewModels.Dashboards;
 using MauiApp1.Views.Auth;
@@ -22,10 +20,11 @@ namespace MauiApp1
                 .UseMauiCommunityToolkit()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+        {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+        });
+
 
             // ✅ Carrega corretamente o appsettings.json
             try

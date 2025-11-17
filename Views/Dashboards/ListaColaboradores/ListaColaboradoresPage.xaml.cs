@@ -1,7 +1,7 @@
 using Microsoft.Maui.Controls;
-using Heicomp_2025_2.ViewModels.Dashboards;
+using MauiApp1.ViewModels.Dashboards;
 
-namespace Heicomp_2025_2.Views.Dashboards.ListaColaboradores
+namespace MauiApp1.Views.Dashboards.ListaColaboradores
 {
     public partial class ListaColaboradoresPage : ContentPage
     {
