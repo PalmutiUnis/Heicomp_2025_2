@@ -10,7 +10,7 @@ namespace MauiApp1
             InitializeComponent();
 
             Routing.RegisterRoute("LoginPage", typeof(LoginPage));
-            Routing.RegisterRoute("ListaColaboradoresPage", typeof(Heicomp_2025_2.Views.Dashboards.ListaColaboradores.ListaColaboradoresPage));
+            Routing.RegisterRoute("ListaColaboradoresPage", typeof(MauiApp1.Views.Dashboards.ListaColaboradores.ListaColaboradoresPage));
         }
     }
 }

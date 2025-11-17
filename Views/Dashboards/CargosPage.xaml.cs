@@ -1,6 +1,6 @@
 using Microsoft.Maui.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using MauiApp1.ViewModels;
+using MauiApp1.ViewModels.Dashboards;
 
 namespace MauiApp1.Views.Dashboards
 {

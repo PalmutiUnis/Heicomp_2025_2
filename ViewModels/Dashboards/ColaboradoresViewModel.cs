@@ -1,5 +1,4 @@
-﻿using Heicomp_2025_2.Models.Colaboradores;
-using Heicomp_2025_2.Services;
+﻿using MauiApp1.Models.Colaboradores;
 using MauiApp1.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls;
