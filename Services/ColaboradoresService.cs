@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MySqlConnector; // <-- MySqlConnector types
-using MauiApp1.Models;
+using MySqlConnector;
+using MauiApp1.Models.Colaboradores;
 
 namespace MauiApp1.Services
 {
@@ -340,21 +340,6 @@ namespace MauiApp1.Services
             }
 
             return query.Skip(offset).Take(limit).ToList();
-        }
-
-        // 9. Teste de conexão
-        public async Task<MySqlConnection> TestarConexaoAsync()
-        {
-            try
-            {
-                var conn = await _connectionFactory.OpenConnectionAsync("RHSenior");
-                return conn;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ Erro de conexão: {ex.Message}");
-                return null;
-            }
         }
     }
 }
