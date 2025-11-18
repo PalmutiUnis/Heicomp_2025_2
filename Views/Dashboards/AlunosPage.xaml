@@ -9,17 +9,20 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Title="Dashboard Alunos"
              Shell.FlyoutBehavior="Disabled">
-    
-    <Shell.TitleView>
-        <Grid ColumnDefinitions="Auto, *, Auto"
+
+    <!-- ========================================
+         BARRA DE NAVEGAÇÃO SUPERIOR (SHELL)
+         ======================================== -->
+        <Shell.TitleView>
+            <Grid ColumnDefinitions="Auto, *, Auto"
               Style="{StaticResource TitleViewGridStyle}"
               HorizontalOptions="Fill"
               VerticalOptions="Fill"
               Margin="0"
               Padding="0">
 
-            <!-- Botão Voltar -->
-            <ImageButton Grid.Column="0"
+                <!-- Botão Voltar -->
+                <ImageButton Grid.Column="0"
                          Source="seta_direita.png"  
                          HeightRequest="44"
                          WidthRequest="44"
@@ -30,15 +33,15 @@
                          HorizontalOptions="Start"
                          VerticalOptions="Center"/>
 
-            <!-- Título -->
-            <Label Grid.Column="1"
-                   Text="Alunos"
+                <!-- Título da Página -->
+                <Label Grid.Column="1"
+                   Text="Dashboard Alunos"
                    Style="{StaticResource TituloShellStyle}"
                    VerticalOptions="Center"
                    HorizontalOptions="Fill"/>
 
-            <!-- Menu -->
-            <ImageButton Grid.Column="2"
+                <!-- Menu (placeholder) -->
+                <ImageButton Grid.Column="2"
                          Source="icone_menu.png"  
                          HeightRequest="44"
                          WidthRequest="44"
@@ -47,159 +50,308 @@
                          Padding="0"
                          HorizontalOptions="End"
                          VerticalOptions="Center"/>
-        </Grid>
-    </Shell.TitleView>
+            </Grid>
+        </Shell.TitleView>
 
-    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
+        <!-- ========================================
+         CONTEÚDO PRINCIPAL SCROLLÁVEL
+         ======================================== -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- ========== FILTROS DRILL-DOWN ========== -->
-            <Frame CornerRadius="15"
+                <!-- ========================================
+                 SEÇÃO: FILTROS DE DRILL-DOWN
+                 ======================================== -->
+                <Frame CornerRadius="15"
                    Padding="15"
                    HasShadow="True"
-                   BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}">
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
 
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Filtros" 
-                           FontSize="18" 
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                    <VerticalStackLayout Spacing="12">
 
-                    <!-- Nível 1: Unidades -->
-                    <Picker Title="Selecione a Unidade"
-                            ItemsSource="{Binding Unidades}"
-                            SelectedItem="{Binding UnidadeSelecionada}"
-                            IsVisible="{Binding MostrarUnidades}"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        <!-- Título da seção de filtros -->
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Filtros de Pesquisa" 
+                               FontSize="18" 
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"
+                               VerticalOptions="Center"
+                               Grid.Column="0"/>
 
-                    <!-- Nível 2: Cursos -->
-                    <Picker Title="Selecione o Curso"
-                            ItemsSource="{Binding Cursos}"
-                            SelectedItem="{Binding CursoSelecionado}"
-                            IsVisible="{Binding MostrarCursos}"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                            <!-- Botão Limpar Filtros -->
+                            <Button Text="Limpar"
+                                Clicked="OnLimparFiltrosClicked"
+                                BackgroundColor="{StaticResource CorGraficoVermelho}"
+                                TextColor="White"
+                                FontSize="14"
+                                Padding="12,6"
+                                CornerRadius="8"
+                                Grid.Column="1"/>
+                        </Grid>
 
-                    <!-- Nível 3: Turnos -->
-                    <Picker Title="Selecione o Turno"
-                            ItemsSource="{Binding Turnos}"
-                            SelectedItem="{Binding TurnoSelecionado}"
-                            IsVisible="{Binding MostrarTurnos}"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        <!-- Filtro Nível 1: Campus -->
+                        <Picker Title="Selecione o Campus"
+                            ItemsSource="{Binding ListaCampus}"
+                            SelectedItem="{Binding CampusSelecionado}"
+                            IsVisible="{Binding MostrarCampus}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
-                    <!-- Nível 4: Modalidades -->
-                    <Picker Title="Selecione a Modalidade"
-                            ItemsSource="{Binding Modalidades}"
+                        <!-- Filtro Nível 2: Modalidade -->
+                        <Picker Title="Selecione a Modalidade"
+                            ItemsSource="{Binding ListaModalidades}"
                             SelectedItem="{Binding ModalidadeSelecionada}"
-                            IsVisible="{Binding MostrarModalidades}"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                            TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                </VerticalStackLayout>
-            </Frame>
+                            IsVisible="{Binding MostrarModalidade}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
-            <!-- ========== CARD GRANDE: TOTAL DE ALUNOS ========== -->
-            <Frame CornerRadius="20"
+                        <!-- Filtro Nível 3: Curso -->
+                        <Picker Title="Selecione o Curso"
+                            ItemsSource="{Binding ListaCursos}"
+                            SelectedItem="{Binding CursoSelecionado}"
+                            IsVisible="{Binding MostrarCurso}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                        <!-- Filtro Nível 4: Turno -->
+                        <Picker Title="Selecione o Turno"
+                            ItemsSource="{Binding ListaTurnos}"
+                            SelectedItem="{Binding TurnoSelecionado}"
+                            IsVisible="{Binding MostrarTurno}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                        <!-- Filtro Nível 5: Período -->
+                        <Picker Title="Selecione o Período"
+                            ItemsSource="{Binding ListaPeriodos}"
+                            SelectedItem="{Binding PeriodoSelecionado}"
+                            IsVisible="{Binding MostrarPeriodo}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- ========================================
+                 SEÇÃO: CARD GRANDE - TOTAL DE ALUNOS
+                 ======================================== -->
+                <!-- Este card mostra o total de alunos baseado nos filtros aplicados -->
+                <Frame CornerRadius="20"
                    Padding="20"
                    HasShadow="True"
-                   BackgroundColor="#4A69BD">
+                   BackgroundColor="{StaticResource CorGraficoPrimaria}">
 
-                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
-                    <!-- Título -->
-                    <Label Text="Total de Alunos"
+                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+
+                        <!-- Título do card -->
+                        <Label Text="Total de Alunos"
                            FontSize="18"
                            TextColor="White"
                            Grid.Row="0"
                            Grid.Column="0"/>
 
-                    <!-- Ícone -->
-                    <Image Source="icone_capelo.png"
-                       WidthRequest="60"
-                       HeightRequest="60"
-                       Grid.Row="0"
-                       Grid.RowSpan="2"
-                       Grid.Column="1"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"/>
-                    <!-- Número grande -->
-                    <Label Text="{Binding TotalAlunos, StringFormat='{0:N0}'}"
+                        <!-- Ícone decorativo -->
+                        <Image Source="icone_capelo.png"
+                           WidthRequest="60"
+                           HeightRequest="60"
+                           Grid.Row="0"
+                           Grid.RowSpan="2"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"/>
+
+                        <!-- Número de alunos (muda conforme filtros) -->
+                        <Label Text="{Binding TotalAlunos, StringFormat='{0:N0}'}"
                            FontSize="42"
                            FontAttributes="Bold"
                            TextColor="White"
                            Grid.Row="1"
                            Grid.Column="0"
                            Margin="0,5,0,0"/>
-                </Grid>
-            </Frame>
-
-            <!-- ========== CARDS PEQUENOS ========== -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
-
-                <!-- Card: Educação Básica -->
-                <Frame CornerRadius="15"
-                       Padding="15"
-                       HasShadow="True"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}"
-                       Grid.Column="0">
-
-                    <VerticalStackLayout Spacing="5">
-                        <Image Source="icone_documentos.png"
-                       WidthRequest="40"
-                       HeightRequest="40"
-                       HorizontalOptions="Start"/>
-                        <Label Text="Educação Básica"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
-                        <Label Text="{Binding EducacaoBasica, StringFormat='{0:N0}'}"
-                               FontSize="28"
-                               FontAttributes="Bold"
-                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                    </VerticalStackLayout>
+                    </Grid>
                 </Frame>
 
-                <!-- Card: Educação Superior -->
-                <Frame CornerRadius="15"
+                <!-- ========================================
+                 SEÇÃO: CARDS PEQUENOS (2 POR LINHA)
+                 ======================================== -->
+                <!-- Estes cards mostram resumos que mudam conforme os filtros -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+
+                    <!-- Card: Modalidade Mais Comum -->
+                    <Frame CornerRadius="15"
                        Padding="15"
                        HasShadow="True"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}"
-                       Grid.Column="1">
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
+                       Grid.Column="0">
 
-                    <VerticalStackLayout Spacing="5">
-                        <Image Source="icone_formatura_azul.png"
+                        <VerticalStackLayout Spacing="5">
+                            <!-- Ícone -->
+                            <Image Source="icone_documentos.png"
                                WidthRequest="40"
                                HeightRequest="40"
                                HorizontalOptions="Start"/>
-                        <Label Text="Educação Superior"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
-                        <Label Text="{Binding EducacaoSuperior, StringFormat='{0:N0}'}"
-                               FontSize="28"
-                               FontAttributes="Bold"
-                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                    </VerticalStackLayout>
-                </Frame>
-            </Grid>
 
-            <!-- ========== GRÁFICO ========== -->
-            <Frame CornerRadius="20"
+                            <!-- Título -->
+                            <Label Text="Modalidade Mais Comum"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoSecundarioClaro}, Dark={StaticResource TextoSecundarioEscuro}}"/>
+
+                            <!-- Valor principal -->
+                            <Label Text="{Binding ModalidadeMaisComum}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Card: Curso com Mais Alunos -->
+                    <Frame CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
+                       Grid.Column="1">
+
+                        <VerticalStackLayout Spacing="5">
+                            <!-- Ícone -->
+                            <Image Source="icone_formatura_azul.png"
+                               WidthRequest="40"
+                               HeightRequest="40"
+                               HorizontalOptions="Start"/>
+
+                            <!-- Título -->
+                            <Label Text="Curso com Mais Alunos"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoSecundarioClaro}, Dark={StaticResource TextoSecundarioEscuro}}"/>
+
+                            <!-- Nome do curso -->
+                            <Label Text="{Binding CursoComMaisAlunos}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                            <!-- Número de alunos -->
+                            <Label Text="{Binding NumeroAlunosCursoTop, StringFormat='{0:N0} alunos'}"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoSecundarioClaro}, Dark={StaticResource TextoSecundarioEscuro}}"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- ========================================
+                 GRÁFICO 1: TOTAL POR CAMPUS
+                 Tipo: Barras Horizontais
+                 Visível: Apenas quando nenhum campus está selecionado
+                 ======================================== -->
+                <Frame CornerRadius="20"
                    Padding="20"
                    HasShadow="True"
-                   BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoCardEscuro}}">
+                   IsVisible="{Binding MostrarGraficoCampus}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
 
-                <VerticalStackLayout Spacing="15">
-                    <Label Text="Distribuição"
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Alunos por Campus"
                            FontSize="20"
                            FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
-                    <skia:SKCanvasView x:Name="GraficoAlunos"
+                        <!-- Canvas para desenhar o gráfico -->
+                        <skia:SKCanvasView x:Name="GraficoCampus"
                                        HeightRequest="300"
-                                       PaintSurface="OnCanvasPaintSurface"/>
-                </VerticalStackLayout>
-            </Frame>
+                                       PaintSurface="OnGraficoCampusPaintSurface"/>
+                    </VerticalStackLayout>
+                </Frame>
 
-        </VerticalStackLayout>
-    </ScrollView>
-</ContentPage>
+                <!-- ========================================
+                 GRÁFICO 2: TOTAL POR MODALIDADE
+                 Tipo: Rosca (DonutChart)
+                 Visível: Até que uma modalidade seja selecionada
+                 ======================================== -->
+                <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   IsVisible="{Binding MostrarGraficoModalidades}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Distribuição por Modalidade"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                        <skia:SKCanvasView x:Name="GraficoModalidades"
+                                       HeightRequest="280"
+                                       PaintSurface="OnGraficoModalidadesPaintSurface"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- ========================================
+                 GRÁFICO 3: TOTAL POR CURSO
+                 Tipo: Barras Verticais
+                 Visível: Até que um curso seja selecionado
+                 ======================================== -->
+                <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   IsVisible="{Binding MostrarGraficoCursos}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Alunos por Curso"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                        <skia:SKCanvasView x:Name="GraficoCursos"
+                                       HeightRequest="320"
+                                       PaintSurface="OnGraficoCursosPaintSurface"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- ========================================
+                 GRÁFICO 4: QUANTIDADE POR TURNO
+                 Tipo: Rosca (DonutChart)
+                 Visível: Até que um turno seja selecionado
+                 ======================================== -->
+                <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   IsVisible="{Binding MostrarGraficoTurnos}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Distribuição por Turno"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                        <skia:SKCanvasView x:Name="GraficoTurnos"
+                                       HeightRequest="280"
+                                       PaintSurface="OnGraficoTurnosPaintSurface"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- ========================================
+                 GRÁFICO 5: DISTRIBUIÇÃO POR PERÍODO
+                 Tipo: Barras Verticais
+                 Visível: Sempre (até o último nível)
+                 ======================================== -->
+                <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   IsVisible="{Binding MostrarGraficoPeriodos}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Alunos por Período"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                        <skia:SKCanvasView x:Name="GraficoPeriodos"
+                                       HeightRequest="320"
+                                       PaintSurface="OnGraficoPeriodosPaintSurface"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage>

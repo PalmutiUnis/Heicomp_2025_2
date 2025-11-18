@@ -7,6 +7,11 @@ using MauiApp1.Views.Auth;
 using Heicomp_2025_2.Services;
 using MauiApp1.ViewModels.Dashboards;
 using Heicomp_2025_2.ViewModels.Dashboards;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using CommunityToolkit.Maui;
+using Heicomp_2025_2.Views.Dashboards; // Para CargosPage
+
+
 
 namespace MauiApp1
 {
@@ -49,12 +54,15 @@ namespace MauiApp1
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<MauiApp1.Views.Dashboards.PainelGestaoPage>();
-            builder.Services.AddTransient<CargosPage>();
+            builder.Services.AddTransient<MauiApp1.Views.Dashboards.CargosPage>();
+            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.AlunosPage>();
 
             // ✅ Adições específicas para o módulo de Colaboradores
             builder.Services.AddSingleton<ColaboradoresService>();            // camada de acesso ao banco
             builder.Services.AddTransient<ColaboradoresViewModel>();          // ViewModel principal (dashboard)
             builder.Services.AddTransient<ListaColaboradoresViewModel>();     // ViewModel da lista completa
+            builder.Services.AddTransient<AlunosViewModel>();
+           
 
 #if DEBUG
             builder.Logging.AddDebug();

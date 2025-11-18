@@ -7,6 +7,7 @@
     xmlns:dashboards="clr-namespace:MauiApp1.Views.Dashboards"
     xmlns:configuracoes="clr-namespace:MauiApp1.Views.Configuracoes"
     xmlns:administrativa="clr-namespace:MauiApp1.Views.Administrativa"
+    xmlns:dashboards2="clr-namespace:Heicomp_2025_2.Views.Dashboards"
     Shell.FlyoutBehavior="Flyout"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource Black}}"
     Title="MauiApp1">
@@ -61,7 +62,7 @@
                 Icon="icone_formatura_branco.png">
         <ShellContent
             Title="Alunos"
-            ContentTemplate="{DataTemplate dashboards:AlunosPage}"
+            ContentTemplate="{DataTemplate dashboards2:AlunosPage}"
             Route="AlunosPage"
             />
     </FlyoutItem>
@@ -70,7 +71,7 @@
                 Icon="icone_pessoas_branco.png">
         <ShellContent
             Title="Colaboradores"
-            ContentTemplate="{DataTemplate dashboards:ColaboradoresPage}"
+            ContentTemplate="{DataTemplate dashboards2:ColaboradoresPage}"
             Route="ColaboradoresPage"
             />
     </FlyoutItem>
