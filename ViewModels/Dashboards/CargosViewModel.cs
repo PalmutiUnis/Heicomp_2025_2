@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using MauiApp1.Services;
 using Microcharts;
 using SkiaSharp;
+
 namespace MauiApp1.ViewModels.Dashboards
 {
     public class CargosViewModel : INotifyPropertyChanged

@@ -3,10 +3,12 @@ using MauiApp1.Services;
 using MauiApp1.ViewModels.Dashboards;
 using MauiApp1.Views.Auth;
 using MauiApp1.Views.Dashboards;
+using Microcharts.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Storage;
 using Plugin.LocalNotification;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace MauiApp1
 {
@@ -19,6 +21,8 @@ namespace MauiApp1
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseLocalNotification()
+                .UseSkiaSharp()
+                .UseMicrocharts()
                 .ConfigureFonts(fonts =>
         {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
