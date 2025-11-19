@@ -61,8 +61,8 @@
 
                     <HorizontalStackLayout Spacing="20" HorizontalOptions="End">
                         <HorizontalStackLayout Spacing="5">
-                            <BoxView Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                             Dark={StaticResource CorGraficoAzulClaro3}}" 
+                            <BoxView Color="{AppThemeBinding Light={StaticResource ProgressHomem},
+                                                             Dark={StaticResource ProgressHomem}}" 
                                      WidthRequest="15" 
                                      HeightRequest="15" 
                                      CornerRadius="3"/>
@@ -72,8 +72,8 @@
                                                                Dark={StaticResource CorTextoBranco}}" />
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="5">
-                            <BoxView Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
-                                                             Dark={StaticResource CorGraficoRosa}}"  
+                            <BoxView Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
+                                                             Dark={StaticResource ProgressMulher}}"  
                                      WidthRequest="15" 
                                      HeightRequest="15" 
                                      CornerRadius="3"/>
@@ -170,15 +170,15 @@
                             <VerticalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, 
-                                                                Dark={StaticResource CorGraficoAzulClaro3}}"
+                                        Color="{AppThemeBinding Light={StaticResource ProgressHomem}, 
+                                                                Dark={StaticResource ProgressHomem}}"
                                         WidthRequest="25" 
                                         HeightRequest="120" 
                                         CornerRadius="3"
                                         VerticalOptions="End"/>
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
-                                                                Dark={StaticResource CorGraficoRosa}}" 
+                                        Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
+                                                                Dark={StaticResource ProgressMulher}}" 
                                         WidthRequest="25" 
                                         HeightRequest="50" 
                                         CornerRadius="3"
@@ -203,16 +203,16 @@
                             <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, 
-                                                                Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                        Color="{AppThemeBinding Light={StaticResource ProgressHomem}, 
+                                                                Dark={StaticResource ProgressHomem}}" 
                                         WidthRequest="25" 
                                         HeightRequest="95" 
                                         CornerRadius="3"
                                         VerticalOptions="End"
                                         />
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
-                                                                Dark={StaticResource CorGraficoRosa}}" 
+                                        Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
+                                                                Dark={StaticResource ProgressMulher}}" 
                                         WidthRequest="25" 
                                         HeightRequest="25" 
                                         CornerRadius="3"
@@ -238,16 +238,16 @@
                             <VerticalStackLayout Grid.Column="2" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                                Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                        Color="{AppThemeBinding Light={StaticResource ProgressHomem},
+                                                                Dark={StaticResource ProgressHomem}}" 
                                         WidthRequest="25" 
                                         HeightRequest="110" 
                                         CornerRadius="3"
                                         VerticalOptions="End"
                                         />
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
-                                                                Dark={StaticResource CorGraficoRosa}}"  
+                                        Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
+                                                                Dark={StaticResource ProgressMulher}}"  
                                         WidthRequest="25"
                                         HeightRequest="75" 
                                         CornerRadius="3"
@@ -271,16 +271,16 @@
                             <VerticalStackLayout Grid.Column="3" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                                Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                        Color="{AppThemeBinding Light={StaticResource ProgressHomem},
+                                                                Dark={StaticResource ProgressHomem}}" 
                                         WidthRequest="25" 
                                         HeightRequest="80" 
                                         CornerRadius="3"
                                         VerticalOptions="End"
                                         />
                                     <BoxView 
-                                        Color="{AppThemeBinding Light={StaticResource CorGraficoRosa}, 
-                                                                Dark={StaticResource CorGraficoRosa}}" 
+                                        Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
+                                                                Dark={StaticResource ProgressMulher}}" 
                                         WidthRequest="25" 
                                         HeightRequest="90" 
                                         CornerRadius="3"
