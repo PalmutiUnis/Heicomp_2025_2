@@ -19,7 +19,8 @@
     <Color x:Key="Magenta">#D600AA</Color>
     <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
-    <Color x:Key="AzulTemaClaro">#1E3A8A</Color>
+    <Color x:Key="AzulTemaClaro">#251E3A8A</Color>
+    <Color x:Key="AzulTemaEscuro">#253B82F6</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
@@ -202,4 +203,11 @@
     <!-- Botões -->
     <Color x:Key="BotaoClaro">#1E3A8A</Color>
     <Color x:Key="BotaoEscuro">#3B82F6</Color>
+
+    <!-- Barras de carregamento/Progresso -->
+    <Color x:Key="ProgressHomem">#3B82F6</Color>
+    <Color x:Key="ProgressMulher">#EC4899</Color>
+        <!-- Textos Coloridos -->
+    <Color x:Key="TextoAzulClaro">#1E3A8A</Color>
+    <Color x:Key="TextoAzulEscuro">#5780f7</Color>
 </ResourceDictionary>
