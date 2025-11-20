@@ -57,8 +57,8 @@
                                                                Dark={StaticResource CorTextoCinza}}"/>
                         </VerticalStackLayout>
                         <Frame Grid.Column="2" Padding="6,2"
-                               BackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro},
-                                                                 Dark={StaticResource AzulTemaEscuro}}"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource LabelAzulClaro},
+                                                                 Dark={StaticResource LabelAzulEscuro}}"
                                CornerRadius="10"
                                HasShadow="False"
                                VerticalOptions="Center">
