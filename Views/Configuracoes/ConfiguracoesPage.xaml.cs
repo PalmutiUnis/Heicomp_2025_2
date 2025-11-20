@@ -1,8 +1,10 @@
 ﻿namespace MauiApp1.Views.Configuracoes;
 
-using Microsoft.Maui.Storage;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Plugin.LocalNotification;
-
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
 
 public partial class ConfiguracoesPage : ContentPage
 {
@@ -63,6 +65,7 @@ public partial class ConfiguracoesPage : ContentPage
     // *************************** Construtor ***************************
     public ConfiguracoesPage()
     {
+        InitializeComponent();
         // 1. Permite o uso de notificações locais 
         LocalNotificationCenter.Current.RequestNotificationPermission();
         BindingContext = this; // Conecta a UI (XAML) com este c�digo
