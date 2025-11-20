@@ -4,7 +4,7 @@
              xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
              x:Class="MauiApp1.Views.Dashboards.GraficosDetalhadosPage"
              Title=""
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, 
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, 
                                                Dark={StaticResource FundoPaginaEscuro}}"
              Shell.FlyoutBehavior="Disabled">
     <Shell.TitleView>
@@ -45,7 +45,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
 
-            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, 
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
                                                      Dark={StaticResource FundoCardEscuro}}"
                    CornerRadius="12"
                    Padding="20"
@@ -61,7 +61,10 @@
 
                     <HorizontalStackLayout Spacing="20" HorizontalOptions="End">
                         <HorizontalStackLayout Spacing="5">
-                            <BoxView Color="{AppThemeBinding Light={StaticResource ProgressHomem},
+                            <BoxView
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                      Dark={StaticResource FundoCardEscuro}}"
+                                    Color="{AppThemeBinding Light={StaticResource ProgressHomem},
                                                              Dark={StaticResource ProgressHomem}}" 
                                      WidthRequest="15" 
                                      HeightRequest="15" 
@@ -72,8 +75,11 @@
                                                                Dark={StaticResource CorTextoBranco}}" />
                         </HorizontalStackLayout>
                         <HorizontalStackLayout Spacing="5">
-                            <BoxView Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
-                                                             Dark={StaticResource ProgressMulher}}"  
+                            <BoxView
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                      Dark={StaticResource FundoCardEscuro}}"
+                                    Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
+                                                            Dark={StaticResource ProgressMulher}}"  
                                      WidthRequest="15" 
                                      HeightRequest="15" 
                                      CornerRadius="3"/>
@@ -170,13 +176,17 @@
                             <VerticalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
                                     <BoxView 
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressHomem}, 
                                                                 Dark={StaticResource ProgressHomem}}"
                                         WidthRequest="25" 
                                         HeightRequest="120" 
                                         CornerRadius="3"
                                         VerticalOptions="End"/>
-                                    <BoxView 
+                                    <BoxView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
                                                                 Dark={StaticResource ProgressMulher}}" 
                                         WidthRequest="25" 
@@ -202,7 +212,9 @@
 
                             <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
-                                    <BoxView 
+                                    <BoxView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressHomem}, 
                                                                 Dark={StaticResource ProgressHomem}}" 
                                         WidthRequest="25" 
@@ -210,7 +222,9 @@
                                         CornerRadius="3"
                                         VerticalOptions="End"
                                         />
-                                    <BoxView 
+                                    <BoxView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
                                                                 Dark={StaticResource ProgressMulher}}" 
                                         WidthRequest="25" 
@@ -237,7 +251,9 @@
 
                             <VerticalStackLayout Grid.Column="2" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
-                                    <BoxView 
+                                    <BoxView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressHomem},
                                                                 Dark={StaticResource ProgressHomem}}" 
                                         WidthRequest="25" 
@@ -245,7 +261,9 @@
                                         CornerRadius="3"
                                         VerticalOptions="End"
                                         />
-                                    <BoxView 
+                                    <BoxView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
                                                                 Dark={StaticResource ProgressMulher}}"  
                                         WidthRequest="25"
@@ -270,7 +288,9 @@
 
                             <VerticalStackLayout Grid.Column="3" Spacing="5" VerticalOptions="End" Margin="0,0,0,44">
                                 <HorizontalStackLayout Spacing="3" HorizontalOptions="Center">
-                                    <BoxView 
+                                    <BoxView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressHomem},
                                                                 Dark={StaticResource ProgressHomem}}" 
                                         WidthRequest="25" 
@@ -278,7 +298,9 @@
                                         CornerRadius="3"
                                         VerticalOptions="End"
                                         />
-                                    <BoxView 
+                                    <BoxView
+                                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
+                                                                          Dark={StaticResource FundoCardEscuro}}"
                                         Color="{AppThemeBinding Light={StaticResource ProgressMulher}, 
                                                                 Dark={StaticResource ProgressMulher}}" 
                                         WidthRequest="25" 
