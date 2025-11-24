@@ -62,7 +62,13 @@ namespace MauiApp1
             builder.Services.AddTransient<ColaboradoresViewModel>();          // ViewModel principal (dashboard)
             builder.Services.AddTransient<ListaColaboradoresViewModel>();     // ViewModel da lista completa
             builder.Services.AddTransient<AlunosViewModel>();
-           
+
+            builder.Services.AddSingleton<AlunosService>();
+            builder.Services.AddTransient<AlunosViewModel>();
+            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.AlunosPage>();
+            builder.Services.AddSingleton<Heicomp_2025_2.Services.AlunosService>();
+            builder.Services.AddTransient<Heicomp_2025_2.ViewModels.Dashboards.AlunosViewModel>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

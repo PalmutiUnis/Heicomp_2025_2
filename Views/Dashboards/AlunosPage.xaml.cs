@@ -1,345 +1,448 @@
-using Heicomp_2025_2.ViewModels.Dashboards;
-using Microcharts; // Biblioteca que cria os gráficos
-using SkiaSharp; // Biblioteca de desenho 2D (cores, formas, etc)
-using SkiaSharp.Views.Maui; // Integração do SkiaSharp com MAUI
-using SkiaSharp.Views.Maui.Controls; // Controles visuais do SkiaSharp para MAUI
+ï»¿using Heicomp_2025_2.ViewModels.Dashboards;
+using SkiaSharp;
+using SkiaSharp.Views.Maui;
+using SkiaSharp.Views.Maui.Controls;
 
 namespace Heicomp_2025_2.Views.Dashboards;
 
-
-
-/// <summary>
-/// Página de Dashboard de Alunos com sistema de Drill-Down em 5 níveis
-/// Campus ? Modalidade ? Curso ? Turno ? Período
-/// </summary>
 public partial class AlunosPage : ContentPage
 {
-    // ViewModel que contém toda a lógica de dados e filtros
     private readonly AlunosViewModel vm;
 
-    // Gráficos que serão desenhados nos canvas
-    private Chart? chartCampus;
-    private Chart? chartModalidades;
-    private Chart? chartCursos;
-    private Chart? chartTurnos;
-    private Chart? chartPeriodos;
-
-    // ========================================
-    // CONSTRUTOR
-    // ========================================
-
-    public AlunosPage()
+    public AlunosPage(AlunosViewModel viewModel)
     {
         InitializeComponent();
 
-        // Inicializa o ViewModel
-        vm = new AlunosViewModel();
+        vm = viewModel;
         BindingContext = vm;
 
-        // Escuta mudanças nas propriedades do ViewModel
-        // Quando os dados dos gráficos mudarem, redesenha os gráficos
         vm.PropertyChanged += (s, e) =>
         {
-            // Atualiza o gráfico correspondente quando seus dados mudam
             switch (e.PropertyName)
             {
                 case nameof(vm.DadosGraficoCampus):
-                    AtualizarGraficoCampus();
                     GraficoCampus?.InvalidateSurface();
                     break;
 
                 case nameof(vm.DadosGraficoModalidades):
-                    AtualizarGraficoModalidades();
                     GraficoModalidades?.InvalidateSurface();
                     break;
 
                 case nameof(vm.DadosGraficoCursos):
-                    AtualizarGraficoCursos();
+                case nameof(vm.Top5CursosLegenda):
                     GraficoCursos?.InvalidateSurface();
                     break;
 
                 case nameof(vm.DadosGraficoTurnos):
-                    AtualizarGraficoTurnos();
                     GraficoTurnos?.InvalidateSurface();
                     break;
 
                 case nameof(vm.DadosGraficoPeriodos):
-                    AtualizarGraficoPeriodos();
+                case nameof(vm.PeriodosLegenda):
                     GraficoPeriodos?.InvalidateSurface();
+                    break;
+
+                case nameof(vm.DadosGraficoTurmas):
+                case nameof(vm.TurmasLegenda):
+                    GraficoTurmas?.InvalidateSurface();
                     break;
             }
         };
-
-        // Desenha todos os gráficos iniciais
-        AtualizarTodosGraficos();
     }
 
-    // ========================================
-    // ATUALIZAÇÃO DOS GRÁFICOS
-    // ========================================
-
-    /// <summary>
-    /// Atualiza todos os gráficos de uma vez (chamado na inicialização)
-    /// </summary>
-    private void AtualizarTodosGraficos()
-    {
-        AtualizarGraficoCampus();
-        AtualizarGraficoModalidades();
-        AtualizarGraficoCursos();
-        AtualizarGraficoTurnos();
-        AtualizarGraficoPeriodos();
-    }
-
-    // ========================================
-    // GRÁFICO 1: TOTAL POR CAMPUS (BARRAS HORIZONTAIS)
-    // ========================================
-
-    /// <summary>
-    /// Prepara o gráfico de barras horizontais para total de alunos por campus
-    /// </summary>
-    private void AtualizarGraficoCampus()
-    {
-        if (vm.DadosGraficoCampus == null) return;
-
-        // Converte os dados para o formato que o Microcharts entende
-        var entries = vm.DadosGraficoCampus.Select(x =>
-            new ChartEntry((float)x.Value)
-            {
-                Label = x.Key,                          // Nome do campus
-                ValueLabel = x.Value.ToString("N0"),    // Número formatado (ex: 5.432)
-                Color = SKColor.Parse("#1E3A8A"),       // Azul escuro (cor principal)
-                ValueLabelColor = SKColor.Parse("#1E3A8A")
-            }).ToList();
-
-        // Cria o gráfico de barras
-        chartCampus = new BarChart
-        {
-            Entries = entries,
-            LabelTextSize = 32,                              // Tamanho do texto dos labels
-            ValueLabelOrientation = Orientation.Horizontal,   // Números na horizontal
-            LabelOrientation = Orientation.Horizontal,        // Labels na horizontal
-            BackgroundColor = SKColors.Transparent,           // Fundo transparente
-            Margin = 20,                                      // Margem interna
-            MinValue = 0                                      // Começa do zero
-        };
-    }
-
-    /// <summary>
-    /// Evento chamado quando o canvas precisa ser desenhado/redesenhado
-    /// </summary>
     private void OnGraficoCampusPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
-        canvas.Clear(); // Limpa o canvas
+        canvas.Clear();
 
-        // Desenha o gráfico no canvas
-        chartCampus?.Draw(canvas, e.Info.Width, e.Info.Height);
-    }
+        if (vm.DadosGraficoCampus == null || vm.DadosGraficoCampus.Count == 0) return;
 
-    // ========================================
-    // GRÁFICO 2: TOTAL POR MODALIDADE (ROSCA)
-    // ========================================
+        var entries = vm.DadosGraficoCampus.OrderByDescending(x => x.Value).ToList();
 
-    /// <summary>
-    /// Prepara o gráfico de rosca para distribuição por modalidade
-    /// </summary>
-    private void AtualizarGraficoModalidades()
-    {
-        if (vm.DadosGraficoModalidades == null) return;
+        float width = e.Info.Width;
+        float height = e.Info.Height;
 
-        // Cores diferentes para cada modalidade
+        int count = entries.Count;
+        float padding = 40;
+        float topSpace = 60;
+        float legendHeight = 60 + (count * 40);
+        float graphHeight = height - legendHeight - topSpace;
+
+        float availableWidth = width - (padding * 2);
+        float barWidth = availableWidth / count * 0.65f;
+        float spacing = availableWidth / count * 0.35f;
+
+        float maxValue = entries.Max(x => x.Value);
+
         var cores = new[]
         {
-            SKColor.Parse("#1E3A8A"), // Azul escuro - Presencial
-            SKColor.Parse("#3B82F6"), // Azul médio - EAD
-            SKColor.Parse("#60A5FA")  // Azul claro - Híbrido
+            SKColor.Parse("#1E3A8A"), SKColor.Parse("#3B82F6"), SKColor.Parse("#60A5FA"),
+            SKColor.Parse("#93C5FD"), SKColor.Parse("#BFDBFE")
         };
 
-        var entries = vm.DadosGraficoModalidades.Select((x, index) =>
-            new ChartEntry((float)x.Value)
-            {
-                Label = x.Key,
-                ValueLabel = x.Value.ToString("N0"),
-                Color = cores[index % cores.Length],      // Usa as cores do array
-                ValueLabelColor = cores[index % cores.Length]
-            }).ToList();
-
-        // Cria o gráfico de rosca (donut)
-        chartModalidades = new DonutChart
+        using var paintFundo = new SKPaint { Color = SKColors.LightGray.WithAlpha(80) };
+        using var paintBarra = new SKPaint();
+        using var paintTexto = new SKPaint
         {
-            Entries = entries,
-            LabelTextSize = 32,
-            BackgroundColor = SKColors.Transparent,
-            HoleRadius = 0.5f,  // Tamanho do buraco no meio (0 a 1)
-            GraphPosition = GraphPosition.Center
+            TextSize = 36,
+            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold),
+            IsAntialias = true
         };
+
+        for (int i = 0; i < count; i++)
+        {
+            var entry = entries[i];
+            var cor = cores[i % cores.Length];
+            float x = padding + i * (barWidth + spacing) + spacing / 2;
+
+            float barHeight = (entry.Value / maxValue) * graphHeight * 0.9f;
+            float y = topSpace + (graphHeight - barHeight);
+
+            canvas.DrawRoundRect(x, topSpace, barWidth, graphHeight, 12, 12, paintFundo);
+
+            paintBarra.Color = cor;
+            canvas.DrawRoundRect(x, y, barWidth, barHeight, 12, 12, paintBarra);
+
+            string texto = entry.Value.ToString("N0");
+            var textBounds = new SKRect();
+            paintTexto.Color = cor;
+            paintTexto.MeasureText(texto, ref textBounds);
+
+            float textoY = y - 15;
+            if (textoY < textBounds.Height + 10)
+            {
+                textoY = y + textBounds.Height + 15;
+                paintTexto.Color = SKColors.White;
+            }
+
+            canvas.DrawText(texto, x + barWidth / 2 - textBounds.MidX, textoY, paintTexto);
+        }
+
+        float legendStartY = topSpace + graphHeight + 30;
+        float legendX = 60;
+
+        using var paintLegendaCirculo = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
+        using var paintLegendaTexto = new SKPaint
+        {
+            TextSize = 32,
+            IsAntialias = true,
+            Color = Application.Current?.RequestedTheme == AppTheme.Dark ? SKColors.White : SKColors.Black
+        };
+
+        for (int i = 0; i < count; i++)
+        {
+            float yPos = legendStartY + (i * 40);
+            var cor = cores[i % cores.Length];
+
+            paintLegendaCirculo.Color = cor;
+            canvas.DrawCircle(legendX, yPos, 12, paintLegendaCirculo);
+
+            string legendaTexto = $"{entries[i].Key}: {entries[i].Value:N0} alunos";
+            canvas.DrawText(legendaTexto, legendX + 30, yPos + 10, paintLegendaTexto);
+        }
     }
 
     private void OnGraficoModalidadesPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
         canvas.Clear();
-        chartModalidades?.Draw(canvas, e.Info.Width, e.Info.Height);
-    }
 
-    // ========================================
-    // GRÁFICO 3: TOTAL POR CURSO (BARRAS VERTICAIS)
-    // ========================================
+        if (vm.DadosGraficoModalidades == null || vm.DadosGraficoModalidades.Count == 0) return;
 
-    /// <summary>
-    /// Prepara o gráfico de barras verticais para total de alunos por curso
-    /// </summary>
-    private void AtualizarGraficoCursos()
-    {
-        if (vm.DadosGraficoCursos == null) return;
+        var entries = vm.DadosGraficoModalidades.ToList();
 
-        // Gradiente de azul (do mais escuro ao mais claro)
-        var cores = new[]
+        float width = e.Info.Width;
+        float height = e.Info.Height;
+
+        float chartHeight = height - 120;
+        float centerX = width / 2;
+        float centerY = chartHeight / 2;
+        float radius = Math.Min(width, chartHeight) / 2.8f;
+        float holeRadius = radius * 0.5f;
+
+        var cores = new[] { SKColor.Parse("#1E3A8A"), SKColor.Parse("#3B82F6"), SKColor.Parse("#60A5FA") };
+
+        float total = entries.Sum(x => x.Value);
+        float startAngle = -90;
+
+        using var paint = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
+        var rect = new SKRect(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+
+        if (entries.Count == 1)
         {
-            SKColor.Parse("#1E3A8A"),
-            SKColor.Parse("#2563EB"),
-            SKColor.Parse("#3B82F6"),
-            SKColor.Parse("#60A5FA"),
-            SKColor.Parse("#93C5FD"),
-            SKColor.Parse("#BFDBFE")
-        };
-
-        var entries = vm.DadosGraficoCursos.Select((x, index) =>
-            new ChartEntry((float)x.Value)
+            paint.Color = cores[0];
+            canvas.DrawCircle(centerX, centerY, radius, paint);
+        }
+        else
+        {
+            for (int i = 0; i < entries.Count; i++)
             {
-                Label = x.Key,
-                ValueLabel = x.Value.ToString("N0"),
-                Color = cores[index % cores.Length],
-                ValueLabelColor = cores[index % cores.Length]
-            }).ToList();
+                float sweepAngle = (entries[i].Value / total) * 360;
+                paint.Color = cores[i % cores.Length];
 
-        chartCursos = new BarChart
+                using var path = new SKPath();
+                path.MoveTo(centerX, centerY);
+                path.ArcTo(rect, startAngle, sweepAngle, false);
+                path.Close();
+                canvas.DrawPath(path, paint);
+
+                startAngle += sweepAngle;
+            }
+        }
+
+        paint.Color = Application.Current?.RequestedTheme == AppTheme.Dark
+            ? SKColor.Parse("#1F2937")
+            : SKColors.White;
+        canvas.DrawCircle(centerX, centerY, holeRadius, paint);
+
+        float legendStartY = chartHeight + 30;
+        float legendX = 60;
+
+        using var paintLegendaCirculo = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
+        using var paintLegendaTexto = new SKPaint
         {
-            Entries = entries,
-            LabelTextSize = 30,
-            ValueLabelOrientation = Orientation.Horizontal,
-            LabelOrientation = Orientation.Horizontal,
-            BackgroundColor = SKColors.Transparent,
-            Margin = 20,
-            MinValue = 0
+            TextSize = 32,
+            IsAntialias = true,
+            Color = Application.Current?.RequestedTheme == AppTheme.Dark ? SKColors.White : SKColors.Black
         };
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            float yPos = legendStartY + (i * 40);
+            paintLegendaCirculo.Color = cores[i % cores.Length];
+            canvas.DrawCircle(legendX, yPos, 12, paintLegendaCirculo);
+            canvas.DrawText($"{entries[i].Key}: {entries[i].Value:N0}", legendX + 30, yPos + 10, paintLegendaTexto);
+        }
     }
 
     private void OnGraficoCursosPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
         canvas.Clear();
-        chartCursos?.Draw(canvas, e.Info.Width, e.Info.Height);
-    }
 
-    // ========================================
-    // GRÁFICO 4: QUANTIDADE POR TURNO (ROSCA)
-    // ========================================
+        if (vm.Top5CursosLegenda == null || vm.Top5CursosLegenda.Count == 0) return;
 
-    /// <summary>
-    /// Prepara o gráfico de rosca para distribuição por turno
-    /// </summary>
-    private void AtualizarGraficoTurnos()
-    {
-        if (vm.DadosGraficoTurnos == null) return;
+        var entries = vm.Top5CursosLegenda.OrderByDescending(x => x.Quantidade).ToList();
 
-        // Cores para cada turno
-        var cores = new[]
+        float width = e.Info.Width;
+        float height = e.Info.Height;
+
+        int count = entries.Count;
+        float padding = 40;
+        float availableWidth = width - (padding * 2);
+        float barWidth = availableWidth / count * 0.65f;
+        float spacing = availableWidth / count * 0.35f;
+
+        float maxValue = entries.Max(x => x.Quantidade);
+        float graphHeight = height - 100;
+
+        using var paintFundo = new SKPaint { Color = SKColors.LightGray.WithAlpha(80) };
+        using var paintBarra = new SKPaint();
+        using var paintTexto = new SKPaint
         {
-            SKColor.Parse("#F59E0B"), // Laranja - Manhã (sol da manhã)
-            SKColor.Parse("#3B82F6"), // Azul - Tarde (céu da tarde)
-            SKColor.Parse("#1E3A8A")  // Azul escuro - Noite (escuridão)
+            TextSize = 36,
+            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold),
+            IsAntialias = true
         };
 
-        var entries = vm.DadosGraficoTurnos.Select((x, index) =>
-            new ChartEntry((float)x.Value)
-            {
-                Label = x.Key,
-                ValueLabel = x.Value.ToString("N0"),
-                Color = cores[index % cores.Length],
-                ValueLabelColor = cores[index % cores.Length]
-            }).ToList();
-
-        chartTurnos = new DonutChart
+        for (int i = 0; i < count; i++)
         {
-            Entries = entries,
-            LabelTextSize = 32,
-            BackgroundColor = SKColors.Transparent,
-            HoleRadius = 0.5f,
-            GraphPosition = GraphPosition.Center
-        };
+            var entry = entries[i];
+            float x = padding + i * (barWidth + spacing) + spacing / 2;
+            float barHeight = (entry.Quantidade / maxValue) * graphHeight;
+            float y = height - 60 - barHeight;
+
+            canvas.DrawRoundRect(x, height - 60 - graphHeight, barWidth, graphHeight, 12, 12, paintFundo);
+
+            paintBarra.Color = entry.Cor.ToSKColor();
+            canvas.DrawRoundRect(x, y, barWidth, barHeight, 12, 12, paintBarra);
+
+            string texto = entry.Quantidade.ToString("N0");
+            var textBounds = new SKRect();
+            paintTexto.Color = entry.Cor.ToSKColor();
+            paintTexto.MeasureText(texto, ref textBounds);
+
+            canvas.DrawText(texto, x + barWidth / 2 - textBounds.MidX, y - 10, paintTexto);
+        }
     }
 
     private void OnGraficoTurnosPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
         canvas.Clear();
-        chartTurnos?.Draw(canvas, e.Info.Width, e.Info.Height);
-    }
 
-    // ========================================
-    // GRÁFICO 5: DISTRIBUIÇÃO POR PERÍODO (BARRAS VERTICAIS)
-    // ========================================
+        if (vm.DadosGraficoTurnos == null || vm.DadosGraficoTurnos.Count == 0) return;
 
-    /// <summary>
-    /// Prepara o gráfico de barras verticais para distribuição por período
-    /// </summary>
-    private void AtualizarGraficoPeriodos()
-    {
-        if (vm.DadosGraficoPeriodos == null) return;
+        var entries = vm.DadosGraficoTurnos.ToList();
 
-        // Todos os períodos com a mesma cor (azul principal)
-        var entries = vm.DadosGraficoPeriodos.Select(x =>
-            new ChartEntry((float)x.Value)
-            {
-                Label = x.Key,
-                ValueLabel = x.Value.ToString("N0"),
-                Color = SKColor.Parse("#1E3A8A"),
-                ValueLabelColor = SKColor.Parse("#1E3A8A")
-            }).ToList();
+        float width = e.Info.Width;
+        float height = e.Info.Height;
 
-        chartPeriodos = new BarChart
+        float chartHeight = height - 120;
+        float centerX = width / 2;
+        float centerY = chartHeight / 2;
+        float radius = Math.Min(width, chartHeight) / 2.8f;
+        float holeRadius = radius * 0.5f;
+
+        var coresSkia = vm.TurnosLegenda.Select(item => item.Cor.ToSKColor()).ToArray();
+
+        float total = entries.Sum(x => x.Value);
+        float startAngle = -90;
+
+        using var paint = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
+        var rect = new SKRect(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+
+        if (entries.Count == 1)
         {
-            Entries = entries,
-            LabelTextSize = 30,
-            ValueLabelOrientation = Orientation.Horizontal,
-            LabelOrientation = Orientation.Horizontal,
-            BackgroundColor = SKColors.Transparent,
-            Margin = 20,
-            MinValue = 0
-        };
+            paint.Color = coresSkia[0];
+            canvas.DrawCircle(centerX, centerY, radius, paint);
+        }
+        else
+        {
+            for (int i = 0; i < entries.Count; i++)
+            {
+                float sweepAngle = (entries[i].Value / total) * 360;
+                paint.Color = coresSkia[i % coresSkia.Length];
+
+                using var path = new SKPath();
+                path.MoveTo(centerX, centerY);
+                path.ArcTo(rect, startAngle, sweepAngle, false);
+                path.Close();
+                canvas.DrawPath(path, paint);
+
+                startAngle += sweepAngle;
+            }
+        }
+
+        paint.Color = Application.Current?.RequestedTheme == AppTheme.Dark
+            ? SKColor.Parse("#1F2937")
+            : SKColors.White;
+        canvas.DrawCircle(centerX, centerY, holeRadius, paint);
     }
 
     private void OnGraficoPeriodosPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
         canvas.Clear();
-        chartPeriodos?.Draw(canvas, e.Info.Width, e.Info.Height);
+
+        if (vm.PeriodosLegenda == null || !vm.PeriodosLegenda.Any()) return;
+
+        var entries = vm.PeriodosLegenda.OrderByDescending(x => x.Quantidade).ToList();
+
+        float width = e.Info.Width;
+        float height = e.Info.Height;
+        int count = entries.Count;
+
+        float paddingLeftRight = 40;
+        float paddingBottom = 40;
+        float paddingTop = 60;
+
+        float availableWidth = width - (paddingLeftRight * 2);
+        float availableHeight = height - paddingBottom - paddingTop;
+
+        float barWidth = availableWidth / count * 0.65f;
+        float spacing = availableWidth / count * 0.35f;
+
+        float maxValue = entries.Max(x => x.Quantidade);
+
+        using var paintFundo = new SKPaint { Color = SKColors.LightGray.WithAlpha(80) };
+        using var paintBarra = new SKPaint { IsAntialias = true };
+        using var paintTextoValor = new SKPaint
+        {
+            TextSize = 28,
+            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold),
+            IsAntialias = true,
+            TextAlign = SKTextAlign.Center
+        };
+
+        for (int i = 0; i < count; i++)
+        {
+            var entry = entries[i];
+            float x = paddingLeftRight + i * (barWidth + spacing);
+            float barHeight = (entry.Quantidade / maxValue) * availableHeight;
+            float barTop = paddingTop + (availableHeight - barHeight);
+
+            canvas.DrawRoundRect(x, paddingTop, barWidth, availableHeight, 12, 12, paintFundo);
+
+            paintBarra.Color = entry.Cor.ToSKColor();
+            canvas.DrawRoundRect(x, barTop, barWidth, barHeight, 12, 12, paintBarra);
+
+            string valorTexto = entry.Quantidade.ToString("N0");
+            paintTextoValor.Color = entry.Cor.ToSKColor();
+            canvas.DrawText(valorTexto, x + barWidth / 2, barTop - 10, paintTextoValor);
+        }
     }
 
-    // 
-    // EVENTOS DE BOTÕES
-    // 
+    private void OnGraficoTurmasPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+    {
+        var canvas = e.Surface.Canvas;
+        canvas.Clear();
 
-    /// <summary>
-    /// Botão "Limpar Filtros" - Reseta todos os filtros e volta para a visão geral
-    /// </summary>
-    private void OnLimparFiltrosClicked(object sender, EventArgs e)
+        if (vm.TurmasLegenda == null || !vm.TurmasLegenda.Any()) return;
+
+        var entries = vm.TurmasLegenda.OrderByDescending(x => x.Quantidade).ToList();
+
+        float width = e.Info.Width;
+        float height = e.Info.Height;
+
+        float paddingLeftRight = 40;
+        float paddingTop = 60;
+        float paddingBottom = 40;
+        float availableHeight = height - paddingTop - paddingBottom;
+        float availableWidth = width - (paddingLeftRight * 2);
+
+        int count = entries.Count;
+        float barWidth = availableWidth / count * 0.7f;
+        float spacing = availableWidth / count * 0.3f;
+
+        float maxValue = entries.Max(x => x.Quantidade);
+
+        using var paintFundo = new SKPaint { Color = SKColors.LightGray.WithAlpha(80) };
+        using var paintBarra = new SKPaint { IsAntialias = true };
+        using var paintTexto = new SKPaint
+        {
+            TextSize = 28,
+            Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold),
+            IsAntialias = true,
+            TextAlign = SKTextAlign.Center
+        };
+
+        for (int i = 0; i < count; i++)
+        {
+            var entry = entries[i];
+            float x = paddingLeftRight + i * (barWidth + spacing);
+            float barHeight = (entry.Quantidade / maxValue) * availableHeight;
+            float barTop = paddingTop + (availableHeight - barHeight);
+
+            canvas.DrawRoundRect(x, paddingTop, barWidth, availableHeight, 12, 12, paintFundo);
+
+            paintBarra.Color = entry.Cor.ToSKColor();
+            canvas.DrawRoundRect(x, barTop, barWidth, barHeight, 12, 12, paintBarra);
+
+            string texto = entry.Quantidade.ToString("N0");
+            paintTexto.Color = entry.Cor.ToSKColor();
+            canvas.DrawText(texto, x + barWidth / 2, barTop - 10, paintTexto);
+        }
+    }
+
+
+
+    private async void OnLimparFiltrosClicked(object sender, EventArgs e)
     {
         vm.LimparFiltros();
 
-        // Redesenha todos os gráficos
-        AtualizarTodosGraficos();
-        GraficoCampus?.InvalidateSurface();
-        GraficoModalidades?.InvalidateSurface();
-        GraficoCursos?.InvalidateSurface();
-        GraficoTurnos?.InvalidateSurface();
-        GraficoPeriodos?.InvalidateSurface();
+        await Task.Delay(300);
+
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            GraficoCampus?.InvalidateSurface();
+            GraficoModalidades?.InvalidateSurface();
+            GraficoCursos?.InvalidateSurface();
+            GraficoTurnos?.InvalidateSurface();
+            GraficoPeriodos?.InvalidateSurface();
+        });
     }
 
-    /// <summary>
-    /// Botão "Voltar" - Retorna para o Painel de Gestão
-    /// </summary>
     private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("//PainelGestaoPage");

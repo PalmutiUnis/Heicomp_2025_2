@@ -1,581 +1,585 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.Input;
+using Heicomp_2025_2.Services;
+using Microsoft.Maui.Graphics;
+using MySqlConnector;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input; 
-using CommunityToolkit.Mvvm.ComponentModel;
-using Microcharts;
-using SkiaSharp;
-using System.Windows.Input;
 
-
-namespace Heicomp_2025_2.ViewModels.Dashboards;
-
-/// <summary>
-/// ViewModel para o Dashboard de Alunos com sistema de Drill-Down em 5 níveis:
-/// Campus → Modalidade → Curso → Turno → Período
-/// </summary>
-public class AlunosViewModel : INotifyPropertyChanged
+namespace Heicomp_2025_2.ViewModels.Dashboards
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    // ========================================
-    // CONTROLE DE NÍVEIS DE DRILL-DOWN
-    // ========================================
-
-    /// <summary>
-    /// Controla qual nível de drill-down está ativo (1 a 5)
-    /// Nível 1: Visão geral
-    /// Nível 2: Campus selecionado
-    /// Nível 3: Modalidade selecionada
-    /// Nível 4: Curso selecionado
-    /// Nível 5: Turno selecionado
-    /// Nível 6: Período selecionado
-    /// </summary>
-    private int _nivelAtual = 1;
-    public int NivelAtual
+    public partial class AlunosViewModel : INotifyPropertyChanged
     {
-        get => _nivelAtual;
-        set
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private readonly AlunosService _service;
+        private readonly SemaphoreSlim _semaphore = new(1, 1);
+        private CancellationTokenSource _cts = new();
+        private bool _isBusy;
+        public bool IsBusy
         {
-            _nivelAtual = value;
-            OnPropertyChanged();
+            get => _isBusy;
+            set { _isBusy = value; OnPropertyChanged(); }
+        }
+
+        public AlunosViewModel(AlunosService service)
+        {
+            _service = service ?? throw new ArgumentNullException(nameof(service));
+            LimparFiltrosCommand = new RelayCommand(LimparFiltros);
+            _ = CarregarDadosIniciaisAsync();
+        }
+
+        public IRelayCommand LimparFiltrosCommand { get; }
+
+
+        private int _totalAlunos;
+        public int TotalAlunos { get => _totalAlunos; set => SetProperty(ref _totalAlunos, value); }
+
+        private string _modalidadeMaisComum = "N/A";
+        public string ModalidadeMaisComum { get => _modalidadeMaisComum; set => SetProperty(ref _modalidadeMaisComum, value); }
+
+        private string _cursoComMaisAlunos = "N/A";
+        public string CursoComMaisAlunos { get => _cursoComMaisAlunos; set => SetProperty(ref _cursoComMaisAlunos, value); }
+
+        private int _numeroAlunosCursoTop;
+        public int NumeroAlunosCursoTop { get => _numeroAlunosCursoTop; set => SetProperty(ref _numeroAlunosCursoTop, value); }
+
+        private List<TurnoLegendaItem> _turnosLegenda = new();
+        public List<TurnoLegendaItem> TurnosLegenda { get => _turnosLegenda; set => SetProperty(ref _turnosLegenda, value); }
+
+
+        public ObservableCollection<string> ListaCampus { get; } = new();
+        public ObservableCollection<ModalidadeItem> ListaModalidades { get; } = new();
+        public ObservableCollection<CursoItem> ListaCursos { get; } = new();
+        public ObservableCollection<TurnoItem> ListaTurnos { get; } = new();
+        public ObservableCollection<PeriodoItem> ListaPeriodos { get; } = new();
+
+        private string? _campusSelecionado;
+        public string? CampusSelecionado
+        {
+            get => _campusSelecionado;
+            set
+            {
+                if (SetProperty(ref _campusSelecionado, value))
+                {
+                    LimparFiltrosDependentes(1);
+                    AtualizarVisibilidadeFiltros();
+                    _ = AtualizarGraficosAsync();
+                }
+            }
+        }
+
+        private ModalidadeItem? _modalidadeSelecionada;
+        public ModalidadeItem? ModalidadeSelecionada
+        {
+            get => _modalidadeSelecionada;
+            set
+            {
+                if (SetProperty(ref _modalidadeSelecionada, value))
+                {
+                    LimparFiltrosDependentes(2);
+                    AtualizarVisibilidadeFiltros();
+                    _ = AtualizarGraficosAsync();
+                }
+            }
+        }
+
+        private CursoItem? _cursoSelecionado;
+        public CursoItem? CursoSelecionado
+        {
+            get => _cursoSelecionado;
+            set
+            {
+                if (SetProperty(ref _cursoSelecionado, value))
+                {
+                    LimparFiltrosDependentes(3);
+                    AtualizarVisibilidadeFiltros();
+                    _ = AtualizarGraficosAsync();
+                }
+            }
+        }
+
+        private TurnoItem? _turnoSelecionado;
+        public TurnoItem? TurnoSelecionado
+        {
+            get => _turnoSelecionado;
+            set
+            {
+                if (SetProperty(ref _turnoSelecionado, value))
+                {
+                    LimparFiltrosDependentes(4);
+                    AtualizarVisibilidadeFiltros();
+                    _ = AtualizarGraficosAsync();
+                }
+            }
+        }
+
+        private PeriodoItem? _periodoSelecionado;
+        public PeriodoItem? PeriodoSelecionado
+        {
+            get => _periodoSelecionado;
+            set
+            {
+                if (SetProperty(ref _periodoSelecionado, value))
+                {
+                    if (value != null)
+                    {
+                        _ = CarregarTurmasDoPeriodoAsync();
+                    }
+                    else
+                    {
+                        MostrarGraficoTurmas = false;
+                        TurmasLegenda = new();
+                        DadosGraficoTurmas = null;
+                    }
+                }
+            }
+        }
+
+        private bool _mostrarModalidade;
+        public bool MostrarModalidade { get => _mostrarModalidade; set => SetProperty(ref _mostrarModalidade, value); }
+
+        private bool _mostrarCurso;
+        public bool MostrarCurso { get => _mostrarCurso; set => SetProperty(ref _mostrarCurso, value); }
+
+        private bool _mostrarTurno;
+        public bool MostrarTurno { get => _mostrarTurno; set => SetProperty(ref _mostrarTurno, value); }
+
+        private bool _mostrarPeriodo;
+        public bool MostrarPeriodo { get => _mostrarPeriodo; set => SetProperty(ref _mostrarPeriodo, value); }
+
+        private bool _mostrarGraficoCampus = true;
+        public bool MostrarGraficoCampus { get => _mostrarGraficoCampus; set => SetProperty(ref _mostrarGraficoCampus, value); }
+
+        private bool _mostrarGraficoModalidades = true;
+        public bool MostrarGraficoModalidades { get => _mostrarGraficoModalidades; set => SetProperty(ref _mostrarGraficoModalidades, value); }
+
+        private bool _mostrarGraficoCursos = true;
+        public bool MostrarGraficoCursos { get => _mostrarGraficoCursos; set => SetProperty(ref _mostrarGraficoCursos, value); }
+
+        private bool _mostrarGraficoTurnos = true;
+        public bool MostrarGraficoTurnos { get => _mostrarGraficoTurnos; set => SetProperty(ref _mostrarGraficoTurnos, value); }
+
+        private bool _mostrarGraficoPeriodos;
+        public bool MostrarGraficoPeriodos { get => _mostrarGraficoPeriodos; set => SetProperty(ref _mostrarGraficoPeriodos, value); }
+
+        private bool _mostrarBotaoCursos = true;
+        public bool MostrarBotaoCursos { get => _mostrarBotaoCursos; set => SetProperty(ref _mostrarBotaoCursos, value); }
+
+
+        private List<CursoLegendaItem> _top5CursosLegenda = new();
+        public List<CursoLegendaItem> Top5CursosLegenda { get => _top5CursosLegenda; set => SetProperty(ref _top5CursosLegenda, value); }
+
+        private List<PeriodoLegendaItem> _periodosLegenda = new();
+        public List<PeriodoLegendaItem> PeriodosLegenda
+        {
+            get => _periodosLegenda; set => SetProperty(ref _periodosLegenda, value);
+        }
+        private List<TurmaLegendaItem> _turmasLegenda = new();
+        public List<TurmaLegendaItem> TurmasLegenda { get => _turmasLegenda; set => SetProperty(ref _turmasLegenda, value); }
+
+        private Dictionary<string, int>? _dadosGraficoTurmas;
+        public Dictionary<string, int>? DadosGraficoTurmas { get => _dadosGraficoTurmas; set => SetProperty(ref _dadosGraficoTurmas, value); }
+
+        private bool _mostrarGraficoTurmas;
+        public bool MostrarGraficoTurmas { get => _mostrarGraficoTurmas; set => SetProperty(ref _mostrarGraficoTurmas, value); }
+
+        private Dictionary<string, int>? _dadosGraficoCampus;
+        public Dictionary<string, int>? DadosGraficoCampus { get => _dadosGraficoCampus; set => SetProperty(ref _dadosGraficoCampus, value); }
+
+        private Dictionary<string, int>? _dadosGraficoModalidades;
+        public Dictionary<string, int>? DadosGraficoModalidades { get => _dadosGraficoModalidades; set => SetProperty(ref _dadosGraficoModalidades, value); }
+
+        private Dictionary<string, int>? _dadosGraficoCursos;
+        public Dictionary<string, int>? DadosGraficoCursos { get => _dadosGraficoCursos; set => SetProperty(ref _dadosGraficoCursos, value); }
+
+        private Dictionary<string, int>? _dadosGraficoTurnos;
+        public Dictionary<string, int>? DadosGraficoTurnos { get => _dadosGraficoTurnos; set => SetProperty(ref _dadosGraficoTurnos, value); }
+
+        private Dictionary<string, int>? _dadosGraficoPeriodos;
+        public Dictionary<string, int>? DadosGraficoPeriodos { get => _dadosGraficoPeriodos; set => SetProperty(ref _dadosGraficoPeriodos, value); }
+
+        private readonly string[] _coresHex = {
+            "#3498db", "#e74c3c", "#2ecc71", "#f1c40f", "#9b59b6",
+            "#1abc9c", "#e67e22", "#34495e", "#8e44ad", "#c0392b"
+        };
+
+        private async Task CarregarDadosIniciaisAsync()
+        {
+            await _semaphore.WaitAsync();
+            try
+            {
+                IsBusy = true;
+
+                var t1 = _service.GetTotalAlunosAsync();
+                var t2 = _service.GetModalidadeMaisAlunosAsync();
+                var t3 = _service.GetCursoComMaisAlunosAsync();
+                var t4 = _service.GetAlunosPorCampusAsync();
+                var t5 = _service.GetDistribuicaoModalidadeGeralAsync();
+                var t6 = _service.GetDistribuicaoTurnoGeralAsync();
+                var t7 = _service.GetCursosTopAsync(limit: 5);
+                var t8 = _service.GetCampusDisponiveisAsync();
+
+                await Task.WhenAll(t1, t2, t3, t4, t5, t6, t7, t8);
+
+                TotalAlunos = await t1;
+                ModalidadeMaisComum = (await t2).Modalidade;
+                CursoComMaisAlunos = (await t3).Curso;
+                NumeroAlunosCursoTop = (await t3).Quantidade;
+
+                var campusData = await t4;
+                var modalidadeData = await t5;
+                var turnoData = await t6;
+                var topCursos = await t7;
+                var listaCampus = await t8;
+
+                ListaCampus.Clear();
+                foreach (var c in listaCampus) ListaCampus.Add(c);
+
+                CriarGraficoCampus(campusData);
+                CriarGraficoModalidades(modalidadeData.Select(kvp => (kvp.Key, kvp.Value)).ToList());
+                CriarGraficoTurnos(turnoData.Select(kvp => (kvp.Key, kvp.Value)).ToList());
+                CriarGraficoTopCursos(topCursos);
+
+                MostrarGraficoCampus = true;
+                MostrarGraficoModalidades = true;
+                MostrarGraficoCursos = true;
+                MostrarGraficoTurnos = true;
+                MostrarGraficoPeriodos = false;
+                MostrarBotaoCursos = false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro ao carregar dados iniciais: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+                _semaphore.Release();
+            }
+        }
+
+        private async Task AtualizarGraficosAsync()
+        {
+            await _semaphore.WaitAsync();
+            _cts.Cancel();
+            _cts.Dispose();
+            _cts = new CancellationTokenSource(TimeSpan.FromSeconds(90));
+
+            try
+            {
+                IsBusy = true;
+
+                if (CampusSelecionado == null && ModalidadeSelecionada == null && CursoSelecionado == null && TurnoSelecionado == null)
+                    return;
+
+                TotalAlunos = await _service.GetTotalAlunosAsync(CampusSelecionado, ModalidadeSelecionada?.Codigo, CursoSelecionado?.Codigo, TurnoSelecionado?.Codigo);
+                ModalidadeMaisComum = (await _service.GetModalidadeMaisAlunosAsync(CampusSelecionado, CursoSelecionado?.Codigo, TurnoSelecionado?.Codigo)).Modalidade;
+                var cursoTop = await _service.GetCursoComMaisAlunosAsync(CampusSelecionado, ModalidadeSelecionada?.Codigo, TurnoSelecionado?.Codigo);
+                CursoComMaisAlunos = cursoTop.Curso;
+                NumeroAlunosCursoTop = cursoTop.Quantidade;
+
+                if (!string.IsNullOrEmpty(CampusSelecionado) && ModalidadeSelecionada == null)
+                {
+                    ListaModalidades.Clear();
+                    var mods = await _service.GetModalidadesDisponiveisAsync(CampusSelecionado);
+                    foreach (var m in mods) ListaModalidades.Add(new ModalidadeItem { Codigo = m.Codigo, Nome = m.Nome });
+
+                    var dist = await _service.GetDistribuicaoModalidadeAsync(CampusSelecionado);
+                    CriarGraficoModalidades(dist);
+
+                    var topCursos = await _service.GetCursosTopAsync(CampusSelecionado, limit: 5);
+                    CriarGraficoTopCursos(topCursos);
+
+                    MostrarGraficoCampus = false;
+                    MostrarGraficoModalidades = true;
+                    MostrarGraficoCursos = true;
+                    MostrarGraficoTurnos = false;
+                    MostrarGraficoPeriodos = false;
+                }
+                else if (ModalidadeSelecionada != null && CursoSelecionado == null)
+                {
+                    ListaCursos.Clear();
+                    var cursos = await _service.GetCursosDisponiveisAsync(CampusSelecionado!, ModalidadeSelecionada.Codigo);
+                    foreach (var c in cursos) ListaCursos.Add(new CursoItem { Codigo = c.Codigo, Nome = c.Nome });
+
+                    var topCursos = await _service.GetCursosTopAsync(CampusSelecionado!, ModalidadeSelecionada.Codigo, limit: 5);
+                    CriarGraficoTopCursos(topCursos);
+
+                    MostrarGraficoModalidades = false;
+                    MostrarGraficoCursos = true;
+                    MostrarGraficoTurnos = false;
+                    MostrarGraficoPeriodos = false;
+                    MostrarBotaoCursos = true;
+                }
+                else if (CursoSelecionado != null && TurnoSelecionado == null)
+                {
+                    ListaTurnos.Clear();
+                    var turnos = await _service.GetTurnosDisponiveisAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado.Codigo);
+                    foreach (var t in turnos) ListaTurnos.Add(new TurnoItem { Codigo = t.Codigo, Nome = t.Nome });
+
+                    var dist = await _service.GetDistribuicaoTurnoAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado.Codigo);
+                    CriarGraficoTurnos(dist);
+
+                    MostrarGraficoCursos = false;
+                    MostrarGraficoTurnos = true;
+                    MostrarGraficoPeriodos = false;
+                }
+                else if (TurnoSelecionado != null)
+                {
+
+                    ListaPeriodos.Clear();
+                    var periodos = await _service.GetPeriodosDisponiveisAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado!.Codigo, TurnoSelecionado.Codigo);
+                    foreach (var p in periodos) ListaPeriodos.Add(new PeriodoItem { Codigo = p.Codigo, Descricao = p.Descricao });
+
+
+                    var dist = await _service.GetAlunosPorPeriodoLetivoAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado!.Codigo, TurnoSelecionado.Codigo);
+
+                    if (dist.Any())
+                    {
+                        CriarGraficoPeriodos(dist);
+
+                        var coresPeriodo = new[] {
+                    Color.FromArgb("#1E3A8A"), Color.FromArgb("#3B82F6"), Color.FromArgb("#60A5FA"),
+                    Color.FromArgb("#93C5FD"), Color.FromArgb("#BFDBFE"), Color.FromArgb("#DBEAFE"),
+                    Color.FromArgb("#FCA5A5"), Color.FromArgb("#F87171")
+                };
+
+                        PeriodosLegenda = dist
+                            .Select((x, i) => new PeriodoLegendaItem
+                            {
+                                Nome = x.PeriodoLetivo,
+                                Quantidade = x.Quantidade,
+                                Cor = coresPeriodo[i % coresPeriodo.Length]
+                            })
+                            .OrderByDescending(x => x.Quantidade)
+                            .ToList();
+
+                        MostrarGraficoTurnos = false;
+                        MostrarGraficoPeriodos = true;
+                        MostrarBotaoCursos = true;
+
+                    }
+                    else
+                    {
+                        MostrarGraficoPeriodos = false;
+                    }
+                }
+            }
+            finally
+            {
+                IsBusy = false;
+                _semaphore.Release();
+            }
+        }
+
+        public void LimparFiltros()
+        {
+            CampusSelecionado = null;
+            ModalidadeSelecionada = null;
+            CursoSelecionado = null;
+            TurnoSelecionado = null;
+            PeriodoSelecionado = null;
+
+            ListaModalidades.Clear();
+            ListaCursos.Clear();
+            ListaTurnos.Clear();
+            ListaPeriodos.Clear();
+
+            MostrarGraficoPeriodos = false;
+
             AtualizarVisibilidadeFiltros();
-            AtualizarVisibilidadeGraficos();
-            AtualizarDados();
-        }
-    }
-
-    // ========================================
-    // VISIBILIDADE DOS FILTROS
-    // ========================================
-
-    private bool _mostrarCampus = true;
-    public bool MostrarCampus
-    {
-        get => _mostrarCampus;
-        set { _mostrarCampus = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarModalidade;
-    public bool MostrarModalidade
-    {
-        get => _mostrarModalidade;
-        set { _mostrarModalidade = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarCurso;
-    public bool MostrarCurso
-    {
-        get => _mostrarCurso;
-        set { _mostrarCurso = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarTurno;
-    public bool MostrarTurno
-    {
-        get => _mostrarTurno;
-        set { _mostrarTurno = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarPeriodo;
-    public bool MostrarPeriodo
-    {
-        get => _mostrarPeriodo;
-        set { _mostrarPeriodo = value; OnPropertyChanged(); }
-    }
-
-    // ========================================
-    // LISTAS DE FILTROS
-    // ========================================
-
-    public ObservableCollection<string> ListaCampus { get; set; }
-    public ObservableCollection<string> ListaModalidades { get; set; }
-    public ObservableCollection<string> ListaCursos { get; set; }
-    public ObservableCollection<string> ListaTurnos { get; set; }
-    public ObservableCollection<string> ListaPeriodos { get; set; }
-
-    // ========================================
-    // VALORES SELECIONADOS
-    // ========================================
-
-    private string? _campusSelecionado;
-    public string? CampusSelecionado
-    {
-        get => _campusSelecionado;
-        set
-        {
-            _campusSelecionado = value;
-            OnPropertyChanged();
-            if (value != null && NivelAtual < 2) NivelAtual = 2;
-        }
-    }
-
-    private string? _modalidadeSelecionada;
-    public string? ModalidadeSelecionada
-    {
-        get => _modalidadeSelecionada;
-        set
-        {
-            _modalidadeSelecionada = value;
-            OnPropertyChanged();
-            if (value != null && NivelAtual < 3) NivelAtual = 3;
-        }
-    }
-
-    private string? _cursoSelecionado;
-    public string? CursoSelecionado
-    {
-        get => _cursoSelecionado;
-        set
-        {
-            _cursoSelecionado = value;
-            OnPropertyChanged();
-            if (value != null && NivelAtual < 4) NivelAtual = 4;
-        }
-    }
-
-    private string? _turnoSelecionado;
-    public string? TurnoSelecionado
-    {
-        get => _turnoSelecionado;
-        set
-        {
-            _turnoSelecionado = value;
-            OnPropertyChanged();
-            if (value != null && NivelAtual < 5) NivelAtual = 5;
-        }
-    }
-
-    private string? _periodoSelecionado;
-    public string? PeriodoSelecionado
-    {
-        get => _periodoSelecionado;
-        set
-        {
-            _periodoSelecionado = value;
-            OnPropertyChanged();
-            if (value != null && NivelAtual < 6) NivelAtual = 6;
-        }
-    }
-
-    // ========================================
-    // DADOS DOS CARDS
-    // ========================================
-
-    /// <summary>
-    /// Total de alunos (muda conforme filtros)
-    /// </summary>
-    private int _totalAlunos;
-    public int TotalAlunos
-    {
-        get => _totalAlunos;
-        set { _totalAlunos = value; OnPropertyChanged(); }
-    }
-
-    /// <summary>
-    /// Nome da modalidade mais comum
-    /// </summary>
-    private string _modalidadeMaisComum = "";
-    public string ModalidadeMaisComum
-    {
-        get => _modalidadeMaisComum;
-        set { _modalidadeMaisComum = value; OnPropertyChanged(); }
-    }
-
-    /// <summary>
-    /// Nome do curso com mais alunos
-    /// </summary>
-    private string _cursoComMaisAlunos = "";
-    public string CursoComMaisAlunos
-    {
-        get => _cursoComMaisAlunos;
-        set { _cursoComMaisAlunos = value; OnPropertyChanged(); }
-    }
-
-    /// <summary>
-    /// Número de alunos no curso com mais alunos
-    /// </summary>
-    private int _numeroAlunosCursoTop;
-    public int NumeroAlunosCursoTop
-    {
-        get => _numeroAlunosCursoTop;
-        set { _numeroAlunosCursoTop = value; OnPropertyChanged(); }
-    }
-
-    // ========================================
-    // VISIBILIDADE DOS GRÁFICOS
-    // ========================================
-
-    private bool _mostrarGraficoCampus = true;
-    public bool MostrarGraficoCampus
-    {
-        get => _mostrarGraficoCampus;
-        set { _mostrarGraficoCampus = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarGraficoModalidades = true;
-    public bool MostrarGraficoModalidades
-    {
-        get => _mostrarGraficoModalidades;
-        set { _mostrarGraficoModalidades = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarGraficoCursos = true;
-    public bool MostrarGraficoCursos
-    {
-        get => _mostrarGraficoCursos;
-        set { _mostrarGraficoCursos = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarGraficoTurnos = true;
-    public bool MostrarGraficoTurnos
-    {
-        get => _mostrarGraficoTurnos;
-        set { _mostrarGraficoTurnos = value; OnPropertyChanged(); }
-    }
-
-    private bool _mostrarGraficoPeriodos = true;
-    public bool MostrarGraficoPeriodos
-    {
-        get => _mostrarGraficoPeriodos;
-        set { _mostrarGraficoPeriodos = value; OnPropertyChanged(); }
-    }
-
-    // ========================================
-    // DADOS DOS GRÁFICOS
-    // ========================================
-
-    /// <summary>
-    /// Dados para o gráfico de total por campus (barras horizontais)
-    /// </summary>
-    private Dictionary<string, int>? _dadosGraficoCampus;
-    public Dictionary<string, int>? DadosGraficoCampus
-    {
-        get => _dadosGraficoCampus;
-        set { _dadosGraficoCampus = value; OnPropertyChanged(); }
-    }
-
-    /// <summary>
-    /// Dados para o gráfico de modalidades (rosca)
-    /// </summary>
-    private Dictionary<string, int>? _dadosGraficoModalidades;
-    public Dictionary<string, int>? DadosGraficoModalidades
-    {
-        get => _dadosGraficoModalidades;
-        set { _dadosGraficoModalidades = value; OnPropertyChanged(); }
-    }
-
-    /// <summary>
-    /// Dados para o gráfico de cursos (barras verticais)
-    /// </summary>
-    private Dictionary<string, int>? _dadosGraficoCursos;
-    public Dictionary<string, int>? DadosGraficoCursos
-    {
-        get => _dadosGraficoCursos;
-        set { _dadosGraficoCursos = value; OnPropertyChanged(); }
-    }
-
-    /// <summary>
-    /// Dados para o gráfico de turnos (rosca)
-    /// </summary>
-    private Dictionary<string, int>? _dadosGraficoTurnos;
-    public Dictionary<string, int>? DadosGraficoTurnos
-    {
-        get => _dadosGraficoTurnos;
-        set { _dadosGraficoTurnos = value; OnPropertyChanged(); }
-    }
-
-    /// <summary>
-    /// Dados para o gráfico de períodos (barras verticais)
-    /// </summary>
-    private Dictionary<string, int>? _dadosGraficoPeriodos;
-    public Dictionary<string, int>? DadosGraficoPeriodos
-    {
-        get => _dadosGraficoPeriodos;
-        set { _dadosGraficoPeriodos = value; OnPropertyChanged(); }
-    }
-
-    // ========================================
-    // CONSTRUTOR
-    // ========================================
-
-    public AlunosViewModel()
-    {
-        // Inicializa listas de filtros com dados fixos
-        ListaCampus = new ObservableCollection<string>
-        {
-            "Campus Varginha",
-            "Campus Três Pontas",
-            "Campus Poços de Caldas",
-            "Campus São Lourenço"
-        };
-
-        ListaModalidades = new ObservableCollection<string>
-        {
-            "Presencial",
-            "EAD",
-            "Híbrido"
-        };
-
-        ListaCursos = new ObservableCollection<string>
-        {
-            "Informática",
-            "Administração",
-            "Enfermagem",
-            "Engenharia Civil",
-            "Direito",
-            "Pedagogia"
-        };
-
-        ListaTurnos = new ObservableCollection<string>
-        {
-            "Manhã",
-            "Tarde",
-            "Noite"
-        };
-
-        ListaPeriodos = new ObservableCollection<string>
-        {
-            "1º Período",
-            "2º Período",
-            "3º Período",
-            "4º Período",
-            "5º Período",
-            "6º Período",
-            "7º Período",
-            "8º Período"
-        };
-
-        // Carrega dados iniciais
-        AtualizarDados();
-    }
-
-    // ========================================
-    // COMANDO PARA LIMPAR FILTROS
-    // ========================================
-
-    /// <summary>
-    /// Reseta todos os filtros e volta para a visão geral (Nível 1)
-    /// </summary>
-    public void LimparFiltros()
-    {
-        CampusSelecionado = null;
-        ModalidadeSelecionada = null;
-        CursoSelecionado = null;
-        TurnoSelecionado = null;
-        PeriodoSelecionado = null;
-        NivelAtual = 1;
-    }
-
-    // ========================================
-    // LÓGICA DE VISIBILIDADE DOS FILTROS
-    // ========================================
-
-    /// <summary>
-    /// Controla quais filtros devem aparecer baseado no nível atual
-    /// </summary>
-    private void AtualizarVisibilidadeFiltros()
-    {
-        MostrarCampus = NivelAtual >= 1;
-        MostrarModalidade = NivelAtual >= 2;
-        MostrarCurso = NivelAtual >= 3;
-        MostrarTurno = NivelAtual >= 4;
-        MostrarPeriodo = NivelAtual >= 5;
-    }
-
-    // ========================================
-    // LÓGICA DE VISIBILIDADE DOS GRÁFICOS
-    // ========================================
-
-    /// <summary>
-    /// Controla quais gráficos devem aparecer baseado nos filtros selecionados
-    /// </summary>
-    private void AtualizarVisibilidadeGraficos()
-    {
-        // Gráfico de campus: some quando um campus é selecionado
-        MostrarGraficoCampus = string.IsNullOrEmpty(CampusSelecionado);
-
-        // Gráfico de modalidades: some quando uma modalidade é selecionada
-        MostrarGraficoModalidades = string.IsNullOrEmpty(ModalidadeSelecionada);
-
-        // Gráfico de cursos: some quando um curso é selecionado
-        MostrarGraficoCursos = string.IsNullOrEmpty(CursoSelecionado);
-
-        // Gráfico de turnos: some quando um turno é selecionado
-        MostrarGraficoTurnos = string.IsNullOrEmpty(TurnoSelecionado);
-
-        // Gráfico de períodos: sempre visível até o último nível
-        MostrarGraficoPeriodos = true;
-    }
-
-    // ========================================
-    // ATUALIZAÇÃO DE DADOS (MOCK - VALORES FIXOS)
-    // ========================================
-
-    /// <summary>
-    /// Atualiza todos os dados dos cards e gráficos com base nos filtros selecionados
-    /// </summary>
-    private void AtualizarDados()
-    {
-        // ========== DADOS DOS CARDS ==========
-
-        if (string.IsNullOrEmpty(CampusSelecionado))
-        {
-            // Visão geral (sem filtros)
-            TotalAlunos = 12847;
-            ModalidadeMaisComum = "Presencial";
-            CursoComMaisAlunos = "Administração";
-            NumeroAlunosCursoTop = 2340;
-        }
-        else if (string.IsNullOrEmpty(ModalidadeSelecionada))
-        {
-            // Campus selecionado
-            TotalAlunos = 5432; // Total deste campus
-            ModalidadeMaisComum = "Presencial";
-            CursoComMaisAlunos = "Informática";
-            NumeroAlunosCursoTop = 890;
-        }
-        else if (string.IsNullOrEmpty(CursoSelecionado))
-        {
-            // Campus + Modalidade selecionados
-            TotalAlunos = 3210;
-            ModalidadeMaisComum = ModalidadeSelecionada ?? "";
-            CursoComMaisAlunos = "Enfermagem";
-            NumeroAlunosCursoTop = 560;
-        }
-        else if (string.IsNullOrEmpty(TurnoSelecionado))
-        {
-            // Campus + Modalidade + Curso selecionados
-            TotalAlunos = 890;
-            ModalidadeMaisComum = ModalidadeSelecionada ?? "";
-            CursoComMaisAlunos = CursoSelecionado ?? "";
-            NumeroAlunosCursoTop = 890;
-        }
-        else if (string.IsNullOrEmpty(PeriodoSelecionado))
-        {
-            // Campus + Modalidade + Curso + Turno selecionados
-            TotalAlunos = 320;
-            ModalidadeMaisComum = ModalidadeSelecionada ?? "";
-            CursoComMaisAlunos = CursoSelecionado ?? "";
-            NumeroAlunosCursoTop = 320;
-        }
-        else
-        {
-            // Todos os filtros selecionados (período específico)
-            TotalAlunos = 45;
-            ModalidadeMaisComum = ModalidadeSelecionada ?? "";
-            CursoComMaisAlunos = CursoSelecionado ?? "";
-            NumeroAlunosCursoTop = 45;
+            _ = CarregarDadosIniciaisAsync();
         }
 
-        // ========== DADOS DOS GRÁFICOS ==========
-
-        // Gráfico 1: Total por Campus (barras horizontais)
-        if (MostrarGraficoCampus)
+        private void LimparFiltrosDependentes(int nivel)
         {
-            DadosGraficoCampus = new Dictionary<string, int>
+            if (nivel <= 1) { ModalidadeSelecionada = null; ListaModalidades.Clear(); }
+            if (nivel <= 2) { CursoSelecionado = null; ListaCursos.Clear(); }
+            if (nivel <= 3) { TurnoSelecionado = null; ListaTurnos.Clear(); }
+            if (nivel <= 4) { PeriodoSelecionado = null; ListaPeriodos.Clear(); }
+        }
+
+        private void AtualizarVisibilidadeFiltros()
+        {
+            MostrarModalidade = !string.IsNullOrEmpty(CampusSelecionado);
+            MostrarCurso = ModalidadeSelecionada != null;
+            MostrarTurno = CursoSelecionado != null;
+            MostrarPeriodo = TurnoSelecionado != null;
+            MostrarBotaoCursos = string.IsNullOrEmpty(CampusSelecionado) || ModalidadeSelecionada != null;
+        }
+
+        private void CriarGraficoCampus(List<(string Campus, int Quantidade)> dados) =>
+            DadosGraficoCampus = dados.ToDictionary(x => x.Campus, x => x.Quantidade);
+
+        private void CriarGraficoModalidades(List<(string Modalidade, int Quantidade)> dados) =>
+            DadosGraficoModalidades = dados.ToDictionary(x => x.Modalidade, x => x.Quantidade);
+
+        private void CriarGraficoTurnos(List<(string Turno, int Quantidade)> dados)
+        {
+            DadosGraficoTurnos = dados.ToDictionary(x => x.Turno, x => x.Quantidade);
+            var cores = new[] { "#1E3A8A", "#3B82F6", "#60A5FA", "#93C5FD", "#BFDBFE", "#DBEAFE" };
+            TurnosLegenda = dados.Select((x, i) => new TurnoLegendaItem
             {
-                { "Varginha", 5432 },
-                { "Três Pontas", 3821 },
-                { "Poços de Caldas", 2104 },
-                { "São Lourenço", 1490 }
-            };
+                Nome = x.Turno,
+                Quantidade = x.Quantidade,
+                Cor = Color.FromArgb(cores[i % cores.Length])
+            }).OrderByDescending(x => x.Quantidade).ToList();
         }
 
-        // Gráfico 2: Total por Modalidade (rosca)
-        if (MostrarGraficoModalidades)
+        private void CriarGraficoTopCursos(List<(string Curso, int Quantidade)> dados)
         {
-            if (string.IsNullOrEmpty(CampusSelecionado))
+            DadosGraficoCursos = dados.Take(5).ToDictionary(x => x.Curso, x => x.Quantidade);
+            var cores = new[] {
+        "#0A4986", "#0C559D", "#0E62B6", "#106FCE", "#117CE6"
+    };
+            Top5CursosLegenda = dados.Take(5).Select((x, i) => new CursoLegendaItem
             {
-                // Dados gerais
-                DadosGraficoModalidades = new Dictionary<string, int>
+                Nome = x.Curso,
+                Quantidade = x.Quantidade,
+                Cor = Color.FromArgb(cores[i % cores.Length])
+            }).ToList();
+        }
+
+        private void CriarGraficoPeriodos(List<(string PeriodoLetivo, int Quantidade)> dados) =>
+            DadosGraficoPeriodos = dados.ToDictionary(x => x.PeriodoLetivo, x => x.Quantidade);
+
+        private async Task CarregarTurmasDoPeriodoAsync()
+        {
+            if (PeriodoSelecionado == null || CampusSelecionado == null ||
+                CursoSelecionado == null || TurnoSelecionado == null || ModalidadeSelecionada == null)
+                return;
+
+            await _semaphore.WaitAsync();
+            try
+            {
+                IsBusy = true;
+
+                var dados = await _service.GetTurmasPorPeriodoAsync(
+                    CampusSelecionado!,
+                    ModalidadeSelecionada.Codigo,
+                    CursoSelecionado.Codigo,
+                    TurnoSelecionado.Codigo,
+                    PeriodoSelecionado.Codigo);
+
+                if (dados.Any())
                 {
-                    { "Presencial", 7200 },
-                    { "EAD", 3450 },
-                    { "Híbrido", 2197 }
-                };
+                    var cores = new Color[] {
+                        Color.FromArgb("#1E3A8A"), Color.FromArgb("#3B82F6"), Color.FromArgb("#60A5FA"),
+                        Color.FromArgb("#93C5FD"), Color.FromArgb("#BFDBFE"), Color.FromArgb("#FCA5A5"),
+                        Color.FromArgb("#F87171"), Color.FromArgb("#F472B6"), Color.FromArgb("#EC4899"),
+                        Color.FromArgb("#8B5CF6"), Color.FromArgb("#6366F1")
+                    };
+
+                    TurmasLegenda = dados
+                        .Select((x, i) => new TurmaLegendaItem
+                        {
+                            Nome = x.Turma,
+                            Quantidade = x.Quantidade,
+                            Cor = cores[i % cores.Length],
+                            VerAlunosCommand = new AsyncRelayCommand<string>(turma => VerAlunosDaTurmaAsync(turma ?? x.Turma))
+                        })
+                        .OrderByDescending(x => x.Quantidade)
+                        .ToList();
+
+                    DadosGraficoTurmas = dados.ToDictionary(x => x.Turma, x => x.Quantidade);
+
+                    MostrarGraficoTurmas = true;
+                    MostrarGraficoPeriodos = false;
+                }
+                else
+                {
+                    MostrarGraficoTurmas = false;
+                    TurmasLegenda = new List<TurmaLegendaItem>();
+                    DadosGraficoTurmas = null;
+                }
             }
-            else
+            finally
             {
-                // Dados filtrados por campus
-                DadosGraficoModalidades = new Dictionary<string, int>
-                {
-                    { "Presencial", 3210 },
-                    { "EAD", 1550 },
-                    { "Híbrido", 672 }
-                };
+                IsBusy = false;
+                _semaphore.Release();
             }
         }
 
-        // Gráfico 3: Total por Curso (barras verticais)
-        if (MostrarGraficoCursos)
+        private async Task VerAlunosDaTurmaAsync(string codTurma)
         {
-            if (string.IsNullOrEmpty(CampusSelecionado))
+            if (string.IsNullOrWhiteSpace(codTurma)) return;
+
+            try
             {
-                // Top 6 cursos geral
-                DadosGraficoCursos = new Dictionary<string, int>
+                IsBusy = true;
+
+                var alunos = await _service.GetAlunosDaTurmaAsync(
+                    campus: CampusSelecionado!,
+                    modalidade: ModalidadeSelecionada!.Codigo,
+                    curso: CursoSelecionado!.Codigo,
+                    turno: TurnoSelecionado!.Codigo,
+                    periodo: PeriodoSelecionado!.Codigo,
+                    turma: codTurma);
+
+                if (!alunos.Any())
                 {
-                    { "Administração", 2340 },
-                    { "Informática", 2100 },
-                    { "Enfermagem", 1980 },
-                    { "Eng. Civil", 1750 },
-                    { "Direito", 1560 },
-                    { "Pedagogia", 1340 }
-                };
+                    await Application.Current!.MainPage!.DisplayAlert(
+                        $"Turma {codTurma}", "Nenhum aluno encontrado.", "OK");
+                    return;
+                }
+
+                var mensagem = string.Join("\n", alunos.Select(a => $"{a.RA} - {a.Nome}"));
+
+                await Application.Current!.MainPage!.DisplayAlert(
+                    $"Alunos da Turma {codTurma} ({alunos.Count})",
+                    mensagem,
+                    "Fechar");
             }
-            else
+            finally
             {
-                // Cursos do campus selecionado
-                DadosGraficoCursos = new Dictionary<string, int>
-                {
-                    { "Informática", 890 },
-                    { "Administração", 780 },
-                    { "Enfermagem", 650 },
-                    { "Direito", 540 }
-                };
+                IsBusy = false;
             }
         }
 
-        // Gráfico 4: Quantidade por Turno (rosca)
-        if (MostrarGraficoTurnos)
+        public ICommand AbrirListaCursosCommand => new AsyncRelayCommand(AbrirListaCursosAsync);
+
+        private async Task AbrirListaCursosAsync()
         {
-            DadosGraficoTurnos = new Dictionary<string, int>
+            if (string.IsNullOrEmpty(CampusSelecionado)) return;
+
+            var cursos = await _service.GetCursosTopAsync(CampusSelecionado, ModalidadeSelecionada?.Codigo, limit: null);
+
+            if (!cursos.Any())
             {
-                { "Manhã", 4320 },
-                { "Tarde", 3890 },
-                { "Noite", 4637 }
-            };
+                await Application.Current!.MainPage!.DisplayAlert("Cursos", "Nenhum curso encontrado.", "OK");
+                return;
+            }
+
+            var msg = string.Join("\n", cursos.Select((c, i) => $"{i + 1}. {c.Curso}: {c.Quantidade} aluno{(c.Quantidade == 1 ? "" : "s")}"));
+            await Application.Current!.MainPage!.DisplayAlert($"Todos os cursos - {CampusSelecionado}", msg, "Fechar");
         }
 
-        // Gráfico 5: Distribuição por Período (barras verticais)
-        if (MostrarGraficoPeriodos)
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
-            DadosGraficoPeriodos = new Dictionary<string, int>
-            {
-                { "1º", 1890 },
-                { "2º", 1750 },
-                { "3º", 1620 },
-                { "4º", 1540 },
-                { "5º", 1320 },
-                { "6º", 1180 },
-                { "7º", 980 },
-                { "8º", 867 }
-            };
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
         }
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    // ========================================
-    // NOTIFICAÇÃO DE MUDANÇAS
-    // ========================================
-
-    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    public class ModalidadeItem { public string Codigo { get; set; } = ""; public string Nome { get; set; } = ""; }
+    public class CursoItem { public string Codigo { get; set; } = ""; public string Nome { get; set; } = ""; }
+    public class TurnoItem { public int Codigo { get; set; } public string Nome { get; set; } = ""; }
+    public class PeriodoItem { public string Codigo { get; set; } = ""; public string Descricao { get; set; } = ""; }
+    public class CursoLegendaItem
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public string Nome { get; set; } = ""; public int Quantidade { get; set; }
+        public Color Cor { get; set; } = Colors.Transparent;
     }
+    public class PeriodoLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; }
+    public class TurnoLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; }
+    public class TurmaLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; public ICommand VerAlunosCommand { get; set; } = null!; }
+
 }
