@@ -20,7 +20,6 @@
     <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
     <Color x:Key="AzulTemaClaro">#1E3A8A</Color>
-    <Color x:Key="AzulTemaEscuro">#3B82F6</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
@@ -100,9 +99,6 @@
     <Color x:Key="CorSombraCard">#ffffff</Color>
     <SolidColorBrush x:Key="BrushCorSombraCard" Color="{StaticResource CorSombraCard}" />
 
-    <Color x:Key="CorSombraCardEscuro">#131417</Color>
-    <SolidColorBrush x:Key="BrushCorSombraCardEscuro" Color="{StaticResource CorSombraCardEscuro}" />
-
     <!-- Fundo gradiente usado em cards e gráficos -->
     <LinearGradientBrush x:Key="CorCardGradiente" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#1E3A8A" Offset="0.0" />
@@ -115,7 +111,6 @@
 
     <!-- Borda opcional para padronização de cards -->
     <Color x:Key="CorCardBorda">#D1D5DB</Color>
-    <Color x:Key="CorCardBordaEscuro">#111721</Color>
     <SolidColorBrush x:Key="BrushCorCardBorda" Color="{StaticResource CorCardBorda}" />
 
     <!-- =========================================================
@@ -207,21 +202,4 @@
     <!-- Botões -->
     <Color x:Key="BotaoClaro">#1E3A8A</Color>
     <Color x:Key="BotaoEscuro">#3B82F6</Color>
-
-    <!-- Barras de carregamento/Progresso -->
-    <Color x:Key="ProgressHomem">#3B82F6</Color>
-    <Color x:Key="ProgressMulher">#EC4899</Color>
-    
-    <!-- Textos Coloridos -->
-    <Color x:Key="TextoAzulClaro">#1E3A8A</Color>
-    <Color x:Key="TextoAzulEscuro">#5780f7</Color>
-    
-    <!-- Labels Coloridas -->
-    <Color x:Key="LabelAzulClaro">#251E3A8A</Color>
-    <Color x:Key="LabelAzulEscuro">#253B82F6</Color>
-    
-    <!-- Fundos coloridos -->
-    <Color x:Key="FundoImagemClaro">#27344a</Color>
-    <Color x:Key="FundoImagemEscuro">#27344a</Color>
-
 </ResourceDictionary>
