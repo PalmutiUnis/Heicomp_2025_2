@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cards="clr-namespace:MauiApp1.Views.Cards"
              x:Class="MauiApp1.Views.Dashboards.AlunosPage"
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, 
+                                               Dark={StaticResource FundoPaginaEscuro}}"
              Title=""
              Shell.FlyoutBehavior="Disabled">
 
