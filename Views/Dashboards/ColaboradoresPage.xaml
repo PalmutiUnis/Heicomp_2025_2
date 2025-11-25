@@ -114,9 +114,9 @@
                                  WidthRequest="40"
                                  Grid.Column="1"
                                  VerticalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Light={StaticResource FundoImagemClaro},
-                                                                   Dark={StaticResource FundoImagemEscuro}}"
-                                 IsEnabled="False"
+                                 BackgroundColor="{AppThemeBinding Light={StaticResource FundoImagem},
+                                                                   Dark={StaticResource FundoImagem}}"
+                                 IsEnabled="True"
                                  />
                     <!--TintColor="#60A5FA"-->
                 </Grid>
