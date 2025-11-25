@@ -211,6 +211,7 @@
     <!-- Barras de carregamento/Progresso -->
     <Color x:Key="ProgressHomem">#3B82F6</Color>
     <Color x:Key="ProgressMulher">#EC4899</Color>
+    <Color x:Key="ProgressNF">#c4c4c4</Color>
     
     <!-- Textos Coloridos -->
     <Color x:Key="TextoAzulClaro">#1E3A8A</Color>
@@ -221,7 +222,6 @@
     <Color x:Key="LabelAzulEscuro">#253B82F6</Color>
     
     <!-- Fundos coloridos -->
-    <Color x:Key="FundoImagemClaro">#27344a</Color>
-    <Color x:Key="FundoImagemEscuro">#27344a</Color>
-
+    <Color x:Key="FundoImagem">Transparent</Color>
+   
 </ResourceDictionary>
