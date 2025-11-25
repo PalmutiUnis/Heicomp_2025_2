@@ -67,7 +67,7 @@
                             <RoundRectangle CornerRadius="30"/>
                         </Border.StrokeShape>
                         <Image Source="icone_perfil.png" 
-                               Aspect="AspectFill"/> 
+                               Aspect="AspectFill"/>
                         <!--  ***Se não tiver imagem vai ser isso (Não implantado)***  
                         <Label Text="{Binding InitialsUsuario}"
                                FontFamily="OpenSansSemibold"
@@ -135,81 +135,13 @@
                         <!-- Switch -->
                         <Switch Grid.Column="2"    
                                 IsToggled="{Binding PushNotificationsEnabled}"
+                                Toggled="OnPushNotificationsToggled"
                                 OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
                                 ThumbColor="{StaticResource White}"
                                 VerticalOptions="Center"/>
                     </Grid>
                 </Border>
 
-                <!-- Notificações por Email -->
-                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
-                        Padding="15"
-                        Margin="0,0,0,1"
-                        StrokeThickness="0">
-                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
-                        <!-- Ícone -->
-                        <Image Source="icone_mensagem.png"
-                                   WidthRequest="40"
-                                   HeightRequest="40"
-                                   Aspect="AspectFit"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-                        <!-- Texto -->
-                        <VerticalStackLayout Grid.Column="1" 
-                                            VerticalOptions="Center"
-                                            Spacing="2">
-                            <Label Text="Email Notifications"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
-                            <Label Text="Receber emails sobre atualizações"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
-                        </VerticalStackLayout>
-
-                        <!-- Switch -->
-                        <Switch Grid.Column="2"
-                                IsToggled="{Binding EmailNotificationsEnabled}"
-                                OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
-                                ThumbColor="{StaticResource White}"
-                                VerticalOptions="Center"/>
-                    </Grid>
-                </Border>
-
-                <!-- Marketing -->
-                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
-                        Padding="15"
-                        StrokeThickness="0">
-                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
-                        <!-- Ícone -->
-                        <Image Source="icone_avisos.png"
-                                   WidthRequest="40"
-                                   HeightRequest="40"
-                                   Aspect="AspectFit"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-                        <!-- Texto -->
-                        <VerticalStackLayout Grid.Column="1" 
-                                            VerticalOptions="Center"
-                                            Spacing="2">
-                            <Label Text="Marketing"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
-                            <Label Text="Ofertas e promoções especiais"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
-                        </VerticalStackLayout>
-                        <!-- Switch -->
-                        <Switch Grid.Column="2"
-                                IsToggled="{Binding MarketingEnabled}"
-                                OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
-                                ThumbColor="{StaticResource White}"
-                                VerticalOptions="Center"/>
-                    </Grid>
-                </Border>
             </VerticalStackLayout>
 
             <!-- SEÇÃO: PREFERÊNCIAS -->
@@ -254,54 +186,6 @@
                                 OnColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
                                 ThumbColor="{StaticResource White}"
                                 VerticalOptions="Center"/>
-                    </Grid>
-                </Border>
-
-                <!-- Idioma -->
-                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
-                        Padding="15"
-                        StrokeThickness="0">
-                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnIdiomaClicked"/>
-                        </Grid.GestureRecognizers>
-
-                        <!-- Ícone -->
-                        <Image Source="icone_mundial.png"
-                                   WidthRequest="40"
-                                   HeightRequest="40"
-                                   Aspect="AspectFit"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
-
-                        <!-- Texto -->
-                        <VerticalStackLayout Grid.Column="1" 
-                                            VerticalOptions="Center"
-                                            Spacing="2">
-                            <Label Text="Idioma"
-                                   FontFamily="OpenSansSemibold"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
-                            <Label Text="Selecione seu idioma"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
-                        </VerticalStackLayout>
-
-                        <!-- Valor Selecionado -->
-                        <HorizontalStackLayout Grid.Column="2" 
-                                              VerticalOptions="Center"
-                                              Spacing="5">
-                            <Label Text="{Binding IdiomaAtual}"
-                                   FontFamily="OpenSansRegular"
-                                   FontSize="14"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"
-                                   VerticalOptions="Center"/>
-                            <Label Text="›"
-                                   FontSize="20"
-                                   TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}"
-                                   VerticalOptions="Center"/>
-                        </HorizontalStackLayout>
                     </Grid>
                 </Border>
             </VerticalStackLayout>
@@ -396,7 +280,8 @@
             </VerticalStackLayout>
 
             <!-- BOTÃO SALVAR -->
-            <Border Padding="20,30,20,20">
+            <VerticalStackLayout 
+                Padding="20,30,20,20">
                 <Button Text="Salvar Alterações"
                         BackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource CorGraficoAzulClaro3}}"
                         TextColor="{StaticResource White}"
@@ -405,7 +290,7 @@
                         HeightRequest="50"
                         CornerRadius="10"
                         Clicked="OnSalvarClicked"/>
-            </Border>
+            </VerticalStackLayout>
 
             <!-- Versão -->
             <Label Text="Versão 0.0.0 (Pre-Alpha)"
@@ -418,5 +303,5 @@
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
-    
-    <!--Comentário só pra ter certeza que estou envia-->
+
+<!--Comentário só pra ter certeza que estou envia-->
