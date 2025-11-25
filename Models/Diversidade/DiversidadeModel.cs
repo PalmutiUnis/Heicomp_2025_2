@@ -25,7 +25,6 @@
         public string Sexo { get; set; }
         public int Quantidade { get; set; }
         public decimal Percentual { get; set; }
-
         public string Descricao => $"{Sexo}: {Quantidade} ({Percentual:F1}%)";
     }
 
@@ -37,8 +36,10 @@
         public string Descricao { get; set; }
         public int Quantidade { get; set; }
         public decimal Percentual { get; set; }
-
         public string DescricaoCompleta => $"{Descricao}: {Quantidade} ({Percentual:F1}%)";
+
+        // Altura da barra proporcional (máx 150px para 100%)
+        public double AlturaBarra => (double)Percentual * 1.5;
     }
 
     /// <summary>
@@ -49,11 +50,10 @@
         public string Descricao { get; set; }
         public int Quantidade { get; set; }
         public decimal Percentual { get; set; }
-
         public string DescricaoCompleta => $"{Descricao}: {Quantidade} ({Percentual:F1}%)";
 
-        // Para criar barras visuais proporcionais ao percentual
-        public double LarguraBarra => (double)Percentual * 4; // Escala visual
+        // Largura da barra proporcional ao percentual (máx ~240px para 60%)
+        public double LarguraBarra => (double)Percentual * 4;
     }
 
     /// <summary>
@@ -64,7 +64,6 @@
         public string Descricao { get; set; }
         public int Quantidade { get; set; }
         public decimal Percentual { get; set; }
-
         public string DescricaoCompleta => $"{Descricao}: {Quantidade} ({Percentual:F1}%)";
     }
 }

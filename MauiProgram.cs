@@ -69,6 +69,9 @@ namespace MauiApp1
 
             // ✅ Registrar Pages
             builder.Services.AddTransient<DiversidadePage>();
+
+            builder.Services.AddTransient<DiversidadeViewModel>();
+            builder.Services.AddTransient<DiversidadePage>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
