@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.Views.Dashboards.DiversidadePage"
              Title=""
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, 
+                                               Dark={StaticResource FundoPaginaEscuro}}"
              Shell.FlyoutBehavior="Disabled">
 
     <!-- Barra superior -->
@@ -58,11 +59,14 @@
             <Picker x:Name="pickerAno"
                     Title="Selecione o ano"
                     HorizontalOptions="Fill"
-                    BackgroundColor="White"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                      Dark={StaticResource FundoCardEscuro}}"
                     FontSize="14"
                     HeightRequest="40"
-                    TitleColor="Gray"
-                    TextColor="Black">
+                    TitleColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                 Dark={StaticResource CorTextoCinza}}"
+                    TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
+                                                Dark={StaticResource CorTextoBranco}}">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>2022</x:String>
@@ -101,10 +105,11 @@
                             <Label Text="1,247"
                                    FontAttributes="Bold"
                                    FontSize="22"
-                                   TextColor="#1E3A8A"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource HeaderClaro},
+                                                               Dark={StaticResource HeaderClaro}}"/>
                             <Label Text="Total Colaboradores"
                                    FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinza}}"/>
                         </VerticalStackLayout>
                     </Grid>
                 </Border>
@@ -129,10 +134,11 @@
                             <Label Text="58.2%"
                                    FontAttributes="Bold"
                                    FontSize="22"
-                                   TextColor="#3B82F6"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
+                                                               Dark={StaticResource TextoAzulEscuro}}"/>
                             <Label Text="Homens"
                                    FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinza}}"/>
                         </VerticalStackLayout>
                     </Grid>
                 </Border>
@@ -157,10 +163,11 @@
                             <Label Text="40.1%"
                                    FontAttributes="Bold"
                                    FontSize="22"
-                                   TextColor="#EC4899"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource ProgressMulher},
+                                                               Dark={StaticResource ProgressMulher}}"/>
                             <Label Text="Mulheres"
                                    FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinza}}"/>
                         </VerticalStackLayout>
                     </Grid>
                 </Border>
@@ -185,10 +192,11 @@
                             <Label Text="1.7%"
                                    FontAttributes="Bold"
                                    FontSize="22"
-                                   TextColor="#9CA3AF"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource ProgressNF},
+                                                               Dark={StaticResource ProgressNF}}"/>
                             <Label Text="Não Informado"
                                    FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinza}}"/>
                         </VerticalStackLayout>
                     </Grid>
                 </Border>
@@ -218,7 +226,7 @@
                    Text="Distribuição por Gênero"
                    FontAttributes="Bold"
                    FontSize="18"
-                   TextColor="{AppThemeBinding Light={StaticResource AzulPrincipal}, Dark={StaticResource TextoPrincipalEscuro}}"
+                   TextColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource TextoPrincipalEscuro}}"
                    VerticalOptions="Center"
                    Margin="8,0,0,0"/>
                     </Grid>
