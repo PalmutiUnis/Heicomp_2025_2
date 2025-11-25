@@ -10,9 +10,9 @@ public partial class ConfiguracoesPage : ContentPage
 {
 
     // 1. Propriedades públicas para o XAML
-    // O XAML vai se ligar a "NomeUsuario", "EmailUsuario" e "InitialsUsuario"
-    public string NomeUsuario { get; set; }
-    public string EmailUsuario { get; set; }
+    // O XAML vai se ligar a "userName" e "userEmail"
+    public string userName { get; set; }
+    public string userEmail { get; set; }
 
 
 
@@ -70,10 +70,8 @@ public partial class ConfiguracoesPage : ContentPage
         LocalNotificationCenter.Current.RequestNotificationPermission();
         BindingContext = this; // Conecta a UI (XAML) com este c�digo
 
-        // 2. Carrega os dados salvos do Preferences
-        NomeUsuario = Preferences.Get("user_name", "Usu�rio"); // "Usu�rio" � um valor padr�o
-        EmailUsuario = Preferences.Get("user_email", "email@exemplo.com"); // "email..." � um valor padr�o
-
+        //2. Carrega o nome e Email do usuário
+        CarregarDadosUsuario();
 
         // 3. Define o BindingContext da p�gina para ELA MESMA.
         // Agora o XAML {Binding NomeUsuario} vai encontrar a propriedade p�blica acima.
@@ -81,6 +79,17 @@ public partial class ConfiguracoesPage : ContentPage
 
     }
     // *************************** Fim Construtor ***************************
+
+
+
+    // *************************** Método: Carregar Dados do Usuário ***************************
+    private void CarregarDadosUsuario()
+    {
+        // Lê os valores salvos no LoginPage. Se não existirem, usa valores padrão.
+        userName = Preferences.Get("user_name", "Usuário Desconhecido");
+        userEmail = Preferences.Get("user_email", "sem.email@unis.com");
+    }
+    // *************************** Fim Método: Carregar Dados do Usuário ***************************
 
 
 
@@ -161,4 +170,5 @@ public partial class ConfiguracoesPage : ContentPage
             System.Diagnostics.Debug.WriteLine($"Erro ao aplicar tema: {ex.Message}");
         }
     }
+    // *************************** Fim Evento: Alterar tema da app ***************************
 }
