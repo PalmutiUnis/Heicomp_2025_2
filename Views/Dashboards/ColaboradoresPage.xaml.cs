@@ -6,10 +6,11 @@ namespace MauiApp1.Views.Dashboards
     public partial class ColaboradoresPage : ContentPage
     {
         private readonly ColaboradoresViewModel _viewModel;
-        public ColaboradoresPage(ColaboradoresViewModel vm)
+        public ColaboradoresPage()
         {
             InitializeComponent();
-            BindingContext = vm;
+            _viewModel = new ColaboradoresViewModel();
+            BindingContext = _viewModel;
         }
 
         private async void OnBackClicked(object sender, EventArgs e)

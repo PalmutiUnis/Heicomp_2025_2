@@ -2,8 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels.Dashboards"
              x:Class="MauiApp1.Views.Dashboards.ListaColaboradores.ListaColaboradoresPage"
-             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro},
-                                               Dark={StaticResource FundoPaginaEscuro}}"
+             BackgroundColor="#F5F6FA"
              Title="Lista de Colaboradores">
 
     <ContentPage.BindingContext>
@@ -15,18 +14,14 @@
         <VerticalStackLayout Padding="15" Spacing="10" VerticalOptions="FillAndExpand">
         <SearchBar Placeholder="Buscar por nome, setor, cargo ou status"
                    Text="{Binding Filtro}" 
-                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
-                                                     Dark={StaticResource FundoCardEscuro}}"
-                   TextColor="HotPink"
+                   BackgroundColor="White"
                    FontFamily="InterRegular"
                    HeightRequest="45"
                    Margin="0,0,0,10" />
         <Button Text="Recarregar"
                    Command="{Binding BuscarCommand}"
-                   BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro},
-                                                     Dark={StaticResource BotaoEscuro}}"
-                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                               Dark={StaticResource CorTextoBranco}}"
+                   BackgroundColor="#2563EB"
+                   TextColor="White"
                    FontFamily="InterSemiBold"
                    CornerRadius="10"
                    HeightRequest="40"
@@ -50,24 +45,14 @@
                                      VerticalOptions="Center"/>
                         <VerticalStackLayout Grid.Column="1" Margin="10,0">
                             <Label Text="{Binding Nome}" FontFamily="InterSemiBold" FontSize="14"/>
-                            <Label Text="{Binding SetorCargo}" 
-                                   FontFamily="InterRegular" 
-                                   FontSize="12" 
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                               Dark={StaticResource CorTextoCinza}}"/>
+                            <Label Text="{Binding SetorCargo}" FontFamily="InterRegular" FontSize="12" TextColor="Gray"/>
                         </VerticalStackLayout>
                         <Frame Grid.Column="2" Padding="6,2"
-                               BackgroundColor="{AppThemeBinding Light={StaticResource LabelAzulClaro},
-                                                                 Dark={StaticResource LabelAzulEscuro}}"
+                               BackgroundColor="#E0F2FE"
                                CornerRadius="10"
                                HasShadow="False"
                                VerticalOptions="Center">
-                            <Label 
-                                Text="{Binding Status}" 
-                                FontFamily="InterRegular" 
-                                FontSize="12" 
-                                TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                            Dark={StaticResource TextoAzulEscuro}}"/>
+                            <Label Text="{Binding Status}" FontFamily="InterRegular" FontSize="12" TextColor="#1E3A8A"/>
                         </Frame>
                     </Grid>
                 </DataTemplate>
@@ -77,8 +62,7 @@
         <Button Text="Carregar mais"
                 IsVisible="{Binding TemMais}"
                 Command="{Binding CarregarMaisCommand}"
-                BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro},
-                                                  Dark={StaticResource BotaoEscuro}}"
+                BackgroundColor="#1E3A8A"
                 TextColor="White"
                 FontFamily="InterSemiBold"
                 CornerRadius="20"
