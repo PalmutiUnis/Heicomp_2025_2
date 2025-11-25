@@ -1,27 +1,25 @@
+using Microsoft.Maui.Controls;
 using MauiApp1.ViewModels.Dashboards;
 
 namespace MauiApp1.Views.Dashboards.ListaColaboradores
 {
     public partial class ListaColaboradoresPage : ContentPage
     {
-        private readonly ListaColaboradoresViewModel _viewModel;
         private bool _initialized = false;
 
-        public ListaColaboradoresPage(ListaColaboradoresViewModel vm)
+        public ListaColaboradoresPage()
         {
             InitializeComponent();
-            _viewModel = vm;
-            BindingContext = vm;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            if (!_initialized)
+            if (!_initialized && BindingContext is ListaColaboradoresViewModel vm)
             {
                 _initialized = true;
-                await _viewModel.InitializeAsync();
+                await vm.InitializeAsync();
             }
         }
     }

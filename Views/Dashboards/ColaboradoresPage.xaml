@@ -5,8 +5,7 @@
     xmlns:converters="clr-namespace:MauiApp1.Converters"
     x:Class="MauiApp1.Views.Dashboards.ColaboradoresPage"
     Title="Colaboradores"
-    BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro},
-                                      Dark={StaticResource FundoPaginaEscuro}}">
+    BackgroundColor="#F3F4F6">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -22,8 +21,7 @@
 
                 <!-- FILTRO 1 -->
                 <Frame Grid.Column="0"
-           BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                             Dark={StaticResource FundoCardEscuro}}"
+           BackgroundColor="white"
            CornerRadius="12"
            HasShadow="False"
            Padding="0"
@@ -38,8 +36,7 @@
                             SelectedItem="{Binding UnidadeSelecionada}"
                             Title="Todas as Unidades"
                             FontFamily="InterRegular"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                                              Dark={StaticResource FundoCardEscuro}}"
+                            BackgroundColor="Transparent"
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="FillAndExpand" />
 
@@ -57,8 +54,7 @@
 
                 <!-- FILTRO 2 -->
                 <Frame Grid.Column="1"
-          BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                            Dark={StaticResource FundoCardEscuro}}"
+           BackgroundColor="white"
            CornerRadius="12"
            HasShadow="False"
            Padding="0"
@@ -88,24 +84,17 @@
 
 
             <!-- CARD TOTAL DE COLABORADORES -->
-            <Frame 
-                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                                  Dark={StaticResource FundoCardEscuro}}" 
-                CornerRadius="15" 
-                HasShadow="True" 
-                Padding="15">
+            <Frame BackgroundColor="White" CornerRadius="15" HasShadow="True" Padding="15">
                 <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
                     <VerticalStackLayout>
                         <Label Text="Total de Colaboradores"
                                FontFamily="InterSemiBold"
                                FontSize="16"
-                               TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                                           Dark={StaticResource CorTextoBranco}}"/>
+                               TextColor="Black"/>
                         <Label Text="{Binding TotalColaboradores}"
                                FontFamily="InterBold"
                                FontSize="28"
-                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                           Dark={StaticResource TextoAzulEscuro}}"/>
+                               TextColor="#1E3A8A"/>
 
                     </VerticalStackLayout>
                     <!-- ALTERE AQUI: ícone de pessoas -->
@@ -123,29 +112,18 @@
             </Frame>
 
             <!-- CARD DISTRIBUIÇÃO POR GÊNERO -->
-            <Frame 
-                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                                  Dark={StaticResource FundoCardEscuro}}"
-                CornerRadius="15" 
-                HasShadow="True" 
-                Padding="15">
+            <Frame BackgroundColor="White" CornerRadius="15" HasShadow="True" Padding="15">
                 <VerticalStackLayout Spacing="12">
 
                     <Label Text="Distribuição por Gênero"
                            FontFamily="InterSemiBold"
                            FontSize="16"
-                           TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                                       Dark={StaticResource CorTextoBranco}}"/>
+                           TextColor="Black"/>
 
                     <!-- HOMENS -->
                     <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" RowSpacing="6">
                         <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Spacing="6">
-                            <Ellipse 
-                                    HeightRequest="11" 
-                                    WidthRequest="11" 
-                                    Fill="{AppThemeBinding Light={StaticResource ProgressHomem},
-                                                           Dark={StaticResource ProgressHomem}}"              
-                                    VerticalOptions="Center"    />
+                            <Image Source="homem.png" HeightRequest="11" WidthRequest="11"/>
                             <Label Text="Homens" FontFamily="InterRegular"/>
                         </HorizontalStackLayout>
 
@@ -156,25 +134,14 @@
                                FontFamily="InterBold"/>
 
                         <ProgressBar Progress="{Binding DistribuicaoGenero[0].Percentual, Converter={StaticResource PercentToProgressConverter}}"
-                                     HeightRequest="8" 
-                                     Grid.Row="1" 
-                                     Grid.ColumnSpan="3" 
-                                     HorizontalOptions="FillAndExpand" 
-                                     ProgressColor="{AppThemeBinding Light={StaticResource ProgressHomem},
-                                                                     Dark={StaticResource ProgressHomem}}"/>
+             HeightRequest="8" Grid.Row="1" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" ProgressColor="#1E3A8A"/>
 
                     </Grid>
 
                     <!-- MULHERES -->
                     <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" RowSpacing="6">
                         <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Spacing="6">
-                            <Ellipse 
-                                    HeightRequest="11" 
-                                    WidthRequest="11" 
-                                    Fill="{AppThemeBinding Light={StaticResource ProgressMulher},
-                                                           Dark={StaticResource ProgressMulher}}"              
-                                    VerticalOptions="Center"    />
-
+                            <Image Source="mulher.png" HeightRequest="11" WidthRequest="11"/>
                             <Label Text="Mulheres" FontFamily="InterRegular"/>
                         </HorizontalStackLayout>
 
@@ -185,12 +152,7 @@
                                FontFamily="InterBold"/>
 
                         <ProgressBar Progress="{Binding DistribuicaoGenero[1].Percentual, Converter={StaticResource PercentToProgressConverter}}"
-                                     HeightRequest="8" 
-                                     Grid.Row="1"
-                                     Grid.ColumnSpan="3" 
-                                     HorizontalOptions="FillAndExpand" 
-                                      ProgressColor="{AppThemeBinding Light={StaticResource ProgressMulher},
-                                                                      Dark={StaticResource ProgressMulher}}"/>
+             HeightRequest="8" Grid.Row="1" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" ProgressColor="#60A5FA"/>
 
                     </Grid>
 
@@ -200,19 +162,13 @@
 
 
             <!-- CARD STATUS DOS COLABORADORES -->
-            <Frame 
-                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                                  Dark={StaticResource FundoCardEscuro}}" 
-                CornerRadius="15" 
-                HasShadow="True" 
-                Padding="15">
+            <Frame BackgroundColor="White" CornerRadius="15" HasShadow="True" Padding="15">
                 <VerticalStackLayout Spacing="10">
 
                     <Label Text="Status dos Colaboradores"
                FontFamily="InterSemiBold"
                FontSize="16"
-               TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                           Dark={StaticResource CorTextoBranco}}"/>
+               TextColor="Black"/>
 
                     <Grid ColumnSpacing="20" RowSpacing="25"
               ColumnDefinitions="*,*"
@@ -223,12 +179,7 @@
                                  HorizontalOptions="Center">
 
                             <!-- Ícone -->
-                            <Frame 
-                                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
-                                                                  Dark={StaticResource FundoCardEscuro}}"
-                                Padding="10" 
-                                CornerRadius="10" 
-                                HasShadow="False">
+                            <Frame Padding="10" CornerRadius="10" HasShadow="False">
                                 <Image Source="ativos.png"
                            HeightRequest="50"
                            WidthRequest="50" />
@@ -239,13 +190,11 @@
                                    FontFamily="InterBold"
                                    FontSize="18"
                                    HorizontalOptions="Center"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                                               Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="Black"/>
 
                             <!-- Descrição -->
                             <Label Text="Ativos" FontFamily="InterRegular" FontSize="13"
-                       HorizontalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                                              Dark={StaticResource CorTextoCinza}}"/>
+                       HorizontalOptions="Center" TextColor="#555"/>
                         </VerticalStackLayout>
 
 
@@ -253,31 +202,20 @@
                         <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="5"
                                  HorizontalOptions="Center">
 
-                            <Frame 
-                                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
-                                  Dark={StaticResource FundoCardEscuro}}"
-                                Padding="10" 
-                                CornerRadius="10" 
-                                HasShadow="False">
+                            <Frame Padding="10" CornerRadius="10" HasShadow="False">
                                 <Image Source="licenca.png"
-                                 HeightRequest="50"
-                                 WidthRequest="50" />
+                           HeightRequest="50"
+                           WidthRequest="50" />
                             </Frame>
 
                             <Label Text="{Binding Status.EmLicenca}"
                                    FontFamily="InterBold"
                                    FontSize="18"
                                    HorizontalOptions="Center"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                                               Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="Black"/>
 
-                            <Label
-                                Text="Em Licença" 
-                                FontFamily="InterRegular" 
-                                FontSize="13"
-                                HorizontalOptions="Center" 
-                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                            Dark={StaticResource CorTextoCinza}}"/>
+                            <Label Text="Em Licença" FontFamily="InterRegular" FontSize="13"
+                       HorizontalOptions="Center" TextColor="#555"/>
                         </VerticalStackLayout>
 
 
@@ -285,12 +223,7 @@
                         <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="5"
                                  HorizontalOptions="Center">
 
-                            <Frame 
-                                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
-                                  Dark={StaticResource FundoCardEscuro}}"
-                                Padding="10" 
-                                CornerRadius="10" 
-                                HasShadow="False">
+                            <Frame Padding="10" CornerRadius="10" HasShadow="False">
                                 <Image Source="estagiarios.png"
                            HeightRequest="50"
                            WidthRequest="50" />
@@ -300,17 +233,11 @@
                                    FontFamily="InterBold"
                                    FontSize="18"
                                    HorizontalOptions="Center"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                                               Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="Black"/>
 
 
-                            <Label 
-                                Text="Estagiários" 
-                                FontFamily="InterRegular" 
-                                FontSize="13"
-                                HorizontalOptions="Center" 
-                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                            Dark={StaticResource CorTextoCinza}}"/>
+                            <Label Text="Estagiários" FontFamily="InterRegular" FontSize="13"
+                       HorizontalOptions="Center" TextColor="#555"/>
                         </VerticalStackLayout>
 
 
@@ -318,12 +245,7 @@
                         <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="5"
                                  HorizontalOptions="Center">
 
-                            <Frame 
-                                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
-                                                                  Dark={StaticResource FundoCardEscuro}}"
-                                Padding="10" 
-                                CornerRadius="10" 
-                                HasShadow="False">
+                            <Frame Padding="10" CornerRadius="10" HasShadow="False">
                                 <Image Source="pcd.png"
                            HeightRequest="50"
                            WidthRequest="50" />
@@ -333,17 +255,11 @@
                                    FontFamily="InterBold"
                                    FontSize="18"
                                    HorizontalOptions="Center"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                                               Dark={StaticResource CorTextoBranco}}"/>
+                                   TextColor="Black"/>
 
 
-                            <Label 
-                                Text="PCD" 
-                                FontFamily="InterRegular" 
-                                FontSize="13"
-                                HorizontalOptions="Center" 
-                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                            Dark={StaticResource CorTextoCinza}}"/>
+                            <Label Text="PCD" FontFamily="InterRegular" FontSize="13"
+                       HorizontalOptions="Center" TextColor="#555"/>
                         </VerticalStackLayout>
 
                     </Grid>
@@ -353,13 +269,7 @@
 
 
             <!-- CARD COLABORADORES POR SETOR -->
-            <Frame 
-                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                                  Dark={StaticResource FundoCardEscuro}}" 
-                CornerRadius="15" 
-                HasShadow="True" 
-                Padding="15" 
-                Margin="0,10,0,0">
+            <Frame BackgroundColor="White" CornerRadius="15" HasShadow="True" Padding="15" Margin="0,10,0,0">
                 <Grid>
                     <VerticalStackLayout Spacing="10">
 
@@ -367,8 +277,7 @@
                         <Label Text="Colaboradores por Setor"
                    FontFamily="InterSemiBold"
                    FontSize="16"
-                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                               Dark={StaticResource CorTextoBranco}}"/>
+                   TextColor="Black"/>
 
                         <!-- GRADE ESCALA + GRÁFICO -->
                         <Grid ColumnDefinitions="40, *"
@@ -393,15 +302,13 @@
                                     <Label Text="{Binding Setores[0].Quantidade}"
                                FontSize="12"
                                FontFamily="InterSemiBold"
-                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                           Dark={StaticResource TextoAzulEscuro}}"
+                               TextColor="#1E3A8A"
                                IsVisible="{Binding MostrarValor1}" 
                                HorizontalOptions="Center"/>
                                     <BoxView x:Name="Barra1"
                                  WidthRequest="27"
                                  HeightRequest="{Binding Setores[0].Altura}"
-                                 Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                         Dark={StaticResource CorGraficoAzulClaro3}}"
+                                 Color="#1E3A8A"
                                  VerticalOptions="End">
                                         <BoxView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding MostrarValorCommand}" CommandParameter="1"/>
@@ -414,14 +321,12 @@
                                     <Label Text="{Binding Setores[1].Quantidade}"
                                FontSize="12"
                                FontFamily="InterSemiBold"
-                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                           Dark={StaticResource TextoAzulEscuro}}"
+                               TextColor="#1E3A8A"
                                IsVisible="{Binding MostrarValor2}"
                                HorizontalOptions="Center"/>
                                     <BoxView WidthRequest="27"
                                  HeightRequest="{Binding Setores[1].Altura}"
-                                 Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                         Dark={StaticResource CorGraficoAzulClaro3}}"
+                                 Color="#1E3A8A"
                                  VerticalOptions="End">
                                         <BoxView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding MostrarValorCommand}" CommandParameter="2"/>
@@ -434,14 +339,12 @@
                                     <Label Text="{Binding Setores[2].Quantidade}"
                                FontSize="12"
                                FontFamily="InterSemiBold"
-                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                           Dark={StaticResource TextoAzulEscuro}}"
+                               TextColor="#1E3A8A"
                                IsVisible="{Binding MostrarValor3}"
                                HorizontalOptions="Center"/>
                                     <BoxView WidthRequest="27"
                                  HeightRequest="{Binding Setores[2].Altura}"
-                                 Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                         Dark={StaticResource CorGraficoAzulClaro3}}"
+                                 Color="#1E3A8A"
                                  VerticalOptions="End">
                                         <BoxView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding MostrarValorCommand}" CommandParameter="3"/>
@@ -454,14 +357,12 @@
                                     <Label Text="{Binding Setores[3].Quantidade}"
                                FontSize="12"
                                FontFamily="InterSemiBold"
-                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                           Dark={StaticResource TextoAzulEscuro}}"
+                               TextColor="#1E3A8A"
                                IsVisible="{Binding MostrarValor4}"
                                HorizontalOptions="Center"/>
                                     <BoxView WidthRequest="27"
                                  HeightRequest="{Binding Setores[3].Altura}"
-                                 Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                         Dark={StaticResource CorGraficoAzulClaro3}}"
+                                 Color="#1E3A8A"
                                  VerticalOptions="End">
                                         <BoxView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding MostrarValorCommand}" CommandParameter="4"/>
@@ -474,14 +375,12 @@
                                     <Label Text="{Binding Setores[4].Quantidade}"
                                FontSize="12"
                                FontFamily="InterSemiBold"
-                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                           Dark={StaticResource TextoAzulEscuro}}"
+                               TextColor="#1E3A8A"
                                IsVisible="{Binding MostrarValor5}"
                                HorizontalOptions="Center"/>
                                     <BoxView WidthRequest="27"
                                  HeightRequest="{Binding Setores[4].Altura}"
-                                  Color="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},
-                                                          Dark={StaticResource CorGraficoAzulClaro3}}"
+                                 Color="#1E3A8A"
                                  VerticalOptions="End">
                                         <BoxView.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding MostrarValorCommand}" CommandParameter="5"/>
@@ -506,8 +405,7 @@
 
                         <!-- BOTÃO VER TODOS -->
                         <Button Text="Ver todos os setores"
-                    TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                Dark={StaticResource TextoAzulEscuro}}"
+                    TextColor="#1E3A8A"
                     BackgroundColor="Transparent"
                     FontFamily="InterSemiBold"
                     HorizontalOptions="Center"
@@ -523,8 +421,7 @@
               VerticalOptions="FillAndExpand"
               HorizontalOptions="FillAndExpand">
 
-                        <Frame BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
-                                                                 Dark={StaticResource FundoCardEscuro}}"
+                        <Frame BackgroundColor="White"
                    CornerRadius="15"
                    Padding="20"
                    HasShadow="True"
@@ -537,8 +434,7 @@
                                 <Label Text="Todos os Setores"
                            FontFamily="InterSemiBold"
                            FontSize="18"
-                           TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                       Dark={StaticResource TextoAzulEscuro}}"
+                           TextColor="Black"
                            HorizontalOptions="Center"/>
 
                                 <CollectionView ItemsSource="{Binding TodosSetores}" HeightRequest="340">
@@ -552,16 +448,13 @@
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
 
-                                <Button 
-                                    Text="Fechar"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro},
-                                                                      Dark={StaticResource BotaoEscuro}}"
-                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                                        Dark={StaticResource CorTextoBranco}}"
-                                    FontFamily="InterSemiBold"
-                                 CornerRadius="20"
-                                 HeightRequest="40"
-                                    Command="{Binding FecharPopupCommand}"/>
+                                <Button Text="Fechar"
+                            BackgroundColor="#1E3A8A"
+                            TextColor="White"
+                            FontFamily="InterSemiBold"
+                            CornerRadius="20"
+                            HeightRequest="40"
+                            Command="{Binding FecharPopupCommand}"/>
                             </VerticalStackLayout>
                         </Frame>
                     </Grid>
@@ -571,18 +464,12 @@
 
             <!-- CARD LISTA DE COLABORADORES -->
             <VerticalStackLayout>
-                <Frame 
-                    BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, 
-                                                      Dark={StaticResource FundoCardEscuro}}" 
-                    CornerRadius="15" 
-                    HasShadow="True" 
-                    Padding="15">
+                <Frame BackgroundColor="White" CornerRadius="15" HasShadow="True" Padding="15">
                     <VerticalStackLayout Spacing="8">
                         <Label Text="Lista de Colaboradores"
                    FontFamily="InterSemiBold"
                    FontSize="16"
-                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
-                                               Dark={StaticResource CorTextoBranco}}"/>
+                   TextColor="Black"/>
 
                         <!-- LISTA (TOP 5) -->
                         <CollectionView ItemsSource="{Binding Colaboradores}" HeightRequest="300">
@@ -599,24 +486,14 @@
                                          VerticalOptions="Center"/>
                                         <VerticalStackLayout Grid.Column="1" Margin="10,0">
                                             <Label Text="{Binding Nome}" FontFamily="InterSemiBold" FontSize="14"/>
-                                            <Label Text="{Binding SetorCargo}" 
-                                                   FontFamily="InterRegular" 
-                                                   FontSize="12" 
-                                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                                               Dark={StaticResource CorTextoCinza}}"/>
+                                            <Label Text="{Binding SetorCargo}" FontFamily="InterRegular" FontSize="12" TextColor="Gray"/>
                                         </VerticalStackLayout>
                                         <Frame Grid.Column="2" Padding="6,2"
-                                               BackgroundColor="{AppThemeBinding Light={StaticResource LabelAzulClaro},
-                                                                                 Dark={StaticResource LabelAzulEscuro}}"
-                                               CornerRadius="10"
-                                               HasShadow="False"
-                                               VerticalOptions="Center">
-                                            <Label 
-                                                Text="{Binding Status}" 
-                                                FontFamily="InterRegular" 
-                                                FontSize="12" 
-                                                TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                                            Dark={StaticResource TextoAzulEscuro}}"/>
+                                   BackgroundColor="#E0F2FE"
+                                   CornerRadius="10"
+                                   HasShadow="False"
+                                   VerticalOptions="Center">
+                                            <Label Text="{Binding Status}" FontFamily="InterRegular" FontSize="12" TextColor="#1E3A8A"/>
                                         </Frame>
                                     </Grid>
                                 </DataTemplate>
@@ -625,8 +502,7 @@
 
                         <!-- BOTÃO VER TODOS -->
                         <Button Text="Ver todos os colaboradores"
-                            TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
-                                                        Dark={StaticResource TextoAzulEscuro}}"
+                            TextColor="#1E3A8A"
                             BackgroundColor="Transparent"
                             FontFamily="InterSemiBold"
                             Command="{Binding AbrirListaCompletaCommand}"
@@ -640,8 +516,7 @@
             <!-- BOTÃO ADICIONAR COLABORADOR -->
             <Button 
                 Text="Adicionar Colaborador"
-                BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro},
-                                                  Dark={StaticResource BotaoEscuro}}"
+                BackgroundColor="#1E3A8A"
                 TextColor="White"
                 FontFamily="InterSemiBold"
                 CornerRadius="30"
