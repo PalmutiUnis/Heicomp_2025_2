@@ -25,8 +25,8 @@ namespace MauiApp1
                 .UseMicrocharts()
                 .ConfigureFonts(fonts =>
         {
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+            fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         });
 
 
@@ -48,7 +48,7 @@ namespace MauiApp1
 
             // Register CargosService via interface
             builder.Services.AddTransient<ICargosService, CargosService>();
-          
+
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
