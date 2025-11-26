@@ -74,12 +74,10 @@
                     <VerticalStackLayout Grid.Column="1" 
                                         VerticalOptions="Center"
                                         Spacing="4">
-                        <!--Substituir para Text="{Binding NomeUsuario}"-->
                         <Label Text="{Binding userName}"
                                FontFamily="OpenSansSemibold"
                                FontSize="18"
                                TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
-                        <!--Substituir para Text="{Binding EmailUsuario}"-->
                         <Label Text="{Binding userEmail}"
                                FontFamily="OpenSansRegular"
                                FontSize="14"
