@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Storage;
 using Plugin.LocalNotification;
+// ADICIONADO: Necessário para os gráficos funcionarem
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using Microcharts.Maui;
 
 namespace MauiApp1
 {
@@ -20,6 +23,8 @@ namespace MauiApp1
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseSkiaSharp()
+                .UseMicrocharts()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
@@ -69,8 +74,18 @@ namespace MauiApp1
             builder.Services.AddTransient<ListaColaboradoresPage>();
 
             // ===========================================================
-            // 📌 Logs Debug
+            // 📌 Módulo Diversidade (CORRIGIDO)
             // ===========================================================
+
+            // 1. Serviço
+            builder.Services.AddTransient<DiversidadeService>();
+
+            // 2. ViewModel
+            builder.Services.AddTransient<DiversidadeViewModel>();
+
+            // 3. Page
+            builder.Services.AddTransient<DiversidadePage>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

@@ -1,341 +1,149 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             xmlns:converters="clr-namespace:MauiApp1.Converters"
              x:Class="MauiApp1.Views.Dashboards.DiversidadePage"
-             Title=""
+             Title="Indicadores de Diversidade"
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
-             Shell.FlyoutBehavior="Disabled">
+             Shell.NavBarIsVisible="True"
+             Shell.ForegroundColor="White"
+             Shell.BackgroundColor="#1E3A8A"
+             Shell.TitleColor="White">
 
-    <!-- Barra superior -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:PercentToHeightConverter x:Key="PercentToHeightConverter" />
+            <converters:PercentToWidthConverter x:Key="PercentToWidthConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Shell.TitleView>
-        <Grid ColumnDefinitions="Auto, *, Auto"
-              Style="{StaticResource TitleViewGridStyle}"
-              HorizontalOptions="Fill"
-              VerticalOptions="Fill"
-              Margin="0"
-              Padding="0">
-
-            <ImageButton Grid.Column="0"
-                         Source="seta_direita.png"
-                         HeightRequest="44"
-                         WidthRequest="44"
-                         BackgroundColor="Transparent"
-                         Clicked="BotaoVoltarPainelGestao"
-                         Margin="0"
-                         Padding="0"
-                         HorizontalOptions="Start"
-                         VerticalOptions="Center"/>
-
-            <Label Grid.Column="1"
-                   Text="Indicadores de Diversidade"
-                   Style="{StaticResource TituloShellStyle}"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"
-                   TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
-
-            <ImageButton Grid.Column="2"
-                         Source="icone_menu.png"
-                         HeightRequest="44"
-                         WidthRequest="44"
-                         BackgroundColor="Transparent"
-                         Margin="0"
-                         Padding="0"
-                         HorizontalOptions="End"
-                         VerticalOptions="Center"/>
+        <Grid ColumnDefinitions="*, Auto">
+            <Label Text="Indicadores de Diversidade" TextColor="White" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+            <ImageButton Grid.Column="1" Source="icone_menu.png" HeightRequest="24" WidthRequest="24" Margin="0,0,10,0" BackgroundColor="Transparent"/>
         </Grid>
     </Shell.TitleView>
 
-    <!-- Conteúdo principal -->
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="16" Spacing="16">
 
-            <!-- Título da Página -->
-            <Label Text="Indicadores de Diversidade"
-                   Style="{StaticResource TextoTituloSecao}"
-                   TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+            <Frame HorizontalOptions="Center" BackgroundColor="White" Padding="0" HeightRequest="45" CornerRadius="8" HasShadow="True" BorderColor="#E5E7EB" WidthRequest="160" Margin="0,0,0,10">
+                <Picker x:Name="PickerAno"
+                        Title="Ano"
+                        ItemsSource="{Binding AnosDisponiveis}" 
+                        SelectedItem="{Binding AnoSelecionadoString, Mode=TwoWay}"
+                        TextColor="#1E3A8A" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+            </Frame>
 
-            <!-- Picker de Ano -->
-            <Picker x:Name="pickerAno"
-                    Title="Selecione o ano"
-                    HorizontalOptions="Fill"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
-                                                      Dark={StaticResource FundoCardEscuro}}"
-                    FontSize="14"
-                    HeightRequest="40"
-                    TitleColor="Gray"
-                    TextColor="Black">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>2022</x:String>
-                        <x:String>2023</x:String>
-                        <x:String>2024</x:String>
-                        <x:String>2025</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                <Frame CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="👥" FontSize="20" TextColor="#1E3A8A"/>
+                        <Label Text="{Binding DadosGerais.TotalColaboradores, StringFormat='{0:N0}'}" FontSize="24" FontAttributes="Bold" TextColor="#1E3A8A"/>
+                        <Label Text="Total Colaboradores" FontSize="12" TextColor="#6B7280"/>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <!-- Seção de porcentagens gerais -->
-            <Label Text="Porcentagens gerais"
-                   Style="{StaticResource TextoTituloSecao}"
-                   TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                <Frame Grid.Column="1" CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="♂" FontSize="20" TextColor="#3B82F6"/>
+                        <Label Text="{Binding DadosGerais.PercentualHomens, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="#3B82F6"/>
+                        <Label Text="Homens" FontSize="12" TextColor="#6B7280"/>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <!-- Grade de Cards -->
-            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                <Frame Grid.Row="1" CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="♀" FontSize="20" TextColor="#EC4899"/>
+                        <Label Text="{Binding DadosGerais.PercentualMulheres, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="#EC4899"/>
+                        <Label Text="Mulheres" FontSize="12" TextColor="#6B7280"/>
+                    </VerticalStackLayout>
+                </Frame>
 
-                <!-- Total Colaboradores -->
-                <Border Grid.Row="0" Grid.Column="0"
-                        Style="{StaticResource CardPadrao}"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                        Padding="12"
-                        HeightRequest="100">
-                    <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                        <Image Grid.Row="0"
-                               Source="icone_organizacao.png"
-                               HeightRequest="24"
-                               WidthRequest="24"
-                               HorizontalOptions="Start"
-                               Margin="0,0,0,5" />
-                        <VerticalStackLayout Grid.Column="1"
-                                             Padding="10,0,0,0"
-                                             VerticalOptions="Center"
-                                             Spacing="2">
-                            <Label Text="1,247"
-                                   FontAttributes="Bold"
-                                   FontSize="22"
-                                   TextColor="#1E3A8A"/>
-                            <Label Text="Total Colaboradores"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
-                        </VerticalStackLayout>
-                    </Grid>
-                </Border>
-
-                <!-- Homens -->
-                <Border Grid.Row="0" Grid.Column="1"
-                        Style="{StaticResource CardPadrao}"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                        Padding="12"
-                        HeightRequest="100">
-                    <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                        <Image Grid.Row="0"
-                               Source="icone_masculino.png"
-                               HeightRequest="24"
-                               WidthRequest="24"
-                               HorizontalOptions="Start"
-                               Margin="0,0,0,5" />
-                        <VerticalStackLayout Grid.Column="1"
-                                             Padding="10,0,0,0"
-                                             VerticalOptions="Center"
-                                             Spacing="2">
-                            <Label Text="58.2%"
-                                   FontAttributes="Bold"
-                                   FontSize="22"
-                                   TextColor="{AppThemeBinding Light={StaticResource ProgressHomem},
-                                                               Dark={StaticResource ProgressHomem}}"/>
-                            <Label Text="Homens"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
-                        </VerticalStackLayout>
-                    </Grid>
-                </Border>
-
-                <!-- Mulheres -->
-                <Border Grid.Row="1" Grid.Column="0"
-                        Style="{StaticResource CardPadrao}"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                        Padding="12"
-                        HeightRequest="100">
-                    <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                        <Image Grid.Row="0"
-                               Source="icone_feminino.png"
-                               HeightRequest="24"
-                               WidthRequest="24"
-                               HorizontalOptions="Start"
-                               Margin="0,0,0,5" />
-                        <VerticalStackLayout Grid.Column="1"
-                                             Padding="10,0,0,0"
-                                             VerticalOptions="Center"
-                                             Spacing="2">
-                            <Label Text="40.1%"
-                                   FontAttributes="Bold"
-                                   FontSize="22"
-                                   TextColor="{AppThemeBinding Light={StaticResource ProgressMulher},
-                                                               Dark={StaticResource ProgressMulher}}"/>
-                            <Label Text="Mulheres"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
-                        </VerticalStackLayout>
-                    </Grid>
-                </Border>
-
-                <!-- Não Informado -->
-                <Border Grid.Row="1" Grid.Column="1"
-                        Style="{StaticResource CardPadrao}"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoCardEscuro}}"
-                        Padding="12"
-                        HeightRequest="100">
-                    <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                        <Image Grid.Row="0"
-                               Source="icone_interrogacao.png"
-                               HeightRequest="24"
-                               WidthRequest="24"
-                               HorizontalOptions="Start"
-                               Margin="0,0,0,5" />
-                        <VerticalStackLayout Grid.Column="1"
-                                             Padding="10,0,0,0"
-                                             VerticalOptions="Center"
-                                             Spacing="2">
-                            <Label Text="1.7%"
-                                   FontAttributes="Bold"
-                                   FontSize="22"
-                                   TextColor="{AppThemeBinding Light={StaticResource ProgressNinf},
-                                                               Dark={StaticResource ProgressNinf}}"/>
-                            <Label Text="Não Informado"
-                                   FontSize="13"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
-                        </VerticalStackLayout>
-                    </Grid>
-                </Border>
-
+                <Frame Grid.Row="1" Grid.Column="1" CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="?" FontSize="20" TextColor="#9CA3AF"/>
+                        <Label Text="{Binding DadosGerais.PercentualNaoInformado, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="#6B7280"/>
+                        <Label Text="Não Informado" FontSize="12" TextColor="#6B7280"/>
+                    </VerticalStackLayout>
+                </Frame>
             </Grid>
 
-            <!-- Seção de Gráfico -->
-            <Border Style="{StaticResource CardPadrao}"
-        BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoCardEscuro}}"
-        WidthRequest="395"
-        HeightRequest="260"
-        HorizontalOptions="Center"
-        Padding="15"
-        Margin="0,10,0,0">
+            <Frame CornerRadius="12" Padding="20" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
 
-                <VerticalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                        <Image Source="fundo_genero.png" HeightRequest="24" WidthRequest="24" VerticalOptions="Center"/>
+                        <Label Text="Distribuição por Gênero" TextColor="#1E3A8A" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
 
-                    <!-- Cabeçalho com ícone e texto -->
-                    <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                        <Image Source="fundo_genero.png"
-                   HeightRequest="22"
-                   WidthRequest="22"
-                   HorizontalOptions="Start"
-                   VerticalOptions="Center"/>
-
-                        <Label Grid.Column="1"
-                   Text="Distribuição por Gênero"
-                   FontAttributes="Bold"
-                   FontSize="18"
-                   TextColor="{AppThemeBinding Light={StaticResource AzulPrincipal}, Dark={StaticResource TextoPrincipalEscuro}}"
-                   VerticalOptions="Center"
-                   Margin="8,0,0,0"/>
-                    </Grid>
-
-                    <!-- Espaço reservado para o gráfico -->
-                    <Grid HeightRequest="180"
-              VerticalOptions="CenterAndExpand"
-              HorizontalOptions="Center"
-              BackgroundColor="Transparent"
-              Padding="0,10,0,0">
-
-                        <!-- Aqui entrará o componente de gráfico futuramente -->
-                        <Label Text="(Gráfico aqui)"
-                   FontSize="14"
-                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-                    </Grid>
-
+                    <micro:ChartView Chart="{Binding ChartGenero}" 
+                                     HeightRequest="350" 
+                                     BackgroundColor="Transparent"/>
                 </VerticalStackLayout>
-            </Border>
+            </Frame>
 
-            <!-- Seção de Gráfico -->
-            <Border Style="{StaticResource CardPadrao}"
-        BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoCardEscuro}}"
-        WidthRequest="395"
-        HeightRequest="260"
-        HorizontalOptions="Center"
-        Padding="15"
-        Margin="0,10,0,0">
+            <Frame CornerRadius="12" Padding="20" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                <VerticalStackLayout Spacing="15">
 
-                <VerticalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                        <Image Source="icone_alteraracoes.png" HeightRequest="24" WidthRequest="24" VerticalOptions="Center"/>
+                        <Label Text="Raça/Cor" TextColor="#1E3A8A" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
 
-                    <!-- Cabeçalho com ícone e texto -->
-                    <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                        <Image Source="icone_alteraracoes.png"
-                   HeightRequest="22"
-                   WidthRequest="22"
-                   HorizontalOptions="Start"
-                   VerticalOptions="Center"/>
+                    <CollectionView ItemsSource="{Binding DistribuicoesRaca}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="100, *" Padding="0,6">
+                                    <Label Grid.Column="0" Text="{Binding Descricao}" FontSize="13" TextColor="#374151" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,0"/>
 
-                        <Label Grid.Column="1"
-                   Text="Raça/Cor"
-                   FontAttributes="Bold"
-                   FontSize="18"
-                   TextColor="{AppThemeBinding Light={StaticResource AzulPrincipal}, Dark={StaticResource TextoPrincipalEscuro}}"
-                   VerticalOptions="Center"
-                   Margin="8,0,0,0"/>
-                    </Grid>
-
-                    <!-- Espaço reservado para o gráfico -->
-                    <Grid HeightRequest="180"
-              VerticalOptions="CenterAndExpand"
-              HorizontalOptions="Center"
-              BackgroundColor="Transparent"
-              Padding="0,10,0,0">
-
-                        <!-- Aqui entrará o componente de gráfico futuramente -->
-                        <Label Text="(Gráfico aqui)"
-                   FontSize="14"
-                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-                    </Grid>
-
+                                    <Grid Grid.Column="1" ColumnDefinitions="Auto, Auto">
+                                        <Frame Grid.Column="0" BackgroundColor="#1E3A8A" CornerRadius="4" HeightRequest="18" 
+                                               WidthRequest="{Binding Percentual, Converter={StaticResource PercentToWidthConverter}}"
+                                               Padding="0" HasShadow="False" HorizontalOptions="Start"/>
+                                        <Label Grid.Column="1" Text="{Binding Percentual, StringFormat='{0:F1}%'}" TextColor="#1E3A8A" FontSize="12" FontAttributes="Bold" VerticalOptions="Center" Margin="8,0,0,0"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
-            </Border>
+            </Frame>
 
-            <!-- Seção de Gráfico -->
-            <Border Style="{StaticResource CardPadrao}"
-        BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoCardEscuro}}"
-        WidthRequest="395"
-        HeightRequest="260"
-        HorizontalOptions="Center"
-        Padding="15"
-        Margin="0,10,0,0">
+            <Frame CornerRadius="12" Padding="20" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                <VerticalStackLayout Spacing="15">
 
-                <VerticalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                        <Image Source="icone_acessibilidade_claro.png" HeightRequest="24" WidthRequest="24" VerticalOptions="Center"/>
+                        <Label Text="Pessoas com Deficiência" TextColor="#1E3A8A" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
 
-                    <!-- Cabeçalho com ícone e texto -->
-                    <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
-                        <Image Source="icone_acessibilidade_claro.png"
-                   HeightRequest="22"
-                   WidthRequest="22"
-                   HorizontalOptions="Start"
-                   VerticalOptions="Center"/>
-
-                        <Label Grid.Column="1"
-                   Text="Pessoas com Deficiência"
-                   FontAttributes="Bold"
-                   FontSize="18"
-                   TextColor="{AppThemeBinding Light={StaticResource AzulPrincipal}, Dark={StaticResource TextoPrincipalEscuro}}"
-                   VerticalOptions="Center"
-                   Margin="8,0,0,0"/>
+                    <Grid ColumnDefinitions="40, *" HeightRequest="220">
+                        <VerticalStackLayout Grid.Column="0" VerticalOptions="Fill" Spacing="0">
+                            <Label Text="100" FontSize="11" TextColor="#9CA3AF" VerticalOptions="Start"/>
+                            <Label Text="50" FontSize="11" TextColor="#9CA3AF" VerticalOptions="CenterAndExpand"/>
+                            <Label Text="0" FontSize="11" TextColor="#9CA3AF" VerticalOptions="End"/>
+                        </VerticalStackLayout>
+                        <StackLayout Grid.Column="1" VerticalOptions="Fill" Spacing="0">
+                            <BoxView HeightRequest="1" Color="#F3F4F6" VerticalOptions="Start"/>
+                            <BoxView HeightRequest="1" Color="#F3F4F6" VerticalOptions="CenterAndExpand"/>
+                            <BoxView HeightRequest="1" Color="#9CA3AF" VerticalOptions="End"/>
+                        </StackLayout>
+                        <CollectionView Grid.Column="1" ItemsSource="{Binding DistribuicoesPCD}" ItemsLayout="HorizontalList" VerticalOptions="End" HeightRequest="200" Margin="20,0,0,0">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout VerticalOptions="End" Spacing="5" WidthRequest="100">
+                                        <Label Text="{Binding Percentual, StringFormat='{0:F1}%'}" TextColor="#1E3A8A" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                        <Frame CornerRadius="4" HasShadow="False" Padding="0" BackgroundColor="#1E3A8A" WidthRequest="60" HorizontalOptions="Center" HeightRequest="{Binding Percentual, Converter={StaticResource PercentToHeightConverter}}"/>
+                                        <Label Text="{Binding Descricao}" TextColor="#374151" FontSize="12" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </Grid>
-
-                    <!-- Espaço reservado para o gráfico -->
-                    <Grid HeightRequest="180"
-              VerticalOptions="CenterAndExpand"
-              HorizontalOptions="Center"
-              BackgroundColor="Transparent"
-              Padding="0,10,0,0">
-
-                        <!-- Aqui entrará o componente de gráfico futuramente -->
-                        <Label Text="(Gráfico aqui)"
-                   FontSize="14"
-                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-                    </Grid>
-
                 </VerticalStackLayout>
-            </Border>
+            </Frame>
 
         </VerticalStackLayout>
     </ScrollView>
