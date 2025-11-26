@@ -11,12 +11,12 @@ public partial class ConfiguracoesPage : ContentPage
 
     // 1. Propriedades públicas para o XAML
     // O XAML vai se ligar a "NomeUsuario", "EmailUsuario" e "InitialsUsuario"
-    public string NomeUsuario { get; set; }
-    public string EmailUsuario { get; set; }
+    public string userName { get; set; }
+    public string userEmail { get; set; }
 
 
 
-    // *************************** Evento: Bot�o Voltar ***************************
+    // *************************** Evento: Botao Voltar ***************************
     private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("//PainelGestaoPage");
@@ -28,16 +28,21 @@ public partial class ConfiguracoesPage : ContentPage
     // *************************** Evento: Salvar Configura��es ***************************
     private async void OnSalvarClicked(object sender, EventArgs e)
     {
-        //           
-        //              bool pushNotif = OnPushNotificationsToggled.IsEnabled;
-        //    
-        //           
-        //    
-        //              string mensagem = $"Configura��es salvas!\n\n" +
-        //                               $"Push Notifications: {(pushNotif ? "Ativado" : "Desativado")}\n" +
-        //                               $"Tema Escuro: {(TemaEscuroEnabled ? "Ativado" : "Desativado")}";
-        //    
-        //              await DisplayAlert("Sucesso", mensagem, "OK");
+        // 1. Tentar ler os Switches
+        bool isPushOn = Preferences.Get("PushNotificationsEnabled", false); // Usando Preferences como proxy de estado
+        bool isTemaOn = Preferences.Get("TemaEscuro", false);
+
+        // NOTE: Se quiser ler diretamente do Switch na tela, você precisa dar x:Name="PushSwitch"
+        // e usar: bool isPushOn = PushSwitch.IsToggled;
+
+        string statusPush = isPushOn ? "Ativado" : "Desativado";
+        string statusTema = isTemaOn ? "Ativado" : "Desativado";
+
+        string mensagem = $"Configurações salvas!\n\n" +
+                         $"Push Notifications: {statusPush}\n" +
+                         $"Tema Escuro: {statusTema}";
+
+        await DisplayAlert("Sucesso", mensagem, "OK");
     }
     // *************************** Fim Evento: Salvar Configurações ***************************
 
@@ -62,6 +67,17 @@ public partial class ConfiguracoesPage : ContentPage
 
 
 
+    // *************************** Propriedade: Carregar dados do usuário ***************************
+    private void CarregarDadosUsuario()
+    {
+        // Lê os valores salvos no LoginPage. Se não existirem, usa valores padrão.
+        userName = Preferences.Get("userName", "Usuário Desconhecido");
+        userEmail = Preferences.Get("userEmail", "sem.email@unis.com");
+    }
+    // *************************** Fim Propriedade: Carregar dados do usuário ***************************
+
+
+
     // *************************** Construtor ***************************
     public ConfiguracoesPage()
     {
@@ -70,14 +86,14 @@ public partial class ConfiguracoesPage : ContentPage
         LocalNotificationCenter.Current.RequestNotificationPermission();
         BindingContext = this; // Conecta a UI (XAML) com este c�digo
 
-        // 2. Carrega os dados salvos do Preferences
-        NomeUsuario = Preferences.Get("user_name", "Usu�rio"); // "Usu�rio" � um valor padr�o
-        EmailUsuario = Preferences.Get("user_email", "email@exemplo.com"); // "email..." � um valor padr�o
-
+        //2. Carrega os dados do usuário
+        CarregarDadosUsuario();
 
         // 3. Define o BindingContext da p�gina para ELA MESMA.
-        // Agora o XAML {Binding NomeUsuario} vai encontrar a propriedade p�blica acima.
         this.BindingContext = this;
+
+        //4. Carrega a preferência do tema
+        TemaEscuroEnabled = Preferences.Get("TemaEscuro", false);
 
     }
     // *************************** Fim Construtor ***************************
@@ -102,7 +118,7 @@ public partial class ConfiguracoesPage : ContentPage
     {
         await DisplayAlert(
             "Termos de Uso",
-            "Ao usar este aplicativo, voc� concorda com nossos termos e pol�ticas de privacidade.",
+            "Ao usar este aplicativo, você concorda com nossos termos e políticas de privacidade.",
             "Li e aceito"
         );
     }
@@ -110,25 +126,25 @@ public partial class ConfiguracoesPage : ContentPage
 
 
 
-    // *************************** Evento: Notifica��es em Push ***************************
+    // *************************** Evento: Notificacoes em Push ***************************
     private async void OnPushNotificationsToggled(object sender, ToggledEventArgs e)
     {
         bool isEnabled = e.Value;
         Preferences.Set("PushNotificationsEnabled", isEnabled);
 
-        // 4. Se o bot�o foi LIGADO, envia a notifica��o
+        // 4. Se o botao foi LIGADO, envia a notificacao
         if (isEnabled)
         {
-            // Cria a notifica��o
+            // Cria a notificacao
             var request = new NotificationRequest
             {
-                NotificationId = 1337, // Um ID �nico para esta notifica��o
-                Title = "Notifica��es Ativadas!",
-                Description = "Voc� agora receber� alertas e promo��es.",
-                BadgeNumber = 1, // N�mero que aparece no �cone do app
+                NotificationId = 1337, // Um ID unico para esta notificacao
+                Title = "Notificações Ativadas!",
+                Description = "Você agora receberá alertas e promoções.",
+                BadgeNumber = 1, // N�mero que aparece no icone do app
                 Schedule = new NotificationRequestSchedule
                 {
-                    // Dispara a notifica��o 1 segundo ap�s ligar o switch
+                    // Dispara a notificacao 1 segundo apos ligar o switch
                     NotifyTime = DateTime.Now.AddSeconds(0.3)
                 }
             };

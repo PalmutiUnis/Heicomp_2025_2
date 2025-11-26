@@ -5,7 +5,7 @@
              xmlns:converters="clr-namespace:MauiApp1.Converters"
              x:Class="MauiApp1.Views.Dashboards.DiversidadePage"
              Title="Indicadores de Diversidade"
-             BackgroundColor="#F3F4F6"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Shell.NavBarIsVisible="True"
              Shell.ForegroundColor="White"
              Shell.BackgroundColor="#1E3A8A"
