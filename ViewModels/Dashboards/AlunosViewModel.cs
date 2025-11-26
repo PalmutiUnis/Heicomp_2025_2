@@ -49,6 +49,13 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
         private List<TurnoLegendaItem> _turnosLegenda = new();
         public List<TurnoLegendaItem> TurnosLegenda { get => _turnosLegenda; set => SetProperty(ref _turnosLegenda, value); }
 
+        private List<ModalidadeLegendaItem> _modalidadesLegenda = new();
+
+        public List<ModalidadeLegendaItem> ModalidadesLegenda { get => _modalidadesLegenda; set => SetProperty(ref _modalidadesLegenda, value); }
+
+        private List<CampusLegendaItem> _campusLegenda = new();
+        public List<CampusLegendaItem> CampusLegenda { get => _campusLegenda; set => SetProperty(ref _campusLegenda, value); }
+
 
         public ObservableCollection<string> ListaCampus { get; } = new();
         public ObservableCollection<ModalidadeItem> ListaModalidades { get; } = new();
@@ -64,12 +71,25 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
             {
                 if (SetProperty(ref _campusSelecionado, value))
                 {
+                    if (value != null && _campusDisplayToCode.TryGetValue(value, out string? codigoReal))
+                    {
+                        _campusCodigoReal = codigoReal;
+                    }
+                    else
+                    {
+                        _campusCodigoReal = value;
+                    }
+
                     LimparFiltrosDependentes(1);
                     AtualizarVisibilidadeFiltros();
                     _ = AtualizarGraficosAsync();
                 }
             }
         }
+
+        private string? _campusCodigoReal;
+
+        public string? CampusCodigoReal => _campusCodigoReal;
 
         private ModalidadeItem? _modalidadeSelecionada;
         public ModalidadeItem? ModalidadeSelecionada
@@ -183,6 +203,8 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
         private Dictionary<string, int>? _dadosGraficoTurmas;
         public Dictionary<string, int>? DadosGraficoTurmas { get => _dadosGraficoTurmas; set => SetProperty(ref _dadosGraficoTurmas, value); }
 
+        private readonly Dictionary<string, string> _campusDisplayToCode = new();
+
         private bool _mostrarGraficoTurmas;
         public bool MostrarGraficoTurmas { get => _mostrarGraficoTurmas; set => SetProperty(ref _mostrarGraficoTurmas, value); }
 
@@ -233,10 +255,31 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 var modalidadeData = await t5;
                 var turnoData = await t6;
                 var topCursos = await t7;
-                var listaCampus = await t8;
+                var listaCampusCompleta = await t8;
+
 
                 ListaCampus.Clear();
-                foreach (var c in listaCampus) ListaCampus.Add(c);
+                _campusDisplayToCode.Clear();
+
+                foreach (var itemCompleto in listaCampusCompleta)
+                {
+                    var partes = itemCompleto.Split(new[] { " : " }, 2, StringSplitOptions.None);
+                    if (partes.Length == 2)
+                    {
+                        string codigoReal = partes[0].Trim();
+                        string descricao = partes[1].Trim();
+
+                        string textoExibicao = $"{codigoReal} : {descricao}";
+
+                        ListaCampus.Add(textoExibicao);
+                        _campusDisplayToCode[textoExibicao] = codigoReal;
+                    }
+                    else
+                    {
+                        ListaCampus.Add(itemCompleto);
+                        _campusDisplayToCode[itemCompleto] = itemCompleto;
+                    }
+                }
 
                 CriarGraficoCampus(campusData);
                 CriarGraficoModalidades(modalidadeData.Select(kvp => (kvp.Key, kvp.Value)).ToList());
@@ -275,22 +318,22 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 if (CampusSelecionado == null && ModalidadeSelecionada == null && CursoSelecionado == null && TurnoSelecionado == null)
                     return;
 
-                TotalAlunos = await _service.GetTotalAlunosAsync(CampusSelecionado, ModalidadeSelecionada?.Codigo, CursoSelecionado?.Codigo, TurnoSelecionado?.Codigo);
-                ModalidadeMaisComum = (await _service.GetModalidadeMaisAlunosAsync(CampusSelecionado, CursoSelecionado?.Codigo, TurnoSelecionado?.Codigo)).Modalidade;
-                var cursoTop = await _service.GetCursoComMaisAlunosAsync(CampusSelecionado, ModalidadeSelecionada?.Codigo, TurnoSelecionado?.Codigo);
+                TotalAlunos = await _service.GetTotalAlunosAsync(CampusCodigoReal, ModalidadeSelecionada?.Codigo, CursoSelecionado?.Codigo, TurnoSelecionado?.Codigo);
+                ModalidadeMaisComum = (await _service.GetModalidadeMaisAlunosAsync(CampusCodigoReal, CursoSelecionado?.Codigo, TurnoSelecionado?.Codigo)).Modalidade;
+                var cursoTop = await _service.GetCursoComMaisAlunosAsync(CampusCodigoReal, ModalidadeSelecionada?.Codigo, TurnoSelecionado?.Codigo);
                 CursoComMaisAlunos = cursoTop.Curso;
                 NumeroAlunosCursoTop = cursoTop.Quantidade;
 
                 if (!string.IsNullOrEmpty(CampusSelecionado) && ModalidadeSelecionada == null)
                 {
                     ListaModalidades.Clear();
-                    var mods = await _service.GetModalidadesDisponiveisAsync(CampusSelecionado);
+                    var mods = await _service.GetModalidadesDisponiveisAsync(CampusCodigoReal);
                     foreach (var m in mods) ListaModalidades.Add(new ModalidadeItem { Codigo = m.Codigo, Nome = m.Nome });
 
-                    var dist = await _service.GetDistribuicaoModalidadeAsync(CampusSelecionado);
+                    var dist = await _service.GetDistribuicaoModalidadeAsync(CampusCodigoReal);
                     CriarGraficoModalidades(dist);
 
-                    var topCursos = await _service.GetCursosTopAsync(CampusSelecionado, limit: 5);
+                    var topCursos = await _service.GetCursosTopAsync(CampusCodigoReal, limit: 5);
                     CriarGraficoTopCursos(topCursos);
 
                     MostrarGraficoCampus = false;
@@ -302,10 +345,10 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 else if (ModalidadeSelecionada != null && CursoSelecionado == null)
                 {
                     ListaCursos.Clear();
-                    var cursos = await _service.GetCursosDisponiveisAsync(CampusSelecionado!, ModalidadeSelecionada.Codigo);
+                    var cursos = await _service.GetCursosDisponiveisAsync(CampusCodigoReal, ModalidadeSelecionada.Codigo);
                     foreach (var c in cursos) ListaCursos.Add(new CursoItem { Codigo = c.Codigo, Nome = c.Nome });
 
-                    var topCursos = await _service.GetCursosTopAsync(CampusSelecionado!, ModalidadeSelecionada.Codigo, limit: 5);
+                    var topCursos = await _service.GetCursosTopAsync(CampusCodigoReal, ModalidadeSelecionada.Codigo, limit: 5);
                     CriarGraficoTopCursos(topCursos);
 
                     MostrarGraficoModalidades = false;
@@ -317,10 +360,10 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 else if (CursoSelecionado != null && TurnoSelecionado == null)
                 {
                     ListaTurnos.Clear();
-                    var turnos = await _service.GetTurnosDisponiveisAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado.Codigo);
+                    var turnos = await _service.GetTurnosDisponiveisAsync(CampusCodigoReal, ModalidadeSelecionada!.Codigo, CursoSelecionado.Codigo);
                     foreach (var t in turnos) ListaTurnos.Add(new TurnoItem { Codigo = t.Codigo, Nome = t.Nome });
 
-                    var dist = await _service.GetDistribuicaoTurnoAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado.Codigo);
+                    var dist = await _service.GetDistribuicaoTurnoAsync(CampusCodigoReal, ModalidadeSelecionada!.Codigo, CursoSelecionado.Codigo);
                     CriarGraficoTurnos(dist);
 
                     MostrarGraficoCursos = false;
@@ -331,11 +374,11 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 {
 
                     ListaPeriodos.Clear();
-                    var periodos = await _service.GetPeriodosDisponiveisAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado!.Codigo, TurnoSelecionado.Codigo);
+                    var periodos = await _service.GetPeriodosDisponiveisAsync(CampusCodigoReal, ModalidadeSelecionada!.Codigo, CursoSelecionado!.Codigo, TurnoSelecionado.Codigo);
                     foreach (var p in periodos) ListaPeriodos.Add(new PeriodoItem { Codigo = p.Codigo, Descricao = p.Descricao });
 
 
-                    var dist = await _service.GetAlunosPorPeriodoLetivoAsync(CampusSelecionado!, ModalidadeSelecionada!.Codigo, CursoSelecionado!.Codigo, TurnoSelecionado.Codigo);
+                    var dist = await _service.GetAlunosPorPeriodoLetivoAsync(CampusCodigoReal, ModalidadeSelecionada!.Codigo, CursoSelecionado!.Codigo, TurnoSelecionado.Codigo);
 
                     if (dist.Any())
                     {
@@ -343,7 +386,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
 
                         var coresPeriodo = new[] {
                     Color.FromArgb("#1E3A8A"), Color.FromArgb("#3B82F6"), Color.FromArgb("#60A5FA"),
-                    Color.FromArgb("#93C5FD"), Color.FromArgb("#BFDBFE"), Color.FromArgb("#DBEAFE"),
+                    Color.FromArgb("#93C5FD"), Color.FromArgb("#7FB8FD"), Color.FromArgb("#DBEAFE"),
                     Color.FromArgb("#FCA5A5"), Color.FromArgb("#F87171")
                 };
 
@@ -411,16 +454,54 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
             MostrarBotaoCursos = string.IsNullOrEmpty(CampusSelecionado) || ModalidadeSelecionada != null;
         }
 
-        private void CriarGraficoCampus(List<(string Campus, int Quantidade)> dados) =>
+        private void CriarGraficoCampus(List<(string Campus, int Quantidade)> dados)
+        {
             DadosGraficoCampus = dados.ToDictionary(x => x.Campus, x => x.Quantidade);
 
-        private void CriarGraficoModalidades(List<(string Modalidade, int Quantidade)> dados) =>
+            var cores = new Color[] {
+        Color.FromArgb("#1E3A8A"),
+        Color.FromArgb("#3B82F6"),
+        Color.FromArgb("#60A5FA"),
+        Color.FromArgb("#93C5FD"),
+        Color.FromArgb("#7FB8FD")
+    };
+
+            CampusLegenda = dados
+                .Select((x, i) => new CampusLegendaItem
+                {
+                    Nome = x.Campus,
+                    Quantidade = x.Quantidade,
+                    Cor = cores[i % cores.Length]
+                })
+                .OrderByDescending(x => x.Quantidade)
+                .ToList();
+        }
+
+        private void CriarGraficoModalidades(List<(string Modalidade, int Quantidade)> dados)
+        {
             DadosGraficoModalidades = dados.ToDictionary(x => x.Modalidade, x => x.Quantidade);
+
+            var cores = new[] {
+        Color.FromArgb("#1E3A8A"),
+        Color.FromArgb("#3B82F6"),
+        Color.FromArgb("#60A5FA")
+    };
+
+            ModalidadesLegenda = dados
+                .Select((x, i) => new ModalidadeLegendaItem
+                {
+                    Nome = x.Modalidade,
+                    Quantidade = x.Quantidade,
+                    Cor = cores[i % cores.Length]
+                })
+                .OrderByDescending(x => x.Quantidade)
+                .ToList();
+        }
 
         private void CriarGraficoTurnos(List<(string Turno, int Quantidade)> dados)
         {
             DadosGraficoTurnos = dados.ToDictionary(x => x.Turno, x => x.Quantidade);
-            var cores = new[] { "#1E3A8A", "#3B82F6", "#60A5FA", "#93C5FD", "#BFDBFE", "#DBEAFE" };
+            var cores = new[] { "#1E3A8A", "#3B82F6", "#60A5FA", "#93C5FD", "#7FB8FD", "#DBEAFE" };
             TurnosLegenda = dados.Select((x, i) => new TurnoLegendaItem
             {
                 Nome = x.Turno,
@@ -458,7 +539,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 IsBusy = true;
 
                 var dados = await _service.GetTurmasPorPeriodoAsync(
-                    CampusSelecionado!,
+                    CampusCodigoReal!,
                     ModalidadeSelecionada.Codigo,
                     CursoSelecionado.Codigo,
                     TurnoSelecionado.Codigo,
@@ -468,7 +549,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 {
                     var cores = new Color[] {
                         Color.FromArgb("#1E3A8A"), Color.FromArgb("#3B82F6"), Color.FromArgb("#60A5FA"),
-                        Color.FromArgb("#93C5FD"), Color.FromArgb("#BFDBFE"), Color.FromArgb("#FCA5A5"),
+                        Color.FromArgb("#93C5FD"), Color.FromArgb("#7FB8FD"), Color.FromArgb("#FCA5A5"),
                         Color.FromArgb("#F87171"), Color.FromArgb("#F472B6"), Color.FromArgb("#EC4899"),
                         Color.FromArgb("#8B5CF6"), Color.FromArgb("#6366F1")
                     };
@@ -512,7 +593,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                 IsBusy = true;
 
                 var alunos = await _service.GetAlunosDaTurmaAsync(
-                    campus: CampusSelecionado!,
+                    campus: CampusCodigoReal!,
                     modalidade: ModalidadeSelecionada!.Codigo,
                     curso: CursoSelecionado!.Codigo,
                     turno: TurnoSelecionado!.Codigo,
@@ -545,7 +626,7 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
         {
             if (string.IsNullOrEmpty(CampusSelecionado)) return;
 
-            var cursos = await _service.GetCursosTopAsync(CampusSelecionado, ModalidadeSelecionada?.Codigo, limit: null);
+            var cursos = await _service.GetCursosTopAsync(CampusCodigoReal, ModalidadeSelecionada?.Codigo, limit: null);
 
             if (!cursos.Any())
             {
@@ -570,14 +651,12 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
     }
 
     public class ModalidadeItem { public string Codigo { get; set; } = ""; public string Nome { get; set; } = ""; }
+    public class ModalidadeLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; }
     public class CursoItem { public string Codigo { get; set; } = ""; public string Nome { get; set; } = ""; }
     public class TurnoItem { public int Codigo { get; set; } public string Nome { get; set; } = ""; }
     public class PeriodoItem { public string Codigo { get; set; } = ""; public string Descricao { get; set; } = ""; }
-    public class CursoLegendaItem
-    {
-        public string Nome { get; set; } = ""; public int Quantidade { get; set; }
-        public Color Cor { get; set; } = Colors.Transparent;
-    }
+    public class CampusLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; }
+    public class CursoLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; }
     public class PeriodoLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; }
     public class TurnoLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; }
     public class TurmaLegendaItem { public string Nome { get; set; } = ""; public int Quantidade { get; set; } public Color Cor { get; set; } = Colors.Transparent; public ICommand VerAlunosCommand { get; set; } = null!; }

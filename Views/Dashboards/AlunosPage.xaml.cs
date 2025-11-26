@@ -55,90 +55,57 @@ public partial class AlunosPage : ContentPage
         var canvas = e.Surface.Canvas;
         canvas.Clear();
 
-        if (vm.DadosGraficoCampus == null || vm.DadosGraficoCampus.Count == 0) return;
+        if (vm.CampusLegenda == null || vm.CampusLegenda.Count == 0) return;
 
-        var entries = vm.DadosGraficoCampus.OrderByDescending(x => x.Value).ToList();
+        var entries = vm.CampusLegenda.OrderByDescending(x => x.Quantidade).ToList();
 
         float width = e.Info.Width;
-        float height = e.Info.Height;
+        float height = e.Info.Height - 120;
 
         int count = entries.Count;
         float padding = 40;
-        float topSpace = 60;
-        float legendHeight = 60 + (count * 40);
-        float graphHeight = height - legendHeight - topSpace;
-
         float availableWidth = width - (padding * 2);
         float barWidth = availableWidth / count * 0.65f;
         float spacing = availableWidth / count * 0.35f;
 
-        float maxValue = entries.Max(x => x.Value);
+        float maxValue = entries.Max(x => x.Quantidade);
 
-        var cores = new[]
-        {
-            SKColor.Parse("#1E3A8A"), SKColor.Parse("#3B82F6"), SKColor.Parse("#60A5FA"),
-            SKColor.Parse("#93C5FD"), SKColor.Parse("#BFDBFE")
-        };
+        float topPadding = 80;
+        float graphHeight = height - topPadding - 40;
 
         using var paintFundo = new SKPaint { Color = SKColors.LightGray.WithAlpha(80) };
-        using var paintBarra = new SKPaint();
+        using var paintBarra = new SKPaint { IsAntialias = true };
         using var paintTexto = new SKPaint
         {
             TextSize = 36,
             Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold),
-            IsAntialias = true
+            IsAntialias = true,
+            TextAlign = SKTextAlign.Center
         };
 
         for (int i = 0; i < count; i++)
         {
             var entry = entries[i];
-            var cor = cores[i % cores.Length];
             float x = padding + i * (barWidth + spacing) + spacing / 2;
 
-            float barHeight = (entry.Value / maxValue) * graphHeight * 0.9f;
-            float y = topSpace + (graphHeight - barHeight);
+            float barHeight = (entry.Quantidade / maxValue) * graphHeight;
+            float barBottom = height - 40;
+            float barTop = barBottom - barHeight;
 
-            canvas.DrawRoundRect(x, topSpace, barWidth, graphHeight, 12, 12, paintFundo);
+            canvas.DrawRoundRect(x, barBottom - graphHeight, barWidth, graphHeight, 12, 12, paintFundo);
 
-            paintBarra.Color = cor;
-            canvas.DrawRoundRect(x, y, barWidth, barHeight, 12, 12, paintBarra);
+            paintBarra.Color = entry.Cor.ToSKColor();
+            canvas.DrawRoundRect(x, barTop, barWidth, barHeight, 12, 12, paintBarra);
 
-            string texto = entry.Value.ToString("N0");
-            var textBounds = new SKRect();
-            paintTexto.Color = cor;
-            paintTexto.MeasureText(texto, ref textBounds);
+            string texto = entry.Quantidade.ToString("N0");
+            paintTexto.Color = entry.Cor.ToSKColor();
 
-            float textoY = y - 15;
-            if (textoY < textBounds.Height + 10)
-            {
-                textoY = y + textBounds.Height + 15;
-                paintTexto.Color = SKColors.White;
-            }
+            float textoY = barTop - 18;
 
-            canvas.DrawText(texto, x + barWidth / 2 - textBounds.MidX, textoY, paintTexto);
-        }
 
-        float legendStartY = topSpace + graphHeight + 30;
-        float legendX = 60;
+            if (textoY < 50) textoY = barTop + 20;
 
-        using var paintLegendaCirculo = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
-        using var paintLegendaTexto = new SKPaint
-        {
-            TextSize = 32,
-            IsAntialias = true,
-            Color = Application.Current?.RequestedTheme == AppTheme.Dark ? SKColors.White : SKColors.Black
-        };
-
-        for (int i = 0; i < count; i++)
-        {
-            float yPos = legendStartY + (i * 40);
-            var cor = cores[i % cores.Length];
-
-            paintLegendaCirculo.Color = cor;
-            canvas.DrawCircle(legendX, yPos, 12, paintLegendaCirculo);
-
-            string legendaTexto = $"{entries[i].Key}: {entries[i].Value:N0} alunos";
-            canvas.DrawText(legendaTexto, legendX + 30, yPos + 10, paintLegendaTexto);
+            canvas.DrawText(texto, x + barWidth / 2, textoY, paintTexto);
         }
     }
 
@@ -150,17 +117,14 @@ public partial class AlunosPage : ContentPage
         if (vm.DadosGraficoModalidades == null || vm.DadosGraficoModalidades.Count == 0) return;
 
         var entries = vm.DadosGraficoModalidades.ToList();
+        var coresSkia = vm.ModalidadesLegenda.Select(item => item.Cor.ToSKColor()).ToArray();
 
         float width = e.Info.Width;
-        float height = e.Info.Height;
-
-        float chartHeight = height - 120;
+        float height = e.Info.Height - 120;
         float centerX = width / 2;
-        float centerY = chartHeight / 2;
-        float radius = Math.Min(width, chartHeight) / 2.8f;
+        float centerY = height / 2;
+        float radius = Math.Min(width, height) / 2.8f;
         float holeRadius = radius * 0.5f;
-
-        var cores = new[] { SKColor.Parse("#1E3A8A"), SKColor.Parse("#3B82F6"), SKColor.Parse("#60A5FA") };
 
         float total = entries.Sum(x => x.Value);
         float startAngle = -90;
@@ -170,7 +134,7 @@ public partial class AlunosPage : ContentPage
 
         if (entries.Count == 1)
         {
-            paint.Color = cores[0];
+            paint.Color = coresSkia[0];
             canvas.DrawCircle(centerX, centerY, radius, paint);
         }
         else
@@ -178,7 +142,7 @@ public partial class AlunosPage : ContentPage
             for (int i = 0; i < entries.Count; i++)
             {
                 float sweepAngle = (entries[i].Value / total) * 360;
-                paint.Color = cores[i % cores.Length];
+                paint.Color = coresSkia[i % coresSkia.Length];
 
                 using var path = new SKPath();
                 path.MoveTo(centerX, centerY);
@@ -194,25 +158,6 @@ public partial class AlunosPage : ContentPage
             ? SKColor.Parse("#1F2937")
             : SKColors.White;
         canvas.DrawCircle(centerX, centerY, holeRadius, paint);
-
-        float legendStartY = chartHeight + 30;
-        float legendX = 60;
-
-        using var paintLegendaCirculo = new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
-        using var paintLegendaTexto = new SKPaint
-        {
-            TextSize = 32,
-            IsAntialias = true,
-            Color = Application.Current?.RequestedTheme == AppTheme.Dark ? SKColors.White : SKColors.Black
-        };
-
-        for (int i = 0; i < entries.Count; i++)
-        {
-            float yPos = legendStartY + (i * 40);
-            paintLegendaCirculo.Color = cores[i % cores.Length];
-            canvas.DrawCircle(legendX, yPos, 12, paintLegendaCirculo);
-            canvas.DrawText($"{entries[i].Key}: {entries[i].Value:N0}", legendX + 30, yPos + 10, paintLegendaTexto);
-        }
     }
 
     private void OnGraficoCursosPaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -424,8 +369,6 @@ public partial class AlunosPage : ContentPage
             canvas.DrawText(texto, x + barWidth / 2, barTop - 10, paintTexto);
         }
     }
-
-
 
     private async void OnLimparFiltrosClicked(object sender, EventArgs e)
     {

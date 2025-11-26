@@ -16,7 +16,6 @@
               Margin="0"
               Padding="0">
 
-            <!-- Botão Voltar -->
             <ImageButton Grid.Column="0"
                          Source="seta_direita.png"  
                          HeightRequest="44"
@@ -28,14 +27,12 @@
                          HorizontalOptions="Start"
                          VerticalOptions="Center"/>
 
-            <!-- Título da Página -->
             <Label Grid.Column="1"
                    Text="Dashboard Alunos"
                    Style="{StaticResource TituloShellStyle}"
                    VerticalOptions="Center"
                    HorizontalOptions="Fill"/>
 
-            <!-- Menu (placeholder) -->
             <ImageButton Grid.Column="2"
                          Source="icone_menu.png"  
                          HeightRequest="44"
@@ -48,15 +45,9 @@
         </Grid>
     </Shell.TitleView>
 
-    <!-- ========================================
-         CONTEÚDO PRINCIPAL SCROLLÁVEL
-         ======================================== -->
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- ========================================
-                 SEÇÃO: FILTROS DE DRILL-DOWN
-                 ======================================== -->
             <Frame CornerRadius="15"
                    Padding="15"
                    HasShadow="True"
@@ -64,7 +55,6 @@
 
                 <VerticalStackLayout Spacing="12">
 
-                    <!-- Título da seção de filtros -->
                     <Grid ColumnDefinitions="*,Auto">
                         <Label Text="Filtros de Pesquisa" 
                                FontSize="18" 
@@ -73,7 +63,6 @@
                                VerticalOptions="Center"
                                Grid.Column="0"/>
 
-                        <!-- Botão Limpar Filtros -->
                         <Button Text="Limpar"
                                 Clicked="OnLimparFiltrosClicked"
                                 BackgroundColor="{StaticResource CorGraficoVermelho}"
@@ -84,7 +73,6 @@
                                 Grid.Column="1"/>
                     </Grid>
 
-                    <!-- Filtro Nível 1: Campus (sempre visível) -->
                     <Picker Title="Selecione o Campus"
                             ItemsSource="{Binding ListaCampus}"
                             SelectedItem="{Binding CampusSelecionado}"
@@ -92,7 +80,6 @@
                             BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
                             TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
-                    <!-- Filtro Nível 2: Modalidade -->
                     <Picker Title="Selecione a Modalidade"
                             ItemsSource="{Binding ListaModalidades}"
                             ItemDisplayBinding="{Binding Nome}"
@@ -101,7 +88,6 @@
                             BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
                             TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
-                    <!-- Filtro Nível 3: Curso -->
                     <Picker Title="Selecione o Curso"
                             ItemsSource="{Binding ListaCursos}"
                             ItemDisplayBinding="{Binding Nome}"
@@ -110,7 +96,6 @@
                             BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
                             TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
-                    <!-- Filtro Nível 4: Turno -->
                     <Picker Title="Selecione o Turno"
                             ItemsSource="{Binding ListaTurnos}"
                             ItemDisplayBinding="{Binding Nome}"
@@ -119,7 +104,6 @@
                             BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
                             TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
-                    <!-- Filtro Nível 5: Período -->
                     <Picker Title="Selecione o Período"
                             ItemsSource="{Binding ListaPeriodos}"
                             ItemDisplayBinding="{Binding Descricao}"
@@ -137,14 +121,12 @@
 
                 <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
 
-                    <!-- Título do card -->
                     <Label Text="Total de Alunos"
                            FontSize="18"
                            TextColor="White"
                            Grid.Row="0"
                            Grid.Column="0"/>
 
-                    <!-- Ícone decorativo -->
                     <Image Source="icone_capelo.png"
                            WidthRequest="60"
                            HeightRequest="60"
@@ -154,7 +136,6 @@
                            VerticalOptions="Center"
                            HorizontalOptions="End"/>
 
-                    <!-- Número de alunos -->
                     <Label Text="{Binding TotalAlunos, StringFormat='{0:N0}'}"
                            FontSize="42"
                            FontAttributes="Bold"
@@ -242,39 +223,76 @@
 
 
             <Frame CornerRadius="20"
-                   Padding="20"
-                   HasShadow="True"
-                   IsVisible="{Binding MostrarGraficoCampus}"
-                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+       Padding="20"
+       HasShadow="True"
+       IsVisible="{Binding MostrarGraficoCampus}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
 
                 <VerticalStackLayout Spacing="15">
                     <Label Text="Campus com mais alunos"
-                           FontSize="20"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
                     <skia:SKCanvasView x:Name="GraficoCampus"
-                                       HeightRequest="300"
-                                       PaintSurface="OnGraficoCampusPaintSurface"/>
+                           HeightRequest="300"
+                           PaintSurface="OnGraficoCampusPaintSurface"/>
+
+                    <CollectionView ItemsSource="{Binding CampusLegenda}" Margin="0,10,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="12">
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="16" HeightRequest="16"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15" LineBreakMode="TailTruncation"/>
+                                    <Label Grid.Column="2" 
+                               Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" 
+                               FontSize="15" 
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
             </Frame>
 
 
             <Frame CornerRadius="20"
-                   Padding="20"
-                   HasShadow="True"
-                   IsVisible="{Binding MostrarGraficoModalidades}"
-                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+       Padding="20"
+       HasShadow="True"
+       IsVisible="{Binding MostrarGraficoModalidades}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
 
                 <VerticalStackLayout Spacing="15">
                     <Label Text="Distribuição por Modalidade"
-                           FontSize="20"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
 
                     <skia:SKCanvasView x:Name="GraficoModalidades"
-                                       HeightRequest="280"
-                                       PaintSurface="OnGraficoModalidadesPaintSurface"/>
+                           HeightRequest="280"
+                           PaintSurface="OnGraficoModalidadesPaintSurface"/>
+
+                    <CollectionView ItemsSource="{Binding ModalidadesLegenda}" Margin="0,10,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="12">
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="16" HeightRequest="16"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15" 
+                               LineBreakMode="WordWrap"/>
+                                    <Label Grid.Column="2" Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" 
+                               FontSize="15" FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
             </Frame>
 

@@ -20,7 +20,7 @@ namespace Heicomp_2025_2.Services
         {
             return await _connectionFactory.OpenConnectionAsync("Corporem");
         }
-        // Consulta Card Total de Alunos
+
         public async Task<int> GetTotalAlunosAsync(string campus = null, string modalidade = null, string curso = null, int? turno = null, string periodo = null, string turma = null)
         {
             var query = "SELECT COUNT(DISTINCT m.RA) AS TOTAL_ALUNOS FROM SMATRICPL m INNER JOIN STURMA tu ON m.CODCOLIGADA = tu.CODCOLIGADA AND m.CODTURMA = tu.CODTURMA AND m.IDPERLET = tu.IDPERLET INNER JOIN SHABILITACAOFILIAL hf ON tu.IDHABILITACAOFILIAL = hf.IDHABILITACAOFILIAL INNER JOIN SHABILITACAOFILIALCAMPUS hfc ON hf.IDHABILITACAOFILIAL = hfc.IDHABILITACAOFILIAL INNER JOIN SCURSO s ON hf.CODCURSO = s.CODCURSO AND hf.CODCOLIGADA = s.CODCOLIGADA WHERE 1=1";
@@ -37,7 +37,6 @@ namespace Heicomp_2025_2.Services
             return result != null && result != DBNull.Value ? Convert.ToInt32(result) : 0;
         }
 
-        //Consulta Card Modalidade mais Comum
         public async Task<(string Modalidade, int Quantidade)> GetModalidadeMaisAlunosAsync(string campus = null, string curso = null, int? turno = null, string periodo = null)
         {
             var query = "SELECT COALESCE(s.CURPRESDIST, 'Presencial (sem definição)') AS MODALIDADE, COUNT(DISTINCT m.RA) AS QTD_ALUNOS FROM SMATRICPL m INNER JOIN STURMA tu ON m.CODCOLIGADA = tu.CODCOLIGADA AND m.CODTURMA = tu.CODTURMA AND m.IDPERLET = tu.IDPERLET INNER JOIN SHABILITACAOFILIAL hf ON tu.IDHABILITACAOFILIAL = hf.IDHABILITACAOFILIAL INNER JOIN SHABILITACAOFILIALCAMPUS hfc ON hf.IDHABILITACAOFILIAL = hfc.IDHABILITACAOFILIAL INNER JOIN SCURSO s ON hf.CODCURSO = s.CODCURSO AND hf.CODCOLIGADA = s.CODCOLIGADA WHERE 1=1";
@@ -54,7 +53,6 @@ namespace Heicomp_2025_2.Services
             return ("N/A", 0);
         }
 
-        //Consulta Curso com mais Alunos
         public async Task<(string Curso, int Quantidade)> GetCursoComMaisAlunosAsync(string campus = null, string modalidade = null, int? turno = null, string periodo = null)
         {
             var query = "SELECT s.NOME AS CURSO, COUNT(DISTINCT m.RA) AS QTD_ALUNOS FROM SMATRICPL m INNER JOIN STURMA tu ON m.CODCOLIGADA = tu.CODCOLIGADA AND m.CODTURMA = tu.CODTURMA AND m.IDPERLET = tu.IDPERLET INNER JOIN SHABILITACAOFILIAL hf ON tu.IDHABILITACAOFILIAL = hf.IDHABILITACAOFILIAL INNER JOIN SHABILITACAOFILIALCAMPUS hfc ON hf.IDHABILITACAOFILIAL = hfc.IDHABILITACAOFILIAL INNER JOIN SCURSO s ON hf.CODCURSO = s.CODCURSO AND hf.CODCOLIGADA = s.CODCOLIGADA WHERE 1=1";
@@ -70,15 +68,31 @@ namespace Heicomp_2025_2.Services
             if (await reader.ReadAsync()) return (reader.GetString("CURSO"), reader.GetInt32("QTD_ALUNOS"));
             return ("N/A", 0);
         }
-        // Consultas do Filtro
+
         public async Task<List<string>> GetCampusDisponiveisAsync()
         {
-            var query = "SELECT DISTINCT CODCAMPUS FROM SCAMPUS WHERE ATIVO = 'S' ORDER BY CODCAMPUS";
+            var query = @"
+        SELECT DISTINCT 
+            CODCAMPUS,
+            CONCAT(CODCAMPUS, ' : ', DESCRICAO) AS NomeCompleto
+        FROM SCAMPUS 
+        WHERE ATIVO = 'S' 
+        ORDER BY CODCAMPUS";
+
             var resultado = new List<string>();
+
             await using var conn = await AbrirConexaoAsync();
             await using var cmd = new MySqlCommand(query, conn);
             await using var reader = await cmd.ExecuteReaderAsync();
-            while (await reader.ReadAsync()) resultado.Add(reader.GetString("CODCAMPUS"));
+
+            while (await reader.ReadAsync())
+            {
+                string codigo = reader.GetString("CODCAMPUS");
+                string nomeCompleto = reader.GetString("NomeCompleto");
+
+                resultado.Add(nomeCompleto);
+            }
+
             return resultado;
         }
         public async Task<List<(string Codigo, string Nome)>> GetModalidadesDisponiveisAsync(string campus)
@@ -143,7 +157,7 @@ namespace Heicomp_2025_2.Services
             while (await reader.ReadAsync()) { var codigo = reader.GetString("CODPERLET"); var descricao = reader.GetString("PERIODO_LETIVO"); resultado.Add((codigo, $"{codigo} - {descricao}")); }
             return resultado;
         }
-        //Consulta Gráfico 5 Campus com mais alunos
+
         public async Task<List<(string Campus, int Quantidade)>> GetAlunosPorCampusAsync()
         {
             var query = "SELECT c.CODCAMPUS AS NOME_CAMPUS, COUNT(DISTINCT m.RA) AS QTD_ALUNOS FROM SMATRICPL m INNER JOIN STURMA tu ON m.CODCOLIGADA = tu.CODCOLIGADA AND m.CODTURMA = tu.CODTURMA AND m.IDPERLET = tu.IDPERLET INNER JOIN SHABILITACAOFILIAL hf ON tu.IDHABILITACAOFILIAL = hf.IDHABILITACAOFILIAL INNER JOIN SHABILITACAOFILIALCAMPUS hfc ON hf.IDHABILITACAOFILIAL = hfc.IDHABILITACAOFILIAL INNER JOIN SCAMPUS c ON hfc.CODCAMPUS = c.CODCAMPUS GROUP BY c.CODCAMPUS ORDER BY QTD_ALUNOS DESC LIMIT 5";
@@ -249,7 +263,7 @@ namespace Heicomp_2025_2.Services
                 parametros.Add(new MySqlParameter("@modalidade", modalidade));
             }
 
-            // QUERY OTIMIZADA - Removendo JOINs desnecessários
+
             var query = $@"
         SELECT 
             p.CODPERLET,
@@ -272,7 +286,7 @@ namespace Heicomp_2025_2.Services
 
             await using var conn = await AbrirConexaoAsync();
             await using var cmd = new MySqlCommand(query, conn);
-            cmd.CommandTimeout = 60; // ⬅️ AUMENTA O TIMEOUT PARA 60 SEGUNDOS
+            cmd.CommandTimeout = 60;
             cmd.Parameters.AddWithValue("@campus", campus);
             cmd.Parameters.AddWithValue("@curso", curso);
             cmd.Parameters.AddWithValue("@turno", turno);
@@ -284,9 +298,7 @@ namespace Heicomp_2025_2.Services
 
             return resultado;
         }
-        // ========================================
-        // NOVOS MÉTODOS PARA VISÃO GERAL (SEM FILTRO)
-        // ========================================
+
 
         public async Task<Dictionary<string, int>> GetDistribuicaoModalidadeGeralAsync()
         {
@@ -349,7 +361,6 @@ namespace Heicomp_2025_2.Services
             return resultado;
         }
 
-        // Adicione este método no final da classe AlunosService
         public async Task<List<(string Turma, int Quantidade)>> GetTurmasPorPeriodoAsync(string campus, string modalidade, string curso, int turno, string periodo)
         {
             var parametros = new List<MySqlParameter>();
@@ -412,7 +423,7 @@ namespace Heicomp_2025_2.Services
             else if (!string.IsNullOrEmpty(modalidade) && modalidade != "Todos")
             {
                 whereModalidade = " AND s.CURPRESDIST = @modalidade";
-                parametros.Add(new MySqlParameter("@modalidade", modalidade[0])); // P ou D
+                parametros.Add(new MySqlParameter("@modalidade", modalidade[0]));
             }
 
             var query = $@"
@@ -421,7 +432,7 @@ namespace Heicomp_2025_2.Services
             p.NOME AS Nome
         FROM SMATRICPL m
         INNER JOIN SALUNO alu        ON alu.CODCOLIGADA = m.CODCOLIGADA AND alu.RA = m.RA
-        INNER JOIN PPESSOA p         ON p.CODIGO = alu.CODPESSOA                  -- <<< AQUI ESTÁ O NOME!!!
+        INNER JOIN PPESSOA p         ON p.CODIGO = alu.CODPESSOA                 
         INNER JOIN STURMA tu         ON tu.CODCOLIGADA = m.CODCOLIGADA 
                                         AND tu.CODTURMA = m.CODTURMA 
                                         AND tu.IDPERLET = m.IDPERLET
