@@ -68,19 +68,27 @@ namespace MauiApp1.ViewModels.Dashboards
             var totalRow = CategoriaTotais.FirstOrDefault(x => string.Equals(x.Categoria, "Total", StringComparison.OrdinalIgnoreCase));
             TotalColaboradores = totalRow?.Total ?? CategoriaTotais.Sum(x => x.Total);
 
+            //Variáveis criadas para ajustar as cores do gráfico conforme o tema (claro/escuro) da aplicação
+            var isDark = Application.Current?.RequestedTheme == AppTheme.Dark;
+            var corDoTexto = isDark ? SKColors.White : SKColors.Black;
+
             var entries = CategoriaTotais
                 .Where(x => !string.Equals(x.Categoria, "Total", StringComparison.OrdinalIgnoreCase))
                 .Select(x => new Microcharts.ChartEntry(x.Total)
                 {
                     Label = x.Categoria,
+                    TextColor = corDoTexto,
                     ValueLabel = x.Total.ToString(),
+                    ValueLabelColor = corDoTexto,
                     Color = CategoriaToColor(x.Categoria)
+                    
                 })
                 .ToList();
 
             PieChart = new Microcharts.PieChart
             {
                 Entries = entries,
+                BackgroundColor = SKColors.Transparent
             };
         }
 
