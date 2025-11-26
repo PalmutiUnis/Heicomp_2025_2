@@ -8,8 +8,8 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Shell.NavBarIsVisible="True"
              Shell.ForegroundColor="White"
-             Shell.BackgroundColor="#1E3A8A"
-             Shell.TitleColor="White">
+             Shell.BackgroundColor="{AppThemeBinding Light={StaticResource CorShellClaro}, Dark={StaticResource CorShellEscuro}}"
+             Shell.TitleColor="{AppThemeBinding Light={StaticResource CorTextoBranco}, Dark={StaticResource CorTextoBranco}}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -20,7 +20,11 @@
 
     <Shell.TitleView>
         <Grid ColumnDefinitions="*, Auto">
-            <Label Text="Indicadores de Diversidade" TextColor="White" FontSize="18" FontAttributes="Bold" VerticalOptions="Center"/>
+            <Label 
+                Text="Indicadores de Diversidade" 
+                TextColor="White" FontSize="18" 
+                FontAttributes="Bold" 
+                VerticalOptions="Center"/>
             <ImageButton Grid.Column="1" Source="icone_menu.png" HeightRequest="24" WidthRequest="24" Margin="0,0,10,0" BackgroundColor="Transparent"/>
         </Grid>
     </Shell.TitleView>
@@ -28,7 +32,16 @@
     <ScrollView>
         <VerticalStackLayout Padding="16" Spacing="16">
 
-            <Frame HorizontalOptions="Center" BackgroundColor="White" Padding="0" HeightRequest="45" CornerRadius="8" HasShadow="True" BorderColor="#E5E7EB" WidthRequest="160" Margin="0,0,0,10">
+            <Frame 
+                HorizontalOptions="Center" 
+                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}" 
+                Padding="0" 
+                HeightRequest="45" 
+                CornerRadius="8" 
+                HasShadow="True" 
+                BorderColor="{AppThemeBinding Light={StaticResource BotaoClaro}, Dark={StaticResource BotaoEscuro}}" 
+                WidthRequest="160" 
+                Margin="0,0,0,10">
                 <Picker x:Name="PickerAno"
                         Title="Ano"
                         ItemsSource="{Binding AnosDisponiveis}" 
@@ -37,15 +50,27 @@
             </Frame>
 
             <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
-                <Frame CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                <Frame CornerRadius="12"
+                       Padding="16" 
+                       HasShadow="True"
+                       BorderColor="Transparent" 
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                         Dark={StaticResource FundoCardEscuro}}">
                     <VerticalStackLayout Spacing="5">
-                        <Label Text="👥" FontSize="20" TextColor="#1E3A8A"/>
-                        <Label Text="{Binding DadosGerais.TotalColaboradores, StringFormat='{0:N0}'}" FontSize="24" FontAttributes="Bold" TextColor="#1E3A8A"/>
-                        <Label Text="Total Colaboradores" FontSize="12" TextColor="#6B7280"/>
+                        <Label Text="👥" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
+                                                                                   Dark={StaticResource TextoAzulEscuro}}"/>
+                        <Label Text="{Binding DadosGerais.TotalColaboradores, StringFormat='{0:N0}'}" FontSize="24" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextoColaboradores}, Dark={StaticResource TextoColaboradores}}"/>
+                        <Label Text="Total Colaboradores" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                                                                    Dark={StaticResource CorTextoCinza}}"/>
                     </VerticalStackLayout>
                 </Frame>
 
-                <Frame Grid.Column="1" CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                <Frame Grid.Column="1" 
+                       CornerRadius="12" 
+                       Padding="16" HasShadow="True" 
+                       BorderColor="Transparent" 
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                         Dark={StaticResource FundoCardEscuro}}">
                     <VerticalStackLayout Spacing="5">
                         <Label Text="♂" FontSize="20" TextColor="#3B82F6"/>
                         <Label Text="{Binding DadosGerais.PercentualHomens, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="#3B82F6"/>
@@ -53,29 +78,54 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <Frame Grid.Row="1" CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                <Frame Grid.Row="1" 
+                       CornerRadius="12" 
+                       Padding="16" 
+                       HasShadow="True" 
+                       BorderColor="Transparent" 
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                        Dark={StaticResource FundoCardEscuro}}">
                     <VerticalStackLayout Spacing="5">
-                        <Label Text="♀" FontSize="20" TextColor="#EC4899"/>
-                        <Label Text="{Binding DadosGerais.PercentualMulheres, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="#EC4899"/>
-                        <Label Text="Mulheres" FontSize="12" TextColor="#6B7280"/>
+                        <Label Text="♀" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource ProgressMulher},
+                                                                                  Dark={StaticResource ProgressMulher}}"/>
+                        <Label Text="{Binding DadosGerais.PercentualMulheres, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource ProgressMulher}, Dark={StaticResource ProgressMulher}}"/>
+                        <Label Text="Mulheres" FontSize="12" TextColor="{AppThemeBinding Light= {StaticResource CorTextoCinza},
+                                                                                         Dark={StaticResource CorTextoCinza}}"/>
                     </VerticalStackLayout>
                 </Frame>
 
-                <Frame Grid.Row="1" Grid.Column="1" CornerRadius="12" Padding="16" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+                <Frame Grid.Row="1" 
+                       Grid.Column="1"
+                       CornerRadius="12"
+                       Padding="16" 
+                       HasShadow="True"
+                       BorderColor="Transparent"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                         Dark={StaticResource FundoCardEscuro}}">
                     <VerticalStackLayout Spacing="5">
                         <Label Text="?" FontSize="20" TextColor="#9CA3AF"/>
-                        <Label Text="{Binding DadosGerais.PercentualNaoInformado, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="#6B7280"/>
+                        <Label Text="{Binding DadosGerais.PercentualNaoInformado, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource ProgressNinf}, Dark={StaticResource ProgressNinf}}"/>
                         <Label Text="Não Informado" FontSize="12" TextColor="#6B7280"/>
                     </VerticalStackLayout>
                 </Frame>
             </Grid>
 
-            <Frame CornerRadius="12" Padding="20" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+            <Frame CornerRadius="12" Padding="20" 
+                   HasShadow="True" 
+                   BorderColor="Transparent" 
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                     Dark={StaticResource FundoCardEscuro}}">
                 <VerticalStackLayout Spacing="10">
 
                     <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                         <Image Source="fundo_genero.png" HeightRequest="24" WidthRequest="24" VerticalOptions="Center"/>
-                        <Label Text="Distribuição por Gênero" TextColor="#1E3A8A" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                        <Label 
+                            Text="Distribuição por Gênero" 
+                            TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
+                                                        Dark={StaticResource TextoAzulEscuro}}" 
+                            FontAttributes="Bold" 
+                            FontSize="16" 
+                            VerticalOptions="Center"/>
                     </HorizontalStackLayout>
 
                     <micro:ChartView Chart="{Binding ChartGenero}" 
@@ -84,25 +134,53 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <Frame CornerRadius="12" Padding="20" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+            <Frame 
+                CornerRadius="12" 
+                Padding="20" 
+                HasShadow="True"
+                BorderColor="Transparent"
+                BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                  Dark={StaticResource FundoCardEscuro}}">
                 <VerticalStackLayout Spacing="15">
 
                     <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                         <Image Source="icone_alteraracoes.png" HeightRequest="24" WidthRequest="24" VerticalOptions="Center"/>
-                        <Label Text="Raça/Cor" TextColor="#1E3A8A" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                        <Label Text="Raça/Cor" 
+                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
+                                                           Dark={StaticResource TextoAzulEscuro}}"                               
+                               FontAttributes="Bold" 
+                               FontSize="16" 
+                               VerticalOptions="Center"/>
                     </HorizontalStackLayout>
 
                     <CollectionView ItemsSource="{Binding DistribuicoesRaca}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid ColumnDefinitions="100, *" Padding="0,6">
-                                    <Label Grid.Column="0" Text="{Binding Descricao}" FontSize="13" TextColor="#374151" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,0"/>
+                                    <Label 
+                                        Grid.Column="0" 
+                                        Text="{Binding Descricao}" 
+                                        FontSize="13" 
+                                        TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" 
+                                        VerticalOptions="Center" 
+                                        HorizontalOptions="End" 
+                                        Margin="0,0,10,0"/>
 
                                     <Grid Grid.Column="1" ColumnDefinitions="Auto, Auto">
-                                        <Frame Grid.Column="0" BackgroundColor="#1E3A8A" CornerRadius="4" HeightRequest="18" 
+                                        <Frame 
+                                            Grid.Column="0" 
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                            CornerRadius="4"
+                                            HeightRequest="18" 
                                                WidthRequest="{Binding Percentual, Converter={StaticResource PercentToWidthConverter}}"
                                                Padding="0" HasShadow="False" HorizontalOptions="Start"/>
-                                        <Label Grid.Column="1" Text="{Binding Percentual, StringFormat='{0:F1}%'}" TextColor="#1E3A8A" FontSize="12" FontAttributes="Bold" VerticalOptions="Center" Margin="8,0,0,0"/>
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Percentual, StringFormat='{0:F1}%'}" 
+                                               TextColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                               FontSize="12" 
+                                               FontAttributes="Bold" 
+                                               VerticalOptions="Center" 
+                                               Margin="8,0,0,0"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -111,19 +189,40 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <Frame CornerRadius="12" Padding="20" HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+            <Frame CornerRadius="12" 
+                   Padding="20" 
+                   HasShadow="True"
+                   BorderColor="Transparent"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                     Dark={StaticResource FundoCardEscuro}}">
                 <VerticalStackLayout Spacing="15">
 
                     <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                         <Image Source="icone_acessibilidade_claro.png" HeightRequest="24" WidthRequest="24" VerticalOptions="Center"/>
-                        <Label Text="Pessoas com Deficiência" TextColor="#1E3A8A" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                        <Label Text="Pessoas com Deficiência" 
+                               TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro}, Dark={StaticResource TextoAzulEscuro }}" 
+                               FontAttributes="Bold" 
+                               FontSize="16" 
+                               VerticalOptions="Center"/>
                     </HorizontalStackLayout>
 
                     <Grid ColumnDefinitions="40, *" HeightRequest="220">
                         <VerticalStackLayout Grid.Column="0" VerticalOptions="Fill" Spacing="0">
-                            <Label Text="100" FontSize="11" TextColor="#9CA3AF" VerticalOptions="Start"/>
-                            <Label Text="50" FontSize="11" TextColor="#9CA3AF" VerticalOptions="CenterAndExpand"/>
-                            <Label Text="0" FontSize="11" TextColor="#9CA3AF" VerticalOptions="End"/>
+                            <Label 
+                                Text="100" 
+                                FontSize="11" 
+                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" 
+                                VerticalOptions="Start"/>
+                            <Label 
+                                Text="50" 
+                                FontSize="11" 
+                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" 
+                                VerticalOptions="CenterAndExpand"/>
+                            <Label 
+                                Text="0" 
+                                FontSize="11" 
+                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" 
+                                VerticalOptions="End"/>
                         </VerticalStackLayout>
                         <StackLayout Grid.Column="1" VerticalOptions="Fill" Spacing="0">
                             <BoxView HeightRequest="1" Color="#F3F4F6" VerticalOptions="Start"/>
@@ -134,9 +233,26 @@
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <VerticalStackLayout VerticalOptions="End" Spacing="5" WidthRequest="100">
-                                        <Label Text="{Binding Percentual, StringFormat='{0:F1}%'}" TextColor="#1E3A8A" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center"/>
-                                        <Frame CornerRadius="4" HasShadow="False" Padding="0" BackgroundColor="#1E3A8A" WidthRequest="60" HorizontalOptions="Center" HeightRequest="{Binding Percentual, Converter={StaticResource PercentToHeightConverter}}"/>
-                                        <Label Text="{Binding Descricao}" TextColor="#374151" FontSize="12" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                                        <Label 
+                                            Text="{Binding Percentual, StringFormat='{0:F1}%'}" 
+                                            TextColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},Dark={StaticResource CorGraficoAzulClaro3}}"
+                                            FontSize="12" 
+                                            FontAttributes="Bold" 
+                                            HorizontalOptions="Center"/>
+                                        <Frame 
+                                            CornerRadius="4" 
+                                            HasShadow="False" 
+                                            Padding="0" 
+                                            BackgroundColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3},Dark={StaticResource CorGraficoAzulClaro3}}" 
+                                            WidthRequest="60" 
+                                            HorizontalOptions="Center" 
+                                            HeightRequest="{Binding Percentual, Converter={StaticResource PercentToHeightConverter}}"/>
+                                        <Label 
+                                            Text="{Binding Descricao}" 
+                                            TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" 
+                                            FontSize="12" 
+                                            HorizontalTextAlignment="Center" 
+                                            HorizontalOptions="Center"/>
                                     </VerticalStackLayout>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
