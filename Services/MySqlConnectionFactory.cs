@@ -23,14 +23,15 @@ namespace MauiApp1.Services
 
         private string BuildConnectionString(string databaseKey)
         {
-            // 🔍 Busca no formato MySql:RHSenior:ConnectionString
+            // Primeiro tenta pegar a ConnectionString completa
             var connStr = _config[$"MySql:{databaseKey}:ConnectionString"];
             if (!string.IsNullOrWhiteSpace(connStr))
                 return connStr;
 
-            // 🔧 Monta manualmente se não houver ConnectionString direta
+            // Monta manualmente se necessário
             string prefix = $"MySql:{databaseKey}";
-            string host = _config[$"{prefix}:Host"] ?? "localhost";
+
+            string host = _config[$"{prefix}:Host"] ?? "10.0.2.2";
             string port = _config[$"{prefix}:Port"] ?? "3306";
             string db = _config[$"{prefix}:Database"] ?? "";
             string user = _config[$"{prefix}:User"] ?? "root";
@@ -49,26 +50,15 @@ namespace MauiApp1.Services
 
         public async Task<MySqlConnection> OpenConnectionAsync(string databaseKey = "RHSenior", CancellationToken ct = default)
         {
-            try
-            {
-                string connectionString = BuildConnectionString(databaseKey);
+            var connectionString = BuildConnectionString(databaseKey);
 
-                if (string.IsNullOrWhiteSpace(connectionString))
-                {
-                    System.Diagnostics.Debug.WriteLine($"❌ Falha ao abrir conexão MySQL ({databaseKey}): ⚠️ Nenhuma string de conexão encontrada para '{databaseKey}'.");
-                    throw new InvalidOperationException($"⚠️ Nenhuma string de conexão encontrada para '{databaseKey}'.");
-                }
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new InvalidOperationException($"Nenhuma string de conexão encontrada para '{databaseKey}'.");
 
-                var conn = new MySqlConnection(connectionString);
-                await conn.OpenAsync(ct);
-                System.Diagnostics.Debug.WriteLine($"✅ Conexão MySQL aberta com sucesso ({databaseKey})!");
-                return conn;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ Falha ao abrir conexão MySQL ({databaseKey}): {ex.Message}\nStack: {ex.StackTrace}");
-                throw;
-            }
+            var conn = new MySqlConnection(connectionString);
+            await conn.OpenAsync(ct);
+
+            return conn;
         }
     }
 }
