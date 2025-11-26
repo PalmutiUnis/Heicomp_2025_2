@@ -58,7 +58,8 @@
             <Picker x:Name="pickerAno"
                     Title="Selecione o ano"
                     HorizontalOptions="Fill"
-                    BackgroundColor="White"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                      Dark={StaticResource FundoCardEscuro}}"
                     FontSize="14"
                     HeightRequest="40"
                     TitleColor="Gray"
@@ -129,7 +130,8 @@
                             <Label Text="58.2%"
                                    FontAttributes="Bold"
                                    FontSize="22"
-                                   TextColor="#3B82F6"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource ProgressHomem},
+                                                               Dark={StaticResource ProgressHomem}}"/>
                             <Label Text="Homens"
                                    FontSize="13"
                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
@@ -157,7 +159,8 @@
                             <Label Text="40.1%"
                                    FontAttributes="Bold"
                                    FontSize="22"
-                                   TextColor="#EC4899"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource ProgressMulher},
+                                                               Dark={StaticResource ProgressMulher}}"/>
                             <Label Text="Mulheres"
                                    FontSize="13"
                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
@@ -185,7 +188,8 @@
                             <Label Text="1.7%"
                                    FontAttributes="Bold"
                                    FontSize="22"
-                                   TextColor="#9CA3AF"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource ProgressNinf},
+                                                               Dark={StaticResource ProgressNinf}}"/>
                             <Label Text="Não Informado"
                                    FontSize="13"
                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}"/>
