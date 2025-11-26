@@ -9,6 +9,7 @@
     xmlns:administrativa="clr-namespace:MauiApp1.Views.Administrativa"
     Shell.FlyoutBehavior="Flyout"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource Black}}"
+    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource CorHamburguer}, Dark={StaticResource CorHamburguer}}"
     Title="MauiApp1">
 
 
