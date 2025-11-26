@@ -66,15 +66,8 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="30"/>
                         </Border.StrokeShape>
-                        <Image Source="icone_perfil.png" 
+                        <Image Source="icone_usuario.png" 
                                Aspect="AspectFill"/>
-                        <!--  ***Se não tiver imagem vai ser isso (Não implantado)***  
-                        <Label Text="{Binding InitialsUsuario}"
-                               FontFamily="OpenSansSemibold"
-                               FontSize="22"
-                               TextColor="{StaticResource CorTextoBranco}"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"/> -->
                     </Border>
 
                     <!-- Nome e Email -->
@@ -82,12 +75,12 @@
                                         VerticalOptions="Center"
                                         Spacing="4">
                         <!--Substituir para Text="{Binding NomeUsuario}"-->
-                        <Label Text="João da Silva"
+                        <Label Text="{Binding userName}"
                                FontFamily="OpenSansSemibold"
                                FontSize="18"
                                TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
                         <!--Substituir para Text="{Binding EmailUsuario}"-->
-                        <Label Text="JoaoDaSilva@email.unis"
+                        <Label Text="{Binding userEmail}"
                                FontFamily="OpenSansRegular"
                                FontSize="14"
                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource Gray300}}"/>
