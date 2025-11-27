@@ -1,66 +1,454 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:cards="clr-namespace:MauiApp1.Views.Cards"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels.Dashboards"
              x:Class="MauiApp1.Views.Dashboards.AlunosPage"
+
              BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}"
-             Title=""
+             Title="Dashboard Alunos"
+
              Shell.FlyoutBehavior="Disabled">
 
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="Auto, *, Auto"
+              Style="{StaticResource TitleViewGridStyle}"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill"
+              Margin="0"
+              Padding="0">
 
-    <Shell.TitleView >
-        <Grid ColumnDefinitions="Auto, *"
-          Style="{StaticResource TitleViewGridStyle}"
-          HorizontalOptions="Fill"
-          VerticalOptions="Fill"
-          Margin="0"
-          Padding="0">
             <ImageButton Grid.Column="0"
-                     Source="seta_direita.png"  
-                     HeightRequest="44"
-                     WidthRequest="44"
-                     BackgroundColor="Transparent"
-                     Clicked="BotaoVoltarPainelGestao"
-                     Margin="0"
-                     Padding="0"
-                     HorizontalOptions="Start"
-                     VerticalOptions="Center"/>
+                         Source="seta_direita.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Clicked="BotaoVoltarPainelGestao"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Center"/>
 
             <Label Grid.Column="1"
-               Text="Alunos"
-               Style="{StaticResource TituloShellStyle}"
-               VerticalOptions="Center"
-               HorizontalOptions="Fill"/>
+                   Text="Dashboard Alunos"
+                   Style="{StaticResource TituloShellStyle}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Fill"/>
 
             <ImageButton Grid.Column="2"
-                     Source="icone_menu.png"  
-                     HeightRequest="44"
-                     WidthRequest="44"
-                     BackgroundColor="Transparent"
-                     Margin="0"
-                     Padding="0"
-                     HorizontalOptions="End"
-                     VerticalOptions="Center"/>
+                         Source="icone_menu.png"  
+                         HeightRequest="44"
+                         WidthRequest="44"
+                         BackgroundColor="Transparent"
+                         Margin="0"
+                         Padding="0"
+                         HorizontalOptions="End"
+                         VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
 
-
     <ScrollView>
-        <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="10" RowSpacing="10">
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Frame CornerRadius="15"
+                   Padding="15"
+                   HasShadow="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Filtros de Pesquisa" 
+                               FontSize="18" 
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"
+                               VerticalOptions="Center"
+                               Grid.Column="0"/>
+
+                        <Button Text="Limpar"
+                                Clicked="OnLimparFiltrosClicked"
+                                BackgroundColor="{StaticResource CorGraficoVermelho}"
+                                TextColor="White"
+                                FontSize="14"
+                                Padding="12,6"
+                                CornerRadius="8"
+                                Grid.Column="1"/>
+                    </Grid>
+
+                    <Picker Title="Selecione o Campus"
+                            ItemsSource="{Binding ListaCampus}"
+                            SelectedItem="{Binding CampusSelecionado}"
+                            IsVisible="{Binding MostrarCampus}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <Picker Title="Selecione a Modalidade"
+                            ItemsSource="{Binding ListaModalidades}"
+                            ItemDisplayBinding="{Binding Nome}"
+                            SelectedItem="{Binding ModalidadeSelecionada}"
+                            IsVisible="{Binding MostrarModalidade}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <Picker Title="Selecione o Curso"
+                            ItemsSource="{Binding ListaCursos}"
+                            ItemDisplayBinding="{Binding Nome}"
+                            SelectedItem="{Binding CursoSelecionado}"
+                            IsVisible="{Binding MostrarCurso}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <Picker Title="Selecione o Turno"
+                            ItemsSource="{Binding ListaTurnos}"
+                            ItemDisplayBinding="{Binding Nome}"
+                            SelectedItem="{Binding TurnoSelecionado}"
+                            IsVisible="{Binding MostrarTurno}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <Picker Title="Selecione o Período"
+                            ItemsSource="{Binding ListaPeriodos}"
+                            ItemDisplayBinding="{Binding Descricao}"
+                            SelectedItem="{Binding PeriodoSelecionado}"
+                            IsVisible="{Binding MostrarPeriodo}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   BackgroundColor="{StaticResource CorGraficoPrimaria}">
+
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+
+                    <Label Text="Total de Alunos"
+                           FontSize="18"
+                           TextColor="White"
+                           Grid.Row="0"
+                           Grid.Column="0"/>
+
+                    <Image Source="icone_capelo.png"
+                           WidthRequest="60"
+                           HeightRequest="60"
+                           Grid.Row="0"
+                           Grid.RowSpan="2"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"/>
+
+                    <Label Text="{Binding TotalAlunos, StringFormat='{0:N0}'}"
+                           FontSize="42"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="0,5,0,0"/>
+                </Grid>
+            </Frame>
 
 
-            <!-- Ex de Layout principal -->
-            <!--Apenas um exemplo de layout com cards para dashboard
-            Obs: Os icones ainda nao estão funcionando-->
-            <Label Text="Alunos"
-                   Grid.Row="0"
-                   Grid.ColumnSpan="2"
-                   Style="{StaticResource TextoTituloSecao}"
-                   VerticalOptions="Start"
-                   HorizontalOptions="Start" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
 
-        </Grid>
+                <Frame CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
+                       Grid.Column="0">
+
+                    <VerticalStackLayout Spacing="5">
+                        <Image Source="icone_documentos.png"
+                               WidthRequest="40"
+                               HeightRequest="40"
+                               HorizontalOptions="Start"/>
+
+                        <Label Text="Modalidade Mais Comum"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoSecundarioClaro}, Dark={StaticResource TextoSecundarioEscuro}}"/>
+
+                        <Label Text="{Binding ModalidadeMaisComum}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame CornerRadius="15"
+                       Padding="15"
+                       HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
+                       Grid.Column="1">
+
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AbrirListaCursosCommand}" />
+                    </Frame.GestureRecognizers>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Grid>
+                            <Image Source="icone_formatura_azul.png"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   HorizontalOptions="Start"/>
+
+                            <Image Source="icone_seta_direita.png"
+                                   WidthRequest="20"
+                                   HeightRequest="20"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Start"
+                                   IsVisible="{Binding MostrarBotaoCursos}"
+                                   Opacity="0.6"/>
+                        </Grid>
+
+                        <Label Text="Curso com Mais Alunos"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoSecundarioClaro}, Dark={StaticResource TextoSecundarioEscuro}}"/>
+
+                        <Label Text="{Binding CursoComMaisAlunos}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                        <Label Text="{Binding NumeroAlunosCursoTop, StringFormat='{0:N0} alunos'}"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoSecundarioClaro}, Dark={StaticResource TextoSecundarioEscuro}}"/>
+
+                        <Label Text="Toque para ver todos os cursos"
+                               FontSize="10"
+                               FontAttributes="Italic"
+                               TextColor="{AppThemeBinding Light={StaticResource CorGraficoAzulClaro3}, Dark={StaticResource CorGraficoAzulClaro1}}"
+                               IsVisible="{Binding MostrarBotaoCursos}"
+                               Margin="0,5,0,0"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+
+            <Frame CornerRadius="20"
+       Padding="20"
+       HasShadow="True"
+       IsVisible="{Binding MostrarGraficoCampus}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Campus com mais alunos"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <skia:SKCanvasView x:Name="GraficoCampus"
+                           HeightRequest="300"
+                           PaintSurface="OnGraficoCampusPaintSurface"/>
+
+                    <CollectionView ItemsSource="{Binding CampusLegenda}" Margin="0,10,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="12">
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="16" HeightRequest="16"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15" LineBreakMode="TailTruncation"/>
+                                    <Label Grid.Column="2" 
+                               Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" 
+                               FontSize="15" 
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+
+            <Frame CornerRadius="20"
+       Padding="20"
+       HasShadow="True"
+       IsVisible="{Binding MostrarGraficoModalidades}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Distribuição por Modalidade"
+               FontSize="20"
+               FontAttributes="Bold"
+               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <skia:SKCanvasView x:Name="GraficoModalidades"
+                           HeightRequest="280"
+                           PaintSurface="OnGraficoModalidadesPaintSurface"/>
+
+                    <CollectionView ItemsSource="{Binding ModalidadesLegenda}" Margin="0,10,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="12">
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="16" HeightRequest="16"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15" 
+                               LineBreakMode="WordWrap"/>
+                                    <Label Grid.Column="2" Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" 
+                               FontSize="15" FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+
+            <Frame CornerRadius="20"
+       Padding="20"
+       HasShadow="True"
+       IsVisible="{Binding MostrarGraficoCursos}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="18">
+
+                    <Label Text="Top 5 Cursos com Mais Alunos"
+               FontSize="20"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <skia:SKCanvasView x:Name="GraficoCursos"
+                           HeightRequest="320"
+                           PaintSurface="OnGraficoCursosPaintSurface"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <CollectionView ItemsSource="{Binding Top5CursosLegenda}"
+                        Margin="0,15,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="12" VerticalOptions="Center">
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="18" HeightRequest="18" VerticalOptions="Center"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15"  
+                                        LineBreakMode="TailTruncation" TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                    <Label Grid.Column="2" Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" FontSize="15"  
+                                            FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="20"
+                   Padding="20"
+                   HasShadow="True"
+                   IsVisible="{Binding MostrarGraficoTurnos}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Distribuição por Turno"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <skia:SKCanvasView x:Name="GraficoTurnos"
+                                       HeightRequest="280"
+                                       PaintSurface="OnGraficoTurnosPaintSurface"/>
+                    <CollectionView ItemsSource="{Binding TurnosLegenda}" Margin="0,10,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="12">
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="16" HeightRequest="16"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15" 
+                               LineBreakMode="WordWrap"/>
+                                    <Label Grid.Column="2" Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" 
+                               FontSize="15" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="20"
+                        Padding="20"
+                        HasShadow="True"
+                        IsVisible="{Binding MostrarGraficoPeriodos}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="18">
+                    <Label Text="Alunos por Período Letivo"
+               FontSize="20"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <skia:SKCanvasView x:Name="GraficoPeriodos"
+                           HeightRequest="380"
+                           PaintSurface="OnGraficoPeriodosPaintSurface"/>
+
+                    <CollectionView ItemsSource="{Binding PeriodosLegenda}"
+                        Margin="0,10,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto" ColumnSpacing="12">
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="16" HeightRequest="16"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15" LineBreakMode="TailTruncation"/>
+                                    <Label Grid.Column="2" Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" FontSize="15" FontAttributes="Bold"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="20"
+       Padding="20"
+       HasShadow="True"
+       IsVisible="{Binding MostrarGraficoTurmas}"
+       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
+
+                <VerticalStackLayout Spacing="18">
+                    <Label Text="Turmas do Período Selecionado"
+               FontSize="20"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+
+                    <skia:SKCanvasView x:Name="GraficoTurmas"
+                           HeightRequest="380"
+                           PaintSurface="OnGraficoTurmasPaintSurface"/>
+
+                    <CollectionView ItemsSource="{Binding TurmasLegenda}"
+                        Margin="0,10,0,0">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="20,*,Auto,Auto" ColumnSpacing="12">
+
+                                    <Ellipse Fill="{Binding Cor}" WidthRequest="16" HeightRequest="16"/>
+                                    <Label Grid.Column="1" Text="{Binding Nome}" FontSize="15" LineBreakMode="TailTruncation"/>
+                                    <Label Grid.Column="2"  
+                                        Text="{Binding Quantidade, StringFormat='{0:N0} alunos'}" 
+                               FontSize="15" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}"/>
+                                    <Button Grid.Column="3"  
+                                            Text="Ver alunos" FontSize="12" Padding="8,4" CornerRadius="12"
+                                BackgroundColor="{Binding Cor}" TextColor="White" HorizontalOptions="End"
+                                Margin="10,0,0,0" Command="{Binding VerAlunosCommand}" CommandParameter="{Binding Nome}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
     </ScrollView>
-
-
 </ContentPage>
