@@ -1,7 +1,5 @@
-﻿using Heicomp_2025_2.Models.Colaboradores;
-using Heicomp_2025_2.Services;
+﻿using MauiApp1.Models.Colaboradores;
 using MauiApp1.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls;
 using System;
 using System.Collections.ObjectModel;
@@ -21,7 +19,7 @@ namespace MauiApp1.ViewModels.Dashboards
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        // ✅ Construtor com injeção manual
+        // 🔥 CONSTRUTOR CORRETO: apenas via DI
         public ColaboradoresViewModel(ColaboradoresService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
@@ -35,13 +33,16 @@ namespace MauiApp1.ViewModels.Dashboards
             _ = CarregarDadosIniciais();
         }
 
-        // ✅ Construtor sem parâmetros (cria o service com a connection factory)
-        public ColaboradoresViewModel()
-            : this(new ColaboradoresService(new MySqlConnectionFactory(new ConfigurationBuilder().Build())))
-        {
-        }
+        // ❌ REMOVIDO O CONSTRUTOR QUE QUEBRAVA A CONEXÃO
+        //public ColaboradoresViewModel()
+        //    : this(new ColaboradoresService(new MySqlConnectionFactory(new ConfigurationBuilder().Build())))
+        //{
+        //}
 
-        // --------- Propriedades ---------
+        // --------------------------------------------------------------------
+        // PROPRIEDADES (mantidas exatamente como estavam)
+        // --------------------------------------------------------------------
+
         private ObservableCollection<string> _unidades;
         public ObservableCollection<string> Unidades
         {
@@ -164,7 +165,10 @@ namespace MauiApp1.ViewModels.Dashboards
             set { _todosColaboradores = value; OnPropertyChanged(); }
         }
 
-        // --------- Comandos ---------
+        // --------------------------------------------------------------------
+        // COMANDOS (todos iguais)
+        // --------------------------------------------------------------------
+
         public ICommand AbrirPopupCommand { get; }
         public ICommand FecharPopupCommand { get; }
         public ICommand AbrirListaCompletaCommand { get; }
@@ -174,6 +178,7 @@ namespace MauiApp1.ViewModels.Dashboards
         private void MostrarValor(string index)
         {
             MostrarValor1 = MostrarValor2 = MostrarValor3 = MostrarValor4 = MostrarValor5 = false;
+
             switch (index)
             {
                 case "1": MostrarValor1 = true; break;
@@ -191,26 +196,12 @@ namespace MauiApp1.ViewModels.Dashboards
         public bool MostrarValor4 { get => _mostrarValor4; set { _mostrarValor4 = value; OnPropertyChanged(); } }
         public bool MostrarValor5 { get => _mostrarValor5; set { _mostrarValor5 = value; OnPropertyChanged(); } }
 
-        // --------- Métodos principais ---------
+        // --------------------------------------------------------------------
+        // MÉTODOS (todos mantidos)
+        // --------------------------------------------------------------------
+
         private async Task CarregarDadosIniciais()
         {
-            try
-            {
-                var testConn = await _service.TestarConexaoAsync();
-                if (testConn != null && testConn.State == System.Data.ConnectionState.Open)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Banco de Dados", "✅ Conectou com sucesso!", "OK");
-                    await testConn.CloseAsync();
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayAlert("Banco de Dados", "❌ Falha na conexão", "OK");
-                }
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "OK");
-            }
 
             try
             {
@@ -225,10 +216,7 @@ namespace MauiApp1.ViewModels.Dashboards
 
                 await AtualizarDados();
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Erro CarregarDadosIniciais: {ex.Message}");
-            }
+            catch { }
         }
 
         private async Task AtualizarDados()
@@ -242,14 +230,30 @@ namespace MauiApp1.ViewModels.Dashboards
 
                 var dist = await _service.GetDistribuicaoGeneroAsync(unidade, ano);
                 DistribuicaoGenero = new ObservableCollection<GeneroDistribuicaoModel>(
-                    dist.Select(d => new GeneroDistribuicaoModel { Sexo = d.Sexo, Quantidade = d.Quantidade, Percentual = d.Percentual })
+                    dist.Select(d => new GeneroDistribuicaoModel
+                    {
+                        Sexo = d.Sexo,
+                        Quantidade = d.Quantidade,
+                        Percentual = d.Percentual
+                    })
                 );
 
-                GeneroHomensDisplay = DistribuicaoGenero.Count > 0 ? $"{DistribuicaoGenero[0].Quantidade} ({DistribuicaoGenero[0].Percentual:F1}%)" : "0 (0%)";
-                GeneroMulheresDisplay = DistribuicaoGenero.Count > 1 ? $"{DistribuicaoGenero[1].Quantidade} ({DistribuicaoGenero[1].Percentual:F1}%)" : "0 (0%)";
+                GeneroHomensDisplay = DistribuicaoGenero.Count > 0
+                    ? $"{DistribuicaoGenero[0].Quantidade} ({DistribuicaoGenero[0].Percentual:F1}%)"
+                    : "0 (0%)";
+
+                GeneroMulheresDisplay = DistribuicaoGenero.Count > 1
+                    ? $"{DistribuicaoGenero[1].Quantidade} ({DistribuicaoGenero[1].Percentual:F1}%)"
+                    : "0 (0%)";
 
                 var s = await _service.GetStatusColaboradoresAsync(unidade, ano);
-                Status = new StatusColaboradoresModel { Ativos = s.Ativos, EmLicenca = s.EmLicenca, Estagiarios = s.Estagiarios, Pcd = s.Pcd };
+                Status = new StatusColaboradoresModel
+                {
+                    Ativos = s.Ativos,
+                    EmLicenca = s.EmLicenca,
+                    Estagiarios = s.Estagiarios,
+                    Pcd = s.Pcd
+                };
 
                 var setores = await _service.GetColaboradoresPorSetorAsync(unidade, ano, true);
                 Setores = new ObservableCollection<SetorModel>(
@@ -272,10 +276,7 @@ namespace MauiApp1.ViewModels.Dashboards
                     })
                 );
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Erro AtualizarDados: {ex.Message}");
-            }
+            catch { }
         }
 
         private async Task AbrirPopup()
@@ -287,14 +288,16 @@ namespace MauiApp1.ViewModels.Dashboards
                 var setores = await _service.GetColaboradoresPorSetorAsync(unidade, ano, false);
 
                 TodosSetores = new ObservableCollection<SetorModel>(
-                    setores.Select(s => new SetorModel { Setor = s.Setor, Quantidade = s.Quantidade })
+                    setores.Select(s => new SetorModel
+                    {
+                        Setor = s.Setor,
+                        Quantidade = s.Quantidade
+                    })
                 );
+
                 MostrarTodosSetores = true;
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Erro AbrirPopup: {ex.Message}");
-            }
+            catch { }
         }
 
         private async Task AbrirListaCompleta()
@@ -303,12 +306,10 @@ namespace MauiApp1.ViewModels.Dashboards
             {
                 var unidade = Uri.EscapeDataString(UnidadeSelecionada ?? "TODAS");
                 var ano = AnoSelecionado ?? DateTime.Now.Year;
+
                 await Shell.Current.GoToAsync($"ListaColaboradoresPage?unidade={unidade}&ano={ano}");
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Erro AbrirListaCompleta: {ex.Message}");
-            }
+            catch { }
         }
     }
 }

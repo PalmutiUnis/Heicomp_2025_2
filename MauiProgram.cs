@@ -1,17 +1,16 @@
-﻿using Microsoft.Extensions.Logging;
-using Plugin.LocalNotification;
-using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Maui;
 using MauiApp1.Services;
-using Microsoft.Maui.Storage;
-using MauiApp1.Views.Auth;
-using Heicomp_2025_2.Services;
 using MauiApp1.ViewModels.Dashboards;
-using Heicomp_2025_2.ViewModels.Dashboards;
+using MauiApp1.Views.Auth;
+using MauiApp1.Views.Dashboards;
+using MauiApp1.Views.Dashboards.ListaColaboradores;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
+using Plugin.LocalNotification;
+// ADICIONADO: Necessário para os gráficos funcionarem
 using SkiaSharp.Views.Maui.Controls.Hosting;
-using CommunityToolkit.Maui;
-using Heicomp_2025_2.Views.Dashboards; // Para CargosPage
-
-
+using Microcharts.Maui;
 
 namespace MauiApp1
 {
@@ -20,10 +19,12 @@ namespace MauiApp1
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .UseSkiaSharp()
-                .UseMauiCommunityToolkit() // Agora reconhecido
+                .UseMicrocharts()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
@@ -31,73 +32,73 @@ namespace MauiApp1
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // ✅ Carrega corretamente o appsettings.json
-            try
-            {
-                using var stream = FileSystem.OpenAppPackageFileAsync("appsettings.json").Result;
-                builder.Configuration.AddJsonStream(stream);
-                System.Diagnostics.Debug.WriteLine("✅ appsettings.json carregado com sucesso!");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ Falha ao carregar appsettings.json: {ex.Message}");
-            }
+            // ===========================================================
+            // 📌 Carrega o appsettings.json
+            // ===========================================================
+            using var stream = FileSystem.OpenAppPackageFileAsync("appsettings.json").Result;
+            builder.Configuration.AddJsonStream(stream);
 
-            // Register MySQL connection factory & repository
+            // ===========================================================
+            // 📌 Registrar Serviços
+            // ===========================================================
+
+            // Factory de conexão
             builder.Services.AddSingleton<IMySqlConnectionFactory, MySqlConnectionFactory>();
+
+            // Módulo Turnover (já existia)
             builder.Services.AddSingleton<TurnoverRepository>();
 
-            // Register CargosService via interface
+            // Serviços de Cargos
             builder.Services.AddTransient<ICargosService, CargosService>();
             builder.Services.AddTransient<CargosViewModel>();
+
+            // Páginas globais
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
-            builder.Services.AddTransient<MauiApp1.Views.Dashboards.PainelGestaoPage>();
-            builder.Services.AddTransient<MauiApp1.Views.Dashboards.CargosPage>();
-            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.AlunosPage>();
+            builder.Services.AddTransient<PainelGestaoPage>();
+            builder.Services.AddTransient<CargosPage>();
 
-            // ✅ Adições específicas para o módulo de Colaboradores
-            builder.Services.AddSingleton<ColaboradoresService>();            // camada de acesso ao banco
-            builder.Services.AddTransient<ColaboradoresViewModel>();          // ViewModel principal (dashboard)
-            builder.Services.AddTransient<ListaColaboradoresViewModel>();     // ViewModel da lista completa
-            builder.Services.AddTransient<AlunosViewModel>();
+            // ===========================================================
+            // 📌 Módulo Colaboradores
+            // ===========================================================
 
-            builder.Services.AddSingleton<AlunosService>();
-            builder.Services.AddTransient<AlunosViewModel>();
-            builder.Services.AddTransient<Heicomp_2025_2.Views.Dashboards.AlunosPage>();
-            builder.Services.AddSingleton<Heicomp_2025_2.Services.AlunosService>();
-            builder.Services.AddTransient<Heicomp_2025_2.ViewModels.Dashboards.AlunosViewModel>();
+            builder.Services.AddTransient<ColaboradoresService>();
 
+            // ViewModels
+            builder.Services.AddTransient<ColaboradoresViewModel>();
+            builder.Services.AddTransient<ListaColaboradoresViewModel>();
+
+            // Páginas que recebem VM via DI
+            builder.Services.AddTransient<ColaboradoresPage>();
+            builder.Services.AddTransient<ListaColaboradoresPage>();
+
+            // ===========================================================
+            // 📌 Módulo Diversidade (CORRIGIDO)
+            // ===========================================================
+
+            // 1. Serviço
+            builder.Services.AddTransient<DiversidadeService>();
+
+            // 2. ViewModel
+            builder.Services.AddTransient<DiversidadeViewModel>();
+
+            // 3. Page
+            builder.Services.AddTransient<DiversidadePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
-
-            // Cria o app
             var app = builder.Build();
 
-            // 🔥 Captura exceções não tratadas (inclusive XAML)
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-            {
-                System.Diagnostics.Debug.WriteLine("🔥 Unhandled Exception: " + e.ExceptionObject.ToString());
-            };
-
-            TaskScheduler.UnobservedTaskException += (s, e) =>
-            {
-                System.Diagnostics.Debug.WriteLine("🔥 Task Exception: " + e.Exception.ToString());
-            };
-
 #if ANDROID
-            // Handler para remover espaço lateral do Shell.TitleView no ANDROID
             Microsoft.Maui.Handlers.ToolbarHandler.Mapper.AppendToMapping("CustomNavigationView", (handler, view) =>
             {
                 handler.PlatformView.ContentInsetStartWithNavigation = 0;
                 handler.PlatformView.SetContentInsetsAbsolute(0, 0);
             });
 #endif
-
 
             return app;
         }

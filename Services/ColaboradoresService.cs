@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MySqlConnector; // <-- MySqlConnector types
-using MauiApp1.Services; // <-- onde IMySqlConnectionFactory está definido
-using Heicomp_2025_2.Models;   // <-- onde estão seus modelos (ColaboradorResumoModel, SetorModel, etc)
+using MySqlConnector;
+using MauiApp1.Models.Colaboradores;
 
-namespace Heicomp_2025_2.Services
+namespace MauiApp1.Services
 {
     public class ColaboradoresService
     {
@@ -182,7 +181,7 @@ namespace Heicomp_2025_2.Services
                 cmd.Parameters.AddWithValue("@ano", ano);
                 cmd.Parameters.AddWithValue("@unidade", unidade);
                 var r = await cmd.ExecuteScalarAsync();
-                return (r != null && r != DBNull.Value) ? Convert.ToInt32(r) : 0;
+                return r != null && r != DBNull.Value ? Convert.ToInt32(r) : 0;
             }
 
             int ativos = await ExecCount("SELECT COUNT(*) FROM base_colaboradores;");
@@ -333,29 +332,14 @@ namespace Heicomp_2025_2.Services
             {
                 string f = filtro.ToLowerInvariant();
                 query = query.Where(c =>
-                    (!string.IsNullOrEmpty(c.Nome) && c.Nome.ToLowerInvariant().Contains(f)) ||
-                    (!string.IsNullOrEmpty(c.Setor) && c.Setor.ToLowerInvariant().Contains(f)) ||
-                    (!string.IsNullOrEmpty(c.Cargo) && c.Cargo.ToLowerInvariant().Contains(f)) ||
-                    (!string.IsNullOrEmpty(c.Status) && c.Status.ToLowerInvariant().Contains(f))
+                    !string.IsNullOrEmpty(c.Nome) && c.Nome.ToLowerInvariant().Contains(f) ||
+                    !string.IsNullOrEmpty(c.Setor) && c.Setor.ToLowerInvariant().Contains(f) ||
+                    !string.IsNullOrEmpty(c.Cargo) && c.Cargo.ToLowerInvariant().Contains(f) ||
+                    !string.IsNullOrEmpty(c.Status) && c.Status.ToLowerInvariant().Contains(f)
                 );
             }
 
             return query.Skip(offset).Take(limit).ToList();
-        }
-
-        // 9. Teste de conexão
-        public async Task<MySqlConnection> TestarConexaoAsync()
-        {
-            try
-            {
-                var conn = await _connectionFactory.OpenConnectionAsync("RHSenior");
-                return conn;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ Erro de conexão: {ex.Message}");
-                return null;
-            }
         }
     }
 }

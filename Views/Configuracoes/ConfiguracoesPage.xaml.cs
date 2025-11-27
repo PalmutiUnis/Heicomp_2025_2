@@ -1,14 +1,55 @@
-namespace MauiApp1.Views.Configuracoes;
+ï»¿namespace MauiApp1.Views.Configuracoes;
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Plugin.LocalNotification;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
 
 public partial class ConfiguracoesPage : ContentPage
 {
-    private bool _temaEscuroEnabled;
 
+    // 1. Propriedades pÃºblicas para o XAML
+    // O XAML vai se ligar a "NomeUsuario", "EmailUsuario" e "InitialsUsuario"
+    public string userName { get; set; }
+    public string userEmail { get; set; }
+
+
+
+    // *************************** Evento: Botao Voltar ***************************
+    private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//PainelGestaoPage");
+    }
+    // *************************** Fim Evento: BotÃ£o Voltar ***************************
+
+
+
+    // *************************** Evento: Salvar Configuraï¿½ï¿½es ***************************
+    private async void OnSalvarClicked(object sender, EventArgs e)
+    {
+        // 1. Tentar ler os Switches
+        bool isPushOn = Preferences.Get("PushNotificationsEnabled", false); // Usando Preferences como proxy de estado
+        bool isTemaOn = Preferences.Get("TemaEscuro", false);
+
+        // NOTE: Se quiser ler diretamente do Switch na tela, vocÃª precisa dar x:Name="PushSwitch"
+        // e usar: bool isPushOn = PushSwitch.IsToggled;
+
+        string statusPush = isPushOn ? "Ativado" : "Desativado";
+        string statusTema = isTemaOn ? "Ativado" : "Desativado";
+
+        string mensagem = $"ConfiguraÃ§Ãµes salvas!\n\n" +
+                         $"Push Notifications: {statusPush}\n" +
+                         $"Tema Escuro: {statusTema}";
+
+        await DisplayAlert("Sucesso", mensagem, "OK");
+    }
+    // *************************** Fim Evento: Salvar ConfiguraÃ§Ãµes ***************************
+
+
+
+    // *************************** Propriedade: Tema Escuro ***************************
+    private bool _temaEscuroEnabled;
     public bool TemaEscuroEnabled
     {
         get => _temaEscuroEnabled;
@@ -22,57 +63,42 @@ public partial class ConfiguracoesPage : ContentPage
             }
         }
     }
+    // *************************** Fim Propriedade: Tema Escuro ***************************
 
-	public ConfiguracoesPage()
-	{
-		InitializeComponent();
+
+
+    // *************************** Propriedade: Carregar dados do usuÃ¡rio ***************************
+    private void CarregarDadosUsuario()
+    {
+        // LÃª os valores salvos no LoginPage. Se nÃ£o existirem, usa valores padrÃ£o.
+        userName = Preferences.Get("userName", "UsuÃ¡rio Desconhecido");
+        userEmail = Preferences.Get("userEmail", "sem.email@unis.com");
+    }
+    // *************************** Fim Propriedade: Carregar dados do usuÃ¡rio ***************************
+
+
+
+    // *************************** Construtor ***************************
+    public ConfiguracoesPage()
+    {
+        InitializeComponent();
+        // 1. Permite o uso de notificaÃ§Ãµes locais 
         LocalNotificationCenter.Current.RequestNotificationPermission();
-        // Carrega a preferência salva e define o estado inicial do Switch
+        BindingContext = this; // Conecta a UI (XAML) com este cï¿½digo
+
+        //2. Carrega os dados do usuÃ¡rio
+        CarregarDadosUsuario();
+
+        // 3. Define o BindingContext da pï¿½gina para ELA MESMA.
+        this.BindingContext = this;
+
+        //4. Carrega a preferÃªncia do tema
         TemaEscuroEnabled = Preferences.Get("TemaEscuro", false);
-        BindingContext = this; // Conecta a UI (XAML) com este código
-            
-	}
 
-    // Evento: Botão Voltar
-    private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//PainelGestaoPage");
     }
+    // *************************** Fim Construtor ***************************
 
-    // Evento: Salvar Alterações
-    private async void OnSalvarClicked(object sender, EventArgs e)
-    {
-        // Captura os valores dos outros switches
-        //    bool pushNotif = SwitchPushNotif.IsToggled;
-        //    bool emailNotif = SwitchEmailNotif.IsToggled;
 
-        // A lógica do tema escuro não é mais necessária aqui, pois é aplicada instantaneamente.
-
-        //    string mensagem = $"Configurações salvas!\n\n" +
-        //                     $"Push Notifications: {(pushNotif ? "Ativado" : "Desativado")}\n" +
-        //                     $"Email Notifications: {(emailNotif ? "Ativado" : "Desativado")}\n" +
-        //                     $"Tema Escuro: {(TemaEscuroEnabled ? "Ativado" : "Desativado")}";
-
-        //    await DisplayAlert("Sucesso", mensagem, "OK");
-    }
-
-    // *************************** Evento: Idioma ***************************
-    private async void OnIdiomaClicked(object sender, EventArgs e)
-    {
-        string resultado = await DisplayActionSheet(
-            "Selecione o Idioma",
-            "Cancelar",
-            null,
-            "Português",
-            "English",
-            "Español"
-        );
-
-        if (resultado != null && resultado != "Cancelar")
-        {
-            await DisplayAlert("Idioma", $"Idioma selecionado: {resultado}", "OK");
-        }
-    }
 
     // *************************** Evento: Ajuda e Suporte ***************************
     private async void OnAjudaClicked(object sender, EventArgs e)
@@ -83,47 +109,55 @@ public partial class ConfiguracoesPage : ContentPage
             "OK"
         );
     }
+    // *************************** Fim Evento: Ajuda e Suporte ***************************
+
+
 
     // *************************** Evento: Termos de Uso ***************************
     private async void OnTermosClicked(object sender, EventArgs e)
     {
         await DisplayAlert(
             "Termos de Uso",
-            "Ao usar este aplicativo, você concorda com nossos termos e políticas de privacidade.",
+            "Ao usar este aplicativo, vocÃª concorda com nossos termos e polÃ­ticas de privacidade.",
             "Li e aceito"
         );
     }
+    // *************************** Fim Evento: Termos de Uso ***************************
 
-    // *************************** Evento: Notificações em Push ***************************
+
+
+    // *************************** Evento: Notificacoes em Push ***************************
     private async void OnPushNotificationsToggled(object sender, ToggledEventArgs e)
     {
         bool isEnabled = e.Value;
         Preferences.Set("PushNotificationsEnabled", isEnabled);
 
-        // 4. Se o botão foi LIGADO, envia a notificação
+        // 4. Se o botao foi LIGADO, envia a notificacao
         if (isEnabled)
         {
-            // Cria a notificação
+            // Cria a notificacao
             var request = new NotificationRequest
             {
-                NotificationId = 1337, // Um ID único para esta notificação
-                Title = "Notificações Ativadas!",
-                Description = "Você agora receberá alertas e promoções.",
-                BadgeNumber = 1, // Número que aparece no ícone do app
+                NotificationId = 1337, // Um ID unico para esta notificacao
+                Title = "NotificaÃ§Ãµes Ativadas!",
+                Description = "VocÃª agora receberÃ¡ alertas e promoÃ§Ãµes.",
+                BadgeNumber = 1, // Nï¿½mero que aparece no icone do app
                 Schedule = new NotificationRequestSchedule
                 {
-                    // Dispara a notificação 1 segundo após ligar o switch
-                    NotifyTime = DateTime.Now.AddSeconds(1)
+                    // Dispara a notificacao 1 segundo apos ligar o switch
+                    NotifyTime = DateTime.Now.AddSeconds(0.3)
                 }
             };
 
-            // Envia a notificação
+            // Envia a notificaï¿½ï¿½o
             await LocalNotificationCenter.Current.Show(request);
         }
     }
+    // *************************** Fim Evento: NotificaÃ§Ãµes em Push ***************************
 
 
-    // Aplica o tema escuro ou claro
+
+    // *************************** Evento: Alterar tema da app ***************************
     private void AplicarTema(bool temaEscuro)
     {
         try
@@ -135,7 +169,7 @@ public partial class ConfiguracoesPage : ContentPage
 
             Application.Current.UserAppTheme = themeRequested;
 
-            // Salva a preferência
+            // Salva a preferï¿½ncia
             Preferences.Set("TemaEscuro", temaEscuro);
         }
         catch (Exception ex)
@@ -143,15 +177,4 @@ public partial class ConfiguracoesPage : ContentPage
             System.Diagnostics.Debug.WriteLine($"Erro ao aplicar tema: {ex.Message}");
         }
     }
-
-    // <summary>
-    // /#region INotifyPropertyChanged Implementation
-    // </summary>
-    // public event PropertyChangedEventHandler PropertyChanged;
-
-    //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    //{
-    //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    //}
-    //#endregion
 }

@@ -1,5 +1,6 @@
 using Duende.IdentityModel.OidcClient;
 using System.Diagnostics;
+using Microsoft.Maui.Storage;
 
 // Precisamos disso para "new AppShell()" e "Application.Current"
 using MauiApp1;
@@ -62,6 +63,9 @@ namespace MauiApp1.Views.Auth
                 var accessToken = loginResult.AccessToken;
                 var userEmail = loginResult.User?.FindFirst(c => c.Type == "email")?.Value;
                 var userName = loginResult.User?.FindFirst(c => c.Type == "name")?.Value;
+
+                Preferences.Set("userName", userName);
+                Preferences.Set("userEmail", userEmail);
 
                 Debug.WriteLine($"[Login Sucesso] Email: {userEmail}");
 
