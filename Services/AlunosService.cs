@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MySqlConnector;
 using MauiApp1.Services;
 
-namespace Heicomp_2025_2.Services
+namespace MauiApp1.Services
 {
     public class AlunosService
     {

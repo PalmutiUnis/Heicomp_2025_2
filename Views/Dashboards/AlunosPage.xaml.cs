@@ -1,14 +1,20 @@
-﻿using Heicomp_2025_2.ViewModels.Dashboards;
+﻿using MauiApp1.ViewModels.Dashboards;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
+using MauiApp1.Services;
 
-namespace Heicomp_2025_2.Views.Dashboards;
+
+namespace MauiApp1.Views.Dashboards;
 
 public partial class AlunosPage : ContentPage
 {
     private readonly AlunosViewModel vm;
 
+    // Construtor sem parâmetros (usado pelo XAML/DataTemplate)
+    public AlunosPage() : this(new AlunosViewModel())
+    {
+    }
     public AlunosPage(AlunosViewModel viewModel)
     {
         InitializeComponent();

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Heicomp_2025_2.Services;
+using MauiApp1.Services;
 using Microsoft.Maui.Graphics;
 using MySqlConnector;
 using System.Collections.ObjectModel;
@@ -8,8 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
-namespace Heicomp_2025_2.ViewModels.Dashboards
+using Microsoft.Extensions.Configuration;
+namespace MauiApp1.ViewModels.Dashboards
 {
     public partial class AlunosViewModel : INotifyPropertyChanged
     {
@@ -23,6 +23,35 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
             get => _isBusy;
             set { _isBusy = value; OnPropertyChanged(); }
         }
+
+        // Construtor sem parâmetros (caso necessário)
+        public AlunosViewModel() : this(CreateDefaultService())
+        {
+        }
+        private static AlunosService CreateDefaultService()
+        {
+            var config = CreateDefaultConfiguration();
+            var factory = new MySqlConnectionFactory(config);
+            return new AlunosService(factory);
+        }
+        private static IConfiguration CreateDefaultConfiguration()
+        {
+            var inMemoryConfig = new Dictionary<string, string>
+    {
+        { "MySql:Corporem:Host", "cursoslivres.cl0yia62segf.sa-east-1.rds.amazonaws.com" },
+        { "MySql:Corporem:Port", "3306" },
+        { "MySql:Corporem:Database", "corporerm_heicomp" },        // ← ALTERE AQUI
+        { "MySql:Corporem:User", "heicomp" },             // ← ALTERE AQUI
+        { "MySql:Corporem:Password", "heicomp2025" },           // ← ALTERE AQUI
+        { "MySql:Corporem:SslMode", "Preferred" },
+        { "MySql:Corporem:AllowPublicKeyRetrieval", "true" }
+    };
+
+            var configBuilder = new ConfigurationBuilder();
+            configBuilder.AddInMemoryCollection(inMemoryConfig!);
+            return configBuilder.Build();
+        }
+
 
         public AlunosViewModel(AlunosService service)
         {
