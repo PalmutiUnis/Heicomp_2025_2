@@ -164,7 +164,7 @@ namespace MauiApp1.ViewModels.Dashboards
                         Label = $"Homens: {DadosGerais.PercentualHomens:F1}%",
                         ValueLabel = "",
                         Color = SKColor.Parse("#3B82F6"), // Azul
-                        TextColor = SKColor.Parse("#374151")
+                        TextColor = SKColor.Parse("#3B82F6")
                     });
                 }
 
@@ -176,7 +176,7 @@ namespace MauiApp1.ViewModels.Dashboards
                         Label = $"Mulheres: {DadosGerais.PercentualMulheres:F1}%",
                         ValueLabel = "",
                         Color = SKColor.Parse("#EC4899"), // Rosa
-                        TextColor = SKColor.Parse("#374151")
+                        TextColor = SKColor.Parse("#EC4899")
                     });
                 }
 
@@ -188,8 +188,8 @@ namespace MauiApp1.ViewModels.Dashboards
                     {
                         Label = $"N/I: {DadosGerais.PercentualNaoInformado:F1}%",
                         ValueLabel = "",
-                        Color = SKColor.Parse("#9CA3AF"), // Cinza
-                        TextColor = SKColor.Parse("#374151")
+                        Color = SKColor.Parse("9CA3AF"), // Cinza
+                        TextColor = SKColor.Parse("#9CA3AF")
                     });
                 }
             }
@@ -202,7 +202,7 @@ namespace MauiApp1.ViewModels.Dashboards
             ChartGenero = new DonutChart
             {
                 Entries = entries,
-                LabelTextSize = 30,       // Tamanho da fonte
+                LabelTextSize = 30,       // Tamanho da 
                 HoleRadius = 0.55f,       // Tamanho do buraco
                 BackgroundColor = SKColors.Transparent,
                 Margin = 30,              // Margem para as legendas externas não cortarem
