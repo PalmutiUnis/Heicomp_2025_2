@@ -24,7 +24,7 @@ namespace MauiApp1.ViewModels.Dashboards
             set { _isBusy = value; OnPropertyChanged(); }
         }
 
-        // Construtor sem parâmetros (caso necessário)
+        
         public AlunosViewModel() : this(CreateDefaultService())
         {
         }
@@ -40,9 +40,9 @@ namespace MauiApp1.ViewModels.Dashboards
     {
         { "MySql:Corporem:Host", "cursoslivres.cl0yia62segf.sa-east-1.rds.amazonaws.com" },
         { "MySql:Corporem:Port", "3306" },
-        { "MySql:Corporem:Database", "corporerm_heicomp" },        // ← ALTERE AQUI
-        { "MySql:Corporem:User", "heicomp" },             // ← ALTERE AQUI
-        { "MySql:Corporem:Password", "heicomp2025" },           // ← ALTERE AQUI
+        { "MySql:Corporem:Database", "corporerm_heicomp" },       
+        { "MySql:Corporem:User", "heicomp" },             
+        { "MySql:Corporem:Password", "heicomp2025" },           
         { "MySql:Corporem:SslMode", "Preferred" },
         { "MySql:Corporem:AllowPublicKeyRetrieval", "true" }
     };

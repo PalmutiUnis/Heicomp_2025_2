@@ -11,7 +11,7 @@ public partial class AlunosPage : ContentPage
 {
     private readonly AlunosViewModel vm;
 
-    // Construtor sem parâmetros (usado pelo XAML/DataTemplate)
+    
     public AlunosPage() : this(new AlunosViewModel())
     {
     }
