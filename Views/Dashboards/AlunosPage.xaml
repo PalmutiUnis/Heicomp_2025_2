@@ -4,8 +4,10 @@
              xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
              xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels.Dashboards"
              x:Class="MauiApp1.Views.Dashboards.AlunosPage"
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
+
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}"
              Title="Dashboard Alunos"
+
              Shell.FlyoutBehavior="Disabled">
 
     <Shell.TitleView>

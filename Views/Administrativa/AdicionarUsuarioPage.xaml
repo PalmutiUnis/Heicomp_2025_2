@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:MauiApp1.Converters"
+             x:Class="MauiApp1.Views.Administrativa.AdicionarUsuarioPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <!-- CONVERTERS -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <conv:IsNotNullOrEmptyConverter x:Key="IsNotNullOrEmptyConverter" />
+            <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" BackgroundColor="#1E3A8A">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Botão Voltar -->
+            <ImageButton Grid.Column="0"
+                        Aspect="Center" 
+                        WidthRequest="30"
+                        HeightRequest="40"
+                        BackgroundColor="Transparent"
+                        Clicked="OnBackClicked">
+                <ImageButton.Source>
+                    <FontImageSource 
+                        Glyph="←" 
+                        FontFamily="Arial"
+                        Size="42" 
+                        Color="White"/>
+                </ImageButton.Source>
+            </ImageButton>
+
+            <!-- Título -->
+            <Label Grid.Column="1" 
+                   Text="Adicionar Usuário" 
+                   FontSize="18" 
+                   FontAttributes="Bold"
+                   TextColor="White" 
+                   VerticalOptions="Center"
+                   Margin="0,0,20,0"/>
+        </Grid>
+
+        <!-- Formulário -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <!-- Nome completo -->
+                <Label Text="Nome completo" 
+                       FontSize="14" 
+                       TextColor="#333333"
+                       Margin="0,5,0,0"/>
+
+                <Frame BorderColor="#E0E0E0" 
+                       CornerRadius="8" 
+                       Padding="0"
+                       HasShadow="False"
+                       BackgroundColor="White">
+                    <Grid>
+                        <Entry Text="{Binding Nome}"
+                               Placeholder="Digite o nome completo"
+                               PlaceholderColor="#AAAAAA"
+                               TextColor="#333333"
+                               FontSize="14"
+                               HeightRequest="50"
+                               Margin="40,0,10,0"
+                               BackgroundColor="Transparent"/>
+
+                        <Label Text="👤" 
+                               FontSize="18" 
+                               TextColor="#999999"
+                               VerticalOptions="Center"
+                               Margin="15,0,0,0"
+                               InputTransparent="True"/>
+                    </Grid>
+                </Frame>
+
+                <!-- E-mail -->
+                <Label Text="E-mail" 
+                       FontSize="14" 
+                       TextColor="#333333"
+                       Margin="0,5,0,0"/>
+
+                <Frame BorderColor="#E0E0E0" 
+                       CornerRadius="8" 
+                       Padding="0"
+                       HasShadow="False"
+                       BackgroundColor="White">
+                    <Grid>
+                        <Entry Text="{Binding Email}"
+                               Placeholder="Digite o e-mail"
+                               PlaceholderColor="#AAAAAA"
+                               TextColor="#333333"
+                               FontSize="14"
+                               Keyboard="Email"
+                               HeightRequest="50"
+                               Margin="40,0,10,0"
+                               BackgroundColor="Transparent"/>
+
+                        <Label Text="✉" 
+                               FontSize="28" 
+                               TextColor="#999999"
+                               VerticalOptions="Center"
+                               Margin="15,0,0,0"
+                               InputTransparent="True"/>
+                    </Grid>
+                </Frame>
+
+                <!-- Cargo -->
+                <Label Text="Cargo" 
+                       FontSize="14" 
+                       TextColor="#333333"
+                       Margin="0,5,0,0"/>
+
+                <Frame BorderColor="#E0E0E0" 
+                       CornerRadius="8" 
+                       Padding="0"
+                       HasShadow="False"
+                       BackgroundColor="White">
+                    <Grid>
+                        <Picker ItemsSource="{Binding CargosDisponiveis}"
+                                SelectedItem="{Binding CargoSelecionado}"
+                                Title="Selecione um cargo"
+                                TitleColor="#AAAAAA"
+                                TextColor="#333333"
+                                FontSize="14"
+                                HeightRequest="50"
+                                Margin="40,0,35,0"
+                                BackgroundColor="Transparent"/>
+
+                        <Label Text="💼" 
+                               FontSize="16" 
+                               TextColor="#999999"
+                               VerticalOptions="Center"
+                               Margin="15,0,0,0"
+                               InputTransparent="True"/>
+
+                        <Label Text="▼" 
+                               FontSize="12" 
+                               TextColor="#999999"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               Margin="0,0,15,0"
+                               InputTransparent="True"/>
+                    </Grid>
+                </Frame>
+
+                <!-- Unidade/Grupo (Opcional) -->
+                <Label Text="Unidade/Grupo (opcional)" 
+                       FontSize="14" 
+                       TextColor="#333333"
+                       Margin="0,5,0,0"/>
+
+                <Frame BorderColor="#E0E0E0" 
+                       CornerRadius="8" 
+                       Padding="0"
+                       HasShadow="False"
+                       BackgroundColor="White">
+                    <Grid>
+                        <Picker ItemsSource="{Binding UnidadesGrupos}"
+                                SelectedItem="{Binding UnidadeGrupoSelecionada}"
+                                Title="Selecione uma unidade/grupo"
+                                TitleColor="#AAAAAA"
+                                TextColor="#333333"
+                                FontSize="14"
+                                HeightRequest="50"
+                                Margin="40,0,35,0"
+                                BackgroundColor="Transparent"/>
+
+                        <Label Text="🏢" 
+                               FontSize="16" 
+                               TextColor="#999999"
+                               VerticalOptions="Center"
+                               Margin="15,0,0,0"
+                               InputTransparent="True"/>
+
+                        <Label Text="▼" 
+                               FontSize="12" 
+                               TextColor="#999999"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               Margin="0,0,15,0"
+                               InputTransparent="True"/>
+                    </Grid>
+                </Frame>
+
+                <!-- Instruções -->
+                <Frame BackgroundColor="#E3F2FD"
+                       BorderColor="Transparent"
+                       CornerRadius="8"
+                       Padding="12"
+                       HasShadow="False"
+                       Margin="0,10,0,0">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="ℹ️"
+                               FontSize="16"
+                               VerticalOptions="Start"/>
+                        <Label Text="Preencha todos os campos obrigatórios. O e-mail será usado para comunicações."
+                               FontSize="12"
+                               TextColor="#1E3A8A"
+                               LineBreakMode="WordWrap"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Botões -->
+                <VerticalStackLayout Spacing="10" Margin="0,20,0,0">
+                    <Button Text="Salvar Usuário"
+                            Command="{Binding SalvarCommand}"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            BackgroundColor="#1E3A8A"
+                            HeightRequest="50"
+                            CornerRadius="8"/>
+
+                    <Button Text="Cancelar"
+                            Command="{Binding VoltarCommand}"
+                            FontSize="14"
+                            TextColor="#666666"
+                            BackgroundColor="#F5F5F5"
+                            HeightRequest="45"
+                            CornerRadius="8"/>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

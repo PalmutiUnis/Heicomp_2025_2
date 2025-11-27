@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.Views.Configuracoes.ConfiguracoesPage"
              Title=""
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}"
              Shell.FlyoutBehavior="Disabled">
 
     <!-- Layout do Shell NavBar -->

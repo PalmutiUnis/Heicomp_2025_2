@@ -1,14 +1,16 @@
 ﻿using CommunityToolkit.Maui;
 using MauiApp1.Services;
+using MauiApp1.Services.Admin;
 using MauiApp1.ViewModels.Dashboards;
+using MauiApp1.ViewModels.Administrativa;
 using MauiApp1.Views.Auth;
+using MauiApp1.Views.Administrativa;
 using MauiApp1.Views.Dashboards;
 using MauiApp1.Views.Dashboards.ListaColaboradores;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Storage;
 using Plugin.LocalNotification;
-// ADICIONADO: Necessário para os gráficos funcionarem
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Microcharts.Maui;
 
@@ -69,22 +71,32 @@ namespace MauiApp1
             builder.Services.AddTransient<ColaboradoresViewModel>();
             builder.Services.AddTransient<ListaColaboradoresViewModel>();
 
-            // Páginas que recebem VM via DI
+            // Páginas com DI
             builder.Services.AddTransient<ColaboradoresPage>();
             builder.Services.AddTransient<ListaColaboradoresPage>();
 
             // ===========================================================
-            // 📌 Módulo Diversidade (CORRIGIDO)
+            // 📌 Módulo Diversidade
             // ===========================================================
 
-            // 1. Serviço
             builder.Services.AddTransient<DiversidadeService>();
-
-            // 2. ViewModel
             builder.Services.AddTransient<DiversidadeViewModel>();
-
-            // 3. Page
             builder.Services.AddTransient<DiversidadePage>();
+
+            // ===========================================================
+            // 📌 Módulo Administrativo
+            // ===========================================================
+
+            // Serviços
+            builder.Services.AddSingleton<AdminService>();
+
+            // ViewModels
+            builder.Services.AddTransient<AreaAdministrativaViewModel>();
+            builder.Services.AddTransient<AdicionarUsuarioViewModel>();
+
+            // Páginas
+            builder.Services.AddTransient<AreaAdministrativaPage>();
+            builder.Services.AddTransient<AdicionarUsuarioPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

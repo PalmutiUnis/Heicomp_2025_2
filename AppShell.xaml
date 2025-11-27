@@ -9,6 +9,7 @@
     xmlns:administrativa="clr-namespace:MauiApp1.Views.Administrativa"
     Shell.FlyoutBehavior="Flyout"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource Black}}"
+    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource CorHamburguer}, Dark={StaticResource CorHamburguer}}"
     Title="MauiApp1">
 
 
@@ -125,7 +126,7 @@
                 Icon="icone_usuario_admin_branco.png">
         <ShellContent
             Title="Área Administrativa"
-            ContentTemplate="{DataTemplate administrativa:AdminPage}"
+            ContentTemplate="{DataTemplate administrativa:AreaAdministrativaPage}"
             />
     </FlyoutItem>
 
