@@ -126,7 +126,7 @@
                 Icon="icone_usuario_admin_branco.png">
         <ShellContent
             Title="Área Administrativa"
-            ContentTemplate="{DataTemplate administrativa:AdminPage}"
+            ContentTemplate="{DataTemplate administrativa:AreaAdministrativaPage}"
             />
     </FlyoutItem>
 

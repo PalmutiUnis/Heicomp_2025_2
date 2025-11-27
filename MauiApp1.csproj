@@ -97,8 +97,17 @@
 	  <MauiAsset Include="Resources\Raw\appsettings.json" LogicalName="appsettings.json" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Views\Administrativa\AreaAdministrativaPage.xaml.cs">
+	    <DependentUpon>AreaAdministrativaPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\Administrativa\AdicionarUsuarioPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Dashboards\ColaboradoresPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -11,6 +11,7 @@ namespace MauiApp1
 
             Routing.RegisterRoute("LoginPage", typeof(LoginPage));
             Routing.RegisterRoute("ListaColaboradoresPage", typeof(MauiApp1.Views.Dashboards.ListaColaboradores.ListaColaboradoresPage));
+            Routing.RegisterRoute("AdicionarUsuarioPage", typeof(MauiApp1.Views.Administrativa.AdicionarUsuarioPage));
         }
     }
 }

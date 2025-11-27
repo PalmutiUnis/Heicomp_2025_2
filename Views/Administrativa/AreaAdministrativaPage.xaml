@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:MauiApp1.Converters"
+             x:Class="MauiApp1.Views.Administrativa.AreaAdministrativaPage"
+             BackgroundColor="#F5F5F5"
+             Shell.NavBarIsVisible="False">
+
+    <!-- CONVERTERS -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <conv:IsNotNullOrEmptyConverter x:Key="IsNotNullOrEmptyConverter" />
+            <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0" BackgroundColor="#2E4A8B" Padding="16,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+
+            <ImageButton Grid.Column="0"
+                         Aspect="Center"
+                         WidthRequest="24"
+                         HeightRequest="24"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         Clicked="OnBackClicked">
+                <ImageButton.Source>
+                    <FontImageSource Glyph="←" FontFamily="Arial" Size="28" Color="White"/>
+                </ImageButton.Source>
+            </ImageButton>
+
+            <Label Grid.Column="1"
+                   Text="Área Administrativa"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"/>
+
+            <ImageButton Grid.Column="2"
+                         Aspect="Center"
+                         WidthRequest="24"
+                         HeightRequest="24"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         Clicked="OnMenuClicked">
+                <ImageButton.Source>
+                    <FontImageSource Glyph="⋮" FontFamily="Arial" Size="28" Color="White"/>
+                </ImageButton.Source>
+            </ImageButton>
+        </Grid>
+
+        <!-- FILTROS -->
+        <VerticalStackLayout Grid.Row="1" Padding="16,16,16,8" Spacing="12" BackgroundColor="White">
+
+            <Border StrokeThickness="1" Stroke="#E0E0E0" BackgroundColor="White" Padding="12,8" StrokeShape="RoundRectangle 8">
+                <Picker ItemsSource="{Binding UnidadesGrupos}"
+                        SelectedItem="{Binding UnidadeSelecionada}"
+                        Title="Todas as Unidades"
+                        TitleColor="#999999"
+                        TextColor="#333333"
+                        FontSize="16"/>
+            </Border>
+
+            <Grid ColumnDefinitions="*,60" ColumnSpacing="8">
+                <Border Grid.Column="0"
+                        StrokeThickness="1" Stroke="#E0E0E0"
+                        BackgroundColor="White"
+                        Padding="12,8"
+                        StrokeShape="RoundRectangle 8">
+                    <Entry Text="{Binding TextoBusca}"
+                           Placeholder="Buscar usuário..."
+                           PlaceholderColor="#999999"
+                           TextColor="#333333"
+                           FontSize="16"/>
+                </Border>
+
+                <Border Grid.Column="1"
+                        StrokeThickness="1"
+                        Stroke="#2E4A8B"
+                        BackgroundColor="#2E4A8B"
+                        StrokeShape="RoundRectangle 8">
+                    <ImageButton Aspect="Center" BackgroundColor="Transparent" Clicked="OnFiltroClicked">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="▼" FontFamily="Arial" Size="20" Color="White"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </Border>
+            </Grid>
+
+            <Label Text="{Binding ContagemUsuarios}"
+                   FontSize="14"
+                   TextColor="#666666"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
+        <!-- LISTA -->
+        <RefreshView Grid.Row="2"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding AtualizarListaCommand}"
+                     RefreshColor="#2E4A8B">
+
+            <CollectionView ItemsSource="{Binding UsuariosFiltrados}"
+                            SelectionMode="None"
+                            BackgroundColor="#F5F5F5">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="White" Padding="16" Margin="0,0,0,1">
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+
+                                <!-- INFO -->
+                                <VerticalStackLayout Spacing="6" VerticalOptions="Center">
+                                    <Label Text="{Binding Nome}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="#333333"/>
+
+                                    <Label Text="{Binding Email}"
+                                           FontSize="14"
+                                           TextColor="#666666"/>
+
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Border BackgroundColor="#E3F2FD"
+                                               Padding="8,4"
+                                               StrokeThickness="0"
+                                               StrokeShape="RoundRectangle 4">
+                                            <Label Text="{Binding Cargo}"
+                                                   FontSize="12"
+                                                   TextColor="#1976D2"/>
+                                        </Border>
+
+                                        <Border BackgroundColor="#F3E5F5"
+                                               Padding="8,4"
+                                               StrokeThickness="0"
+                                               StrokeShape="RoundRectangle 4">
+                                            <Label Text="{Binding UnidadeGrupo}"
+                                                   FontSize="12"
+                                                   TextColor="#7B1FA2"/>
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <!-- FOTO + DELETE -->
+                                <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
+                                    <Border BackgroundColor="#2E4A8B"
+                                           WidthRequest="50" HeightRequest="50"
+                                           StrokeShape="RoundRectangle 25">
+                                        <Image Source="{Binding FotoUrl}" Aspect="AspectFill"/>
+                                    </Border>
+
+                                    <Border BackgroundColor="#E53935"
+                                           WidthRequest="50" HeightRequest="50"
+                                           StrokeShape="RoundRectangle 25">
+                                        <ImageButton BackgroundColor="Transparent"
+                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeletarUsuarioCommand}"
+                                                     CommandParameter="{Binding .}">
+                                            <ImageButton.Source>
+                                                <FontImageSource Glyph="🗑" FontFamily="Arial" Size="24" Color="White"/>
+                                            </ImageButton.Source>
+                                        </ImageButton>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </Grid>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetalhesCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="40" Spacing="16">
+                            <Label Text="📋" FontSize="64" HorizontalOptions="Center"/>
+                            <Label Text="Nenhum usuário encontrado" FontSize="18" FontAttributes="Bold" TextColor="#999999" HorizontalOptions="Center"/>
+                            <Label Text="Ajuste os filtros ou adicione novos usuários" FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+        </RefreshView>
+
+        <!-- BOTÃO FLOAT -->
+        <Border Grid.Row="2"
+                BackgroundColor="#2E4A8B"
+                WidthRequest="60" HeightRequest="60"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="0,0,16,16"
+                StrokeShape="RoundRectangle 30">
+            <ImageButton BackgroundColor="Transparent"
+                         Clicked="OnAdicionarUsuarioClicked">
+                <ImageButton.Source>
+                    <FontImageSource Glyph="+" FontFamily="Arial" Size="36" Color="White"/>
+                </ImageButton.Source>
+            </ImageButton>
+        </Border>
+
+        <!-- LOADING -->
+        <ActivityIndicator Grid.Row="2"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="#2E4A8B"
+                           WidthRequest="60"
+                           HeightRequest="60"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+    </Grid>
+</ContentPage>
