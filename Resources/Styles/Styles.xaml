@@ -68,8 +68,8 @@
     </Style>
 
     <Style TargetType="DatePicker">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource FundoPickerClaro}, Dark={StaticResource FundoPickerEscuro}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>

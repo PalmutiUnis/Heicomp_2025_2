@@ -235,5 +235,9 @@
     
     <!-- Cor Hamburguer -->
     <Color x:Key="CorHamburguer">#4169E1</Color>
+    
+    <!-- Cor Picker -->
+    <Color x:Key="FundoPickerClaro">#E5E7EB</Color>
+    <Color x:Key="FundoPickerEscuro">#334155</Color>
 
 </ResourceDictionary>
