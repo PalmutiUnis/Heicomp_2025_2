@@ -72,14 +72,16 @@ namespace MauiApp1.Services
             // SQL Mágico: Agrupa por situação e conta
             // Atenção: Verifique se o nome da coluna no seu banco é 'Situacao' mesmo.
             string query = @"
-                SELECT 
-                    rh.`Descrição (Situação)` as NomeSituacao, 
-                    COUNT(rh.index) as Quantidade
-                FROM rhdataset rh
-                WHERE (@unidade = 'TODAS' OR rh.Filial = @unidade)
-                GROUP BY rh.`Descrição (Situação)`
-                ORDER BY Quantidade DESC;
-            ";
+                              SELECT * FROM (
+                                  SELECT 
+                                      IFNULL(rh.`Descrição (Situação)`, 'TOTAL GERAL') as NomeSituacao, 
+                                      COUNT(rh.index) as Quantidade
+                                  FROM rhdataset rh
+                                  WHERE (@unidade = 'TODAS' OR rh.Filial = @unidade)
+                                  GROUP BY rh.`Descrição (Situação)` WITH ROLLUP
+                              ) as TabelaVirtual
+                              ORDER BY (NomeSituacao = 'TOTAL GERAL') DESC, Quantidade DESC;
+                            ";
 
             await using (var cmd = new MySqlCommand(query, conn))
             {
