@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:conv="clr-namespace:MauiApp1.Converters"
              x:Class="MauiApp1.Views.Administrativa.AreaAdministrativaPage"
-             BackgroundColor="#F5F5F5"
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}"
              Shell.NavBarIsVisible="False">
 
     <!-- CONVERTERS -->
@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
-        <Grid Grid.Row="0" BackgroundColor="#2E4A8B" Padding="16,0">
+        <Grid Grid.Row="0" BackgroundColor="{AppThemeBinding Light={StaticResource HeaderClaro}, Dark={StaticResource HeaderEscuro}}" Padding="16,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*"/>
@@ -64,34 +64,42 @@
         </Grid>
 
         <!-- FILTROS -->
-        <VerticalStackLayout Grid.Row="1" Padding="16,16,16,8" Spacing="12" BackgroundColor="White">
+        <VerticalStackLayout 
+            Grid.Row="1" 
+            Padding="16,16,16,8" 
+            Spacing="12"
+            BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}">
 
-            <Border StrokeThickness="1" Stroke="#E0E0E0" BackgroundColor="White" Padding="12,8" StrokeShape="RoundRectangle 8">
+            <Border StrokeThickness="1" Stroke="{AppThemeBinding Light={StaticResource CorCardBorda}, Dark={StaticResource CorCardBordaEscuro}}" 
+                    BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}" 
+                    Padding="12,8" 
+                    StrokeShape="RoundRectangle 8">
                 <Picker ItemsSource="{Binding UnidadesGrupos}"
                         SelectedItem="{Binding UnidadeSelecionada}"
                         Title="Todas as Unidades"
-                        TitleColor="#999999"
-                        TextColor="#333333"
+                        TitleColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
+                        TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                         FontSize="16"/>
             </Border>
 
             <Grid ColumnDefinitions="*,60" ColumnSpacing="8">
                 <Border Grid.Column="0"
-                        StrokeThickness="1" Stroke="#E0E0E0"
-                        BackgroundColor="White"
+                        StrokeThickness="1" 
+                        Stroke="{AppThemeBinding Light={StaticResource CorCardBorda}, Dark={StaticResource CorCardBordaEscuro}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}" 
                         Padding="12,8"
                         StrokeShape="RoundRectangle 8">
                     <Entry Text="{Binding TextoBusca}"
                            Placeholder="Buscar usuário..."
-                           PlaceholderColor="#999999"
-                           TextColor="#333333"
+                           PlaceholderColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
+                           TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                            FontSize="16"/>
                 </Border>
 
                 <Border Grid.Column="1"
                         StrokeThickness="1"
-                        Stroke="#2E4A8B"
-                        BackgroundColor="#2E4A8B"
+                        Stroke="{AppThemeBinding Light={StaticResource BordaBotaoClaro}, Dark={StaticResource BordaBotaoEscuro}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro}, Dark={StaticResource BotaoEscuro}}"
                         StrokeShape="RoundRectangle 8">
                     <ImageButton Aspect="Center" BackgroundColor="Transparent" Clicked="OnFiltroClicked">
                         <ImageButton.Source>
@@ -103,7 +111,7 @@
 
             <Label Text="{Binding ContagemUsuarios}"
                    FontSize="14"
-                   TextColor="#666666"
+                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource BrushCorTextoCinzaEscuro}}"
                    HorizontalOptions="Center"/>
         </VerticalStackLayout>
 
@@ -111,15 +119,17 @@
         <RefreshView Grid.Row="2"
                      IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding AtualizarListaCommand}"
-                     RefreshColor="#2E4A8B">
+                     RefreshColor="{AppThemeBinding Light={StaticResource BotaoClaro}, Dark={StaticResource BotaoEscuro}}">
 
             <CollectionView ItemsSource="{Binding UsuariosFiltrados}"
                             SelectionMode="None"
-                            BackgroundColor="#F5F5F5">
+                            BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},Dark={StaticResource FundoCardEscuro}}">
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border BackgroundColor="White" Padding="16" Margin="0,0,0,1">
+                        <Border 
+                            BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}" 
+                            Padding="16" Margin="0,0,0,1">
 
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
 
@@ -128,36 +138,36 @@
                                     <Label Text="{Binding Nome}"
                                            FontSize="18"
                                            FontAttributes="Bold"
-                                           TextColor="#333333"/>
+                                           TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
 
                                     <Label Text="{Binding Email}"
                                            FontSize="14"
-                                           TextColor="#666666"/>
+                                           TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"/>
 
                                     <HorizontalStackLayout Spacing="12">
-                                        <Border BackgroundColor="#E3F2FD"
+                                        <Border BackgroundColor="{AppThemeBinding Light={StaticResource LabelAzulClaro}, Dark={StaticResource LabelAzulEscuro}}"
                                                Padding="8,4"
                                                StrokeThickness="0"
                                                StrokeShape="RoundRectangle 4">
                                             <Label Text="{Binding Cargo}"
                                                    FontSize="12"
-                                                   TextColor="#1976D2"/>
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro}, Dark={StaticResource TextoAzulEscuro}}"/>
                                         </Border>
 
-                                        <Border BackgroundColor="#F3E5F5"
+                                        <Border BackgroundColor="{StaticResource LabelGruposAdm}"
                                                Padding="8,4"
                                                StrokeThickness="0"
                                                StrokeShape="RoundRectangle 4">
                                             <Label Text="{Binding UnidadeGrupo}"
                                                    FontSize="12"
-                                                   TextColor="#7B1FA2"/>
+                                                   TextColor="{StaticResource TextoGruposAdm}"/>
                                         </Border>
                                     </HorizontalStackLayout>
                                 </VerticalStackLayout>
 
                                 <!-- FOTO + DELETE -->
                                 <HorizontalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="Center">
-                                    <Border BackgroundColor="#2E4A8B"
+                                    <Border BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro}, Dark={StaticResource BotaoEscuro}}"
                                            WidthRequest="50" HeightRequest="50"
                                            StrokeShape="RoundRectangle 25">
                                         <Image Source="{Binding FotoUrl}" Aspect="AspectFill"/>
@@ -188,9 +198,22 @@
                 <CollectionView.EmptyView>
                     <ContentView>
                         <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="40" Spacing="16">
-                            <Label Text="📋" FontSize="64" HorizontalOptions="Center"/>
-                            <Label Text="Nenhum usuário encontrado" FontSize="18" FontAttributes="Bold" TextColor="#999999" HorizontalOptions="Center"/>
-                            <Label Text="Ajuste os filtros ou adicione novos usuários" FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <Label 
+                                Text="📋" 
+                                FontSize="64" 
+                                HorizontalOptions="Center"/>
+                            <Label 
+                                Text="Nenhum usuário encontrado" 
+                                FontSize="18" 
+                                FontAttributes="Bold" 
+                                TextColor="{AppThemeBinding Light={StaticResource CorTextoBranco}, Dark={StaticResource CorTextoBranco}}" 
+                                HorizontalOptions="Center"/>
+                            <Label 
+                                Text="Ajuste os filtros ou adicione novos usuários" 
+                                FontSize="14" 
+                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}" 
+                                HorizontalOptions="Center" 
+                                HorizontalTextAlignment="Center"/>
                         </VerticalStackLayout>
                     </ContentView>
                 </CollectionView.EmptyView>
@@ -200,7 +223,7 @@
 
         <!-- BOTÃO FLOAT -->
         <Border Grid.Row="2"
-                BackgroundColor="#2E4A8B"
+                BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro}, Dark={StaticResource BotaoEscuro}}"
                 WidthRequest="60" HeightRequest="60"
                 HorizontalOptions="End" VerticalOptions="End"
                 Margin="0,0,16,16"
@@ -208,7 +231,10 @@
             <ImageButton BackgroundColor="Transparent"
                          Clicked="OnAdicionarUsuarioClicked">
                 <ImageButton.Source>
-                    <FontImageSource Glyph="+" FontFamily="Arial" Size="36" Color="White"/>
+                    <FontImageSource 
+                        Glyph="+" 
+                        FontFamily="Arial" 
+                        Size="36" Color="White"/>
                 </ImageButton.Source>
             </ImageButton>
         </Border>
@@ -217,7 +243,8 @@
         <ActivityIndicator Grid.Row="2"
                            IsRunning="{Binding IsBusy}"
                            IsVisible="{Binding IsBusy}"
-                           Color="#2E4A8B"
+                           BackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource AzulTemaEscuro}}"
+                           Color="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource AzulTemaEscuro}}"
                            WidthRequest="60"
                            HeightRequest="60"
                            HorizontalOptions="Center"

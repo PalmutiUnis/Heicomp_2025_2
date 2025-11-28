@@ -96,7 +96,7 @@
                        Margin="0,0,0,10"/>
 
                 <!-- Notificações em Push -->
-                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
                         Padding="15"
                         Margin="0,0,0,1"
                         StrokeThickness="0">
@@ -144,7 +144,7 @@
                        Margin="0,0,0,10"/>
 
                 <!-- Tema Escuro -->
-                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
                         Padding="15"
                         Margin="0,0,0,1"
                         StrokeThickness="0">
@@ -190,7 +190,7 @@
                        Margin="0,0,0,10"/>
 
                 <!-- Ajuda e Suporte -->
-                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
                         Padding="15"
                         Margin="0,0,0,1"
                         StrokeThickness="0">
@@ -230,7 +230,7 @@
                 </Border>
 
                 <!-- Termos de Uso -->
-                <Border BackgroundColor="{AppThemeBinding Light={StaticResource CinzaClaro}, Dark={StaticResource HeaderEscuro}}"
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}"
                         Padding="15"
                         StrokeThickness="0">
                     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">

@@ -4,7 +4,7 @@
              xmlns:conv="clr-namespace:MauiApp1.Converters"
              x:Class="MauiApp1.Views.Administrativa.AdicionarUsuarioPage"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="White">
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}">
 
     <!-- CONVERTERS -->
     <ContentPage.Resources>
@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Grid Grid.Row="0" BackgroundColor="#1E3A8A">
+        <Grid Grid.Row="0" BackgroundColor="{AppThemeBinding Light={StaticResource HeaderClaro}, Dark={StaticResource HeaderEscuro}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="*"/>
@@ -61,19 +61,19 @@
                 <!-- Nome completo -->
                 <Label Text="Nome completo" 
                        FontSize="14" 
-                       TextColor="#333333"
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                        Margin="0,5,0,0"/>
 
-                <Frame BorderColor="#E0E0E0" 
+                <Frame BorderColor="{AppThemeBinding Light={StaticResource CorCardBorda}, Dark={StaticResource CorCardBordaEscuro}}" 
                        CornerRadius="8" 
                        Padding="0"
                        HasShadow="False"
-                       BackgroundColor="White">
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
                     <Grid>
                         <Entry Text="{Binding Nome}"
                                Placeholder="Digite o nome completo"
-                               PlaceholderColor="#AAAAAA"
-                               TextColor="#333333"
+                               PlaceholderColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
+                               TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                                FontSize="14"
                                HeightRequest="50"
                                Margin="40,0,10,0"
@@ -91,19 +91,19 @@
                 <!-- E-mail -->
                 <Label Text="E-mail" 
                        FontSize="14" 
-                       TextColor="#333333"
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                        Margin="0,5,0,0"/>
 
-                <Frame BorderColor="#E0E0E0" 
+                <Frame BorderColor="{AppThemeBinding Light={StaticResource CorCardBorda}, Dark={StaticResource CorCardBordaEscuro}}"
                        CornerRadius="8" 
                        Padding="0"
                        HasShadow="False"
-                       BackgroundColor="White">
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
                     <Grid>
                         <Entry Text="{Binding Email}"
                                Placeholder="Digite o e-mail"
-                               PlaceholderColor="#AAAAAA"
-                               TextColor="#333333"
+                               PlaceholderColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
+                               TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                                FontSize="14"
                                Keyboard="Email"
                                HeightRequest="50"
@@ -122,20 +122,20 @@
                 <!-- Cargo -->
                 <Label Text="Cargo" 
                        FontSize="14" 
-                       TextColor="#333333"
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                        Margin="0,5,0,0"/>
 
-                <Frame BorderColor="#E0E0E0" 
+                <Frame BorderColor="{AppThemeBinding Light={StaticResource CorCardBorda}, Dark={StaticResource CorCardBordaEscuro}}"
                        CornerRadius="8" 
                        Padding="0"
                        HasShadow="False"
-                       BackgroundColor="White">
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
                     <Grid>
                         <Picker ItemsSource="{Binding CargosDisponiveis}"
                                 SelectedItem="{Binding CargoSelecionado}"
                                 Title="Selecione um cargo"
-                                TitleColor="#AAAAAA"
-                                TextColor="#333333"
+                                TitleColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
+                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                                 FontSize="14"
                                 HeightRequest="50"
                                 Margin="40,0,35,0"
@@ -161,20 +161,20 @@
                 <!-- Unidade/Grupo (Opcional) -->
                 <Label Text="Unidade/Grupo (opcional)" 
                        FontSize="14" 
-                       TextColor="#333333"
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                        Margin="0,5,0,0"/>
 
-                <Frame BorderColor="#E0E0E0" 
+                <Frame BorderColor="{AppThemeBinding Light={StaticResource CorCardBorda}, Dark={StaticResource CorCardBordaEscuro}}"
                        CornerRadius="8" 
                        Padding="0"
                        HasShadow="False"
-                       BackgroundColor="White">
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro}, Dark={StaticResource FundoCardEscuro}}">
                     <Grid>
                         <Picker ItemsSource="{Binding UnidadesGrupos}"
                                 SelectedItem="{Binding UnidadeGrupoSelecionada}"
                                 Title="Selecione uma unidade/grupo"
-                                TitleColor="#AAAAAA"
-                                TextColor="#333333"
+                                TitleColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
+                                TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"
                                 FontSize="14"
                                 HeightRequest="50"
                                 Margin="40,0,35,0"
@@ -198,7 +198,7 @@
                 </Frame>
 
                 <!-- Instruções -->
-                <Frame BackgroundColor="#E3F2FD"
+                <Frame BackgroundColor="{StaticResource LabelAzulEscuro}"
                        BorderColor="Transparent"
                        CornerRadius="8"
                        Padding="12"
@@ -210,7 +210,7 @@
                                VerticalOptions="Start"/>
                         <Label Text="Preencha todos os campos obrigatórios. O e-mail será usado para comunicações."
                                FontSize="12"
-                               TextColor="#1E3A8A"
+                               TextColor="{StaticResource TextoAzulEscuro}"
                                LineBreakMode="WordWrap"
                                VerticalOptions="Center"/>
                     </HorizontalStackLayout>
@@ -222,16 +222,16 @@
                             Command="{Binding SalvarCommand}"
                             FontSize="16"
                             FontAttributes="Bold"
-                            TextColor="White"
-                            BackgroundColor="#1E3A8A"
+                            TextColor="{StaticResource CorTextoBranco}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro}, Dark={StaticResource BotaoEscuro}}"
                             HeightRequest="50"
                             CornerRadius="8"/>
 
                     <Button Text="Cancelar"
                             Command="{Binding VoltarCommand}"
                             FontSize="14"
-                            TextColor="#666666"
-                            BackgroundColor="#F5F5F5"
+                            TextColor="{StaticResource CorTextoBranco}"
+                            BackgroundColor="{StaticResource CorGraficoVermelho}"
                             HeightRequest="45"
                             CornerRadius="8"/>
                 </VerticalStackLayout>

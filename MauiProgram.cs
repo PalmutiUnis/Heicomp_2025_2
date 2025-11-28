@@ -98,6 +98,18 @@ namespace MauiApp1
             builder.Services.AddTransient<AreaAdministrativaPage>();
             builder.Services.AddTransient<AdicionarUsuarioPage>();
 
+
+            // ===========================================================
+            // 📌 Módulo Gráficos Detalhados
+            // ===========================================================
+
+            //Conexão com banco de dados e serviços para gráficos detalhados
+            builder.Services.AddTransient<GraficosDetalhadosServices>();
+            //VM para gráficos detalhados
+            builder.Services.AddTransient<GraficosDetalhadosViewModel>();
+            //Página para gráficos detalhados
+            builder.Services.AddTransient<GraficosDetalhadosPage>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
