@@ -243,7 +243,7 @@
         <ActivityIndicator Grid.Row="2"
                            IsRunning="{Binding IsBusy}"
                            IsVisible="{Binding IsBusy}"
-                           BackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource AzulTemaEscuro}}"
+                           BackgroundColor="{StaticResource Transparente}"
                            Color="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource AzulTemaEscuro}}"
                            WidthRequest="60"
                            HeightRequest="60"
