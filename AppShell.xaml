@@ -33,7 +33,7 @@
             Padding="10" Spacing="10"
             VerticalOptions="Center" 
             HorizontalOptions="Fill">
-            <Image Source="icone_capelo.png"
+            <Image Source="logoapp.png"
                VerticalOptions="Center" />
 
             <VerticalStackLayout VerticalOptions="Center" Spacing="4">
