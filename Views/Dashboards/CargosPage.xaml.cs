@@ -11,10 +11,9 @@ namespace MauiApp1.Views.Dashboards
             InitializeComponent();
         }
 
-        // Adicione aqui os m�todos de evento, por exemplo:
-        private void BotaoVoltarPainelGestao(object sender, EventArgs e)
+        private async void OnBackClicked(object sender, EventArgs e)
         {
-            // L�gica para voltar ao painel de gest�o
+            await Shell.Current.GoToAsync("//PainelGestaoPage");
         }
 
         protected override async void OnAppearing()
