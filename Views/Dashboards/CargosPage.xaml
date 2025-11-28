@@ -28,7 +28,7 @@
                          HeightRequest="44"
                          WidthRequest="44"
                          BackgroundColor="Transparent"
-                         Clicked="BotaoVoltarPainelGestao"
+                         Clicked="OnBackClicked"
                          Margin="0"
                          Padding="0"
                          HorizontalOptions="Start"
