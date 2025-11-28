@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui;
 using MauiApp1.Services;
 using MauiApp1.Services.Admin;
 using MauiApp1.ViewModels.Dashboards;
@@ -54,15 +54,19 @@ namespace MauiApp1
             builder.Services.AddTransient<ICargosService, CargosService>();
             builder.Services.AddTransient<CargosViewModel>();
 
+            // Serviços de Diversidade
+            builder.Services.AddTransient<DiversidadeService>();
+
             // Páginas globais
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<AppShell>();
             builder.Services.AddTransient<PainelGestaoPage>();
+            builder.Services.AddTransient<PainelGestaoViewModel>();
             builder.Services.AddTransient<CargosPage>();
 
             // ===========================================================
-            // 📌 Módulo Colaboradores
+            // Módulo Colaboradores
             // ===========================================================
 
             builder.Services.AddTransient<ColaboradoresService>();
@@ -76,7 +80,7 @@ namespace MauiApp1
             builder.Services.AddTransient<ListaColaboradoresPage>();
 
             // ===========================================================
-            // 📌 Módulo Diversidade
+            // Módulo Diversidade
             // ===========================================================
 
             builder.Services.AddTransient<DiversidadeService>();
@@ -84,7 +88,7 @@ namespace MauiApp1
             builder.Services.AddTransient<DiversidadePage>();
 
             // ===========================================================
-            // 📌 Módulo Administrativo
+            // Módulo Administrativo
             // ===========================================================
 
             // Serviços
@@ -98,9 +102,8 @@ namespace MauiApp1
             builder.Services.AddTransient<AreaAdministrativaPage>();
             builder.Services.AddTransient<AdicionarUsuarioPage>();
 
-
             // ===========================================================
-            // 📌 Módulo Gráficos Detalhados
+            // Módulo Gráficos Detalhados
             // ===========================================================
 
             //Conexão com banco de dados e serviços para gráficos detalhados
@@ -110,11 +113,27 @@ namespace MauiApp1
             //Página para gráficos detalhados
             builder.Services.AddTransient<GraficosDetalhadosPage>();
 
+            // ===========================================================
+            // Módulo Rotatividade (Grupo 6)
+            // ===========================================================
+            builder.Services.AddTransient<RotatividadeViewModel>();
+            builder.Services.AddTransient<RotatividadePage>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
             var app = builder.Build();
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine("🔥 Unhandled Exception: " + e.ExceptionObject.ToString());
+            };
+
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine("🔥 Task Exception: " + e.Exception.ToString());
+            };
 
 #if ANDROID
             Microsoft.Maui.Handlers.ToolbarHandler.Mapper.AppendToMapping("CustomNavigationView", (handler, view) =>

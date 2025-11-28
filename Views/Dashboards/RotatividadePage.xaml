@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Views.Dashboards.RotatividadePage"
              Title=""
-             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource FundoPaginaEscuro}}"
              Shell.FlyoutBehavior="Disabled">
 
     <!-- Layout do Shell NavBar -->
     <Shell.TitleView >
-        <Grid ColumnDefinitions="Auto, *"
+        <Grid ColumnDefinitions="Auto, *, Auto"
               Style="{StaticResource TitleViewGridStyle}"
               HorizontalOptions="Fill"
               VerticalOptions="Fill"
               Margin="0"
               Padding="0">
             <ImageButton Grid.Column="0"
-                         Source="seta_direita.png"  
+                         Source="seta_direita.png"
                          HeightRequest="44"
                          WidthRequest="44"
                          BackgroundColor="Transparent"
@@ -32,7 +34,7 @@
                    HorizontalOptions="Fill"/>
 
             <ImageButton Grid.Column="2"
-                     Source="icone_menu.png"  
+                     Source="icone_menu.png"
                      HeightRequest="44"
                      WidthRequest="44"
                      BackgroundColor="Transparent"
@@ -42,10 +44,113 @@
                      VerticalOptions="Center"/>
         </Grid>
     </Shell.TitleView>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Indicador de Loading -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                             IsVisible="{Binding IsLoading}"
+                             Color="{StaticResource Primary}"
+                             HeightRequest="50" />
+
+            <!-- Conteúdo principal (visível quando não está loading) -->
+            <VerticalStackLayout IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" Spacing="15">
+
+                <!-- Card de Turnover (destaque com gráfico circular) -->
+                <Label Text="Taxa de Rotatividade"
+                       Style="{StaticResource TextoTituloSecao}" />
+
+                <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="220">
+                    <Grid Padding="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Gráfico Circular (Gauge) -->
+                        <Grid Grid.Column="0"
+                              HorizontalOptions="Center"
+                              VerticalOptions="Center">
+
+                            <!-- Gráfico Circular Dinâmico -->
+                            <controls:CircularGaugeView
+                                Progress="{Binding TurnoverValue}"
+                                ProgressColor="{StaticResource Primary}"
+                                TrackColor="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+                                StrokeWidth="20"
+                                WidthRequest="150"
+                                HeightRequest="150"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                            <!-- Valor central -->
+                            <VerticalStackLayout HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                                <Label Text="{Binding Turnover}"
+                                       FontAttributes="Bold"
+                                       FontSize="21"
+                                       HorizontalOptions="Center"
+                                       TextColor="{StaticResource Primary}" />
+                                <Label Text="Turnover"
+                                       FontSize="11"
+                                       HorizontalOptions="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!-- Legenda e informações -->
+                        <VerticalStackLayout Grid.Column="1"
+                                           Spacing="15"
+                                           VerticalOptions="Center">
+
+                            <VerticalStackLayout Spacing="5">
+                                <HorizontalStackLayout Spacing="8">
+                                    <BoxView Color="{StaticResource CorGraficoVerde}"
+                                             WidthRequest="15"
+                                             HeightRequest="15"
+                                             CornerRadius="3" />
+                                    <Label Text="Admissões"
+                                           FontSize="14"
+                                           TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" />
+                                </HorizontalStackLayout>
+                                <Label Text="{Binding Admissoes}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       Margin="23,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="5">
+                                <HorizontalStackLayout Spacing="8">
+                                    <BoxView Color="{StaticResource CorGraficoVermelho}"
+                                             WidthRequest="15"
+                                             HeightRequest="15"
+                                             CornerRadius="3" />
+                                    <Label Text="Desligamentos"
+                                           FontSize="14"
+                                           TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoBranco}}" />
+                                </HorizontalStackLayout>
+                                <Label Text="{Binding Desligamentos}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       Margin="23,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextoPrincipalClaro}, Dark={StaticResource TextoPrincipalEscuro}}" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Card de Total de Colaboradores -->
+                <Border Style="{StaticResource CardPadrao}" WidthRequest="398" HeightRequest="102">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Total de Colaboradores" Style="{StaticResource TextoSubtitulo}" HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalColaboradores}" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

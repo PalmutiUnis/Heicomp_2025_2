@@ -1,4 +1,4 @@
-﻿using MySqlConnector;
+using MySqlConnector;
 using MauiApp1.Models;
 using System.Diagnostics;
 
