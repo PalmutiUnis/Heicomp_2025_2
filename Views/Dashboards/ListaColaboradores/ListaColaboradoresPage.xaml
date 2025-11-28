@@ -54,7 +54,7 @@
                                    FontFamily="InterRegular" 
                                    FontSize="12" 
                                    TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                               Dark={StaticResource CorTextoCinza}}"/>
+                                                               Dark={StaticResource CorTextoCinzaEscuro}}"/>
                         </VerticalStackLayout>
                         <Frame Grid.Column="2" Padding="6,2"
                                BackgroundColor="{AppThemeBinding Light={StaticResource LabelAzulClaro},

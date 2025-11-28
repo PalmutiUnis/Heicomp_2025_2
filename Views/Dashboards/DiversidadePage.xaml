@@ -61,7 +61,7 @@
                                                                                    Dark={StaticResource TextoAzulEscuro}}"/>
                         <Label Text="{Binding DadosGerais.TotalColaboradores, StringFormat='{0:N0}'}" FontSize="24" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextoColaboradores}, Dark={StaticResource TextoColaboradores}}"/>
                         <Label Text="Total Colaboradores" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
-                                                                                                    Dark={StaticResource CorTextoCinza}}"/>
+                                                                                                    Dark={StaticResource CorTextoCinzaEscuro}}"/>
                     </VerticalStackLayout>
                 </Frame>
 
@@ -90,7 +90,7 @@
                                                                                   Dark={StaticResource ProgressMulher}}"/>
                         <Label Text="{Binding DadosGerais.PercentualMulheres, StringFormat='{0:F1}%'}" FontSize="24" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource ProgressMulher}, Dark={StaticResource ProgressMulher}}"/>
                         <Label Text="Mulheres" FontSize="12" TextColor="{AppThemeBinding Light= {StaticResource CorTextoCinza},
-                                                                                         Dark={StaticResource CorTextoCinza}}"/>
+                                                                                         Dark={StaticResource CorTextoCinzaEscuro}}"/>
                     </VerticalStackLayout>
                 </Frame>
 

@@ -6,7 +6,7 @@
              x:Class="MauiApp1.Views.Dashboards.CargosPage"
              Title="Cargos"
              BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro}, Dark={StaticResource FundoPaginaEscuro}}"
-             Shell.FlyoutBehavior="Flyout">
+             Shell.FlyoutBehavior="Disabled">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -107,7 +107,7 @@
                     />
                 <Label Text="{Binding CargoCategorias.Count, StringFormat='{0} cargos'}" 
                        FontSize="12" 
-                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinza}}" Margin="8,0,0,0" VerticalOptions="Center"/>
+                       TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}" Margin="8,0,0,0" VerticalOptions="Center"/>
             </HorizontalStackLayout>
             <CollectionView ItemsSource="{Binding CargoCategorias}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
@@ -128,7 +128,7 @@
                                     <Label Text="•" 
 FontSize="13" 
                                            TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto}, Dark={StaticResource CorTextoBranco}}"/>
-                                    <Label Text="{Binding Categoria}" FontSize="13" TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinza}}"/>
+                                    <Label Text="{Binding Categoria}" FontSize="13" TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"/>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Frame>

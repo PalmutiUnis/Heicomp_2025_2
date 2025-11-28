@@ -141,7 +141,7 @@
                             <Label Text="Nenhum dado encontrado" 
                                    HorizontalOptions="Center" 
                                    VerticalOptions="Center"
-                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinza}}"/>
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza}, Dark={StaticResource CorTextoCinzaEscuro}}"/>
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemTemplate>
