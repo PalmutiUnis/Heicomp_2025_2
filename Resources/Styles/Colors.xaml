@@ -20,6 +20,7 @@
     <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
     <Color x:Key="AzulTemaClaro">#1E3A8A</Color>
+    <Color x:Key="AzulTemaEscuro">#3B82F6</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
@@ -76,6 +77,10 @@
     <!-- Texto secundário / detalhes em cinza -->
     <Color x:Key="CorTextoCinza">#6B7280</Color>
     <SolidColorBrush x:Key="BrushCorTextoCinza" Color="{StaticResource CorTextoCinza}" />
+    
+    <!-- Texto secundário para modo escuro -->
+    <Color x:Key="CorTextoCinzaEscuro">#919191</Color>
+    <SolidColorBrush x:Key="BrushCorTextoCinzaEscuro" Color="{StaticResource CorTextoCinzaEscuro}"/>
 
     <!-- =========================================================
          CARDS
@@ -99,6 +104,9 @@
     <Color x:Key="CorSombraCard">#ffffff</Color>
     <SolidColorBrush x:Key="BrushCorSombraCard" Color="{StaticResource CorSombraCard}" />
 
+    <Color x:Key="CorSombraCardEscuro">#131417</Color>
+    <SolidColorBrush x:Key="BrushCorSombraCardEscuro" Color="{StaticResource CorSombraCardEscuro}" />
+
     <!-- Fundo gradiente usado em cards e gráficos -->
     <LinearGradientBrush x:Key="CorCardGradiente" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#1E3A8A" Offset="0.0" />
@@ -110,7 +118,8 @@
     </LinearGradientBrush>
 
     <!-- Borda opcional para padronização de cards -->
-    <Color x:Key="CorCardBorda">#D1D5DB</Color>
+    <Color x:Key="CorCardBorda">#babdc2</Color>
+    <Color x:Key="CorCardBordaEscuro">#1c1e21</Color>
     <SolidColorBrush x:Key="BrushCorCardBorda" Color="{StaticResource CorCardBorda}" />
 
     <!-- =========================================================
@@ -176,16 +185,16 @@
     <!-- CORES PARA TEMA ESCURO/CLARO -->
 
     <!-- Fundos de Página -->
-    <Color x:Key="FundoPaginaClaro">#F3F4F6</Color>
+    <Color x:Key="FundoPaginaClaro">White</Color>
     <Color x:Key="FundoPaginaEscuro">#0F172A</Color>
 
     <!-- Fundos de Cards -->
-    <Color x:Key="FundoCardClaro">White</Color>
+    <Color x:Key="FundoCardClaro">#e2e3e5</Color>
     <Color x:Key="FundoCardEscuro">#1E293B</Color>
 
     <!-- Headers -->
     <Color x:Key="HeaderClaro">#2B4C9E</Color>
-    <Color x:Key="HeaderEscuro">#1E293B</Color>
+    <Color x:Key="HeaderEscuro">#000000</Color>
 
     <!-- Textos Principais -->
     <Color x:Key="TextoPrincipalClaro">#111827</Color>
@@ -202,4 +211,42 @@
     <!-- Botões -->
     <Color x:Key="BotaoClaro">#1E3A8A</Color>
     <Color x:Key="BotaoEscuro">#3B82F6</Color>
+
+    <!-- Barras de carregamento/Progresso -->
+    <Color x:Key="ProgressHomem">#3B82F6</Color>
+    <Color x:Key="ProgressMulher">#EC4899</Color>
+    <Color x:Key="ProgressNinf">#9CA3AF</Color>
+    
+    <!-- Textos Coloridos -->
+    <Color x:Key="TextoAzulClaro">#1E3A8A</Color>
+    <Color x:Key="TextoAzulEscuro">#5780f7</Color>
+    <Color x:Key="TextoColaboradores">#2c468f</Color>
+    <Color x:Key="TextoGruposAdm">#9946bd</Color>
+    
+    <!-- Labels Coloridas -->
+    <Color x:Key="LabelAzulClaro">#251E3A8A</Color>
+    <Color x:Key="LabelAzulEscuro">#253B82F6</Color>
+    <Color x:Key="LabelGruposAdm">#259946bd</Color>
+    
+    <!-- Fundos coloridos -->
+    <Color x:Key="FundoImagemClaro">#27344a</Color>
+    <Color x:Key="FundoImagemEscuro">#27344a</Color>
+    
+    <!-- Transparente -->
+    <Color x:Key="Transparente">Transparent</Color>
+    
+    <!-- Cor Shell -->
+    <Color x:Key="CorShellClaro">#1e3a8a</Color>
+    <Color x:Key="CorShellEscuro">#000000</Color>
+    
+    <!-- Cor Hamburguer -->
+    <Color x:Key="CorHamburguer">#4169E1</Color>
+    
+    <!-- Cor Picker -->
+    <Color x:Key="FundoPickerClaro">#E5E7EB</Color>
+    <Color x:Key="FundoPickerEscuro">#334155</Color>
+    
+    <!-- Borda para botões -->
+    <Color x:Key="BordaBotaoClaro">#0F1D45</Color>
+    <Color x:Key="BordaBotaoEscuro">#1D4ED8</Color>
 </ResourceDictionary>

@@ -4,18 +4,18 @@ using MauiApp1.Services;
 using Microcharts;
 using SkiaSharp;
 
-namespace Heicomp_2025_2.ViewModels.Dashboards
+namespace MauiApp1.ViewModels.Dashboards
 {
     public class PainelGestaoViewModel : INotifyPropertyChanged
     {
         private readonly ICargosService _cargosService;
-        private readonly IDiversidadeService _diversidadeService;
+        private readonly DiversidadeService _diversidadeService;
         private Chart _chart;
         private Chart _genderChart;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public PainelGestaoViewModel(ICargosService cargosService, IDiversidadeService diversidadeService)
+        public PainelGestaoViewModel(ICargosService cargosService, DiversidadeService diversidadeService)
         {
             _cargosService = cargosService;
             _diversidadeService = diversidadeService;
@@ -80,17 +80,18 @@ namespace Heicomp_2025_2.ViewModels.Dashboards
                     BackgroundColor = SKColors.Transparent
                 };
 
-                var genderData = await _diversidadeService.GetGenderDistributionAsync();
+                // Gender distribution chart
+                var genderData = await _diversidadeService.ObterDistribuicaoGeneroAsync(DateTime.Now.Year);
                 var genderEntries = new List<ChartEntry>();
                 var genderColors = new[] { "#3B82F6", "#EC4899", "#6B7280" };
                 var genderColorIndex = 0;
 
                 foreach (var item in genderData)
                 {
-                    genderEntries.Add(new ChartEntry(item.Value)
+                    genderEntries.Add(new ChartEntry(item.Quantidade)
                     {
-                        Label = item.Key,
-                        ValueLabel = item.Value.ToString(),
+                        Label = item.Sexo,
+                        ValueLabel = item.Quantidade.ToString(),
                         Color = SKColor.Parse(genderColors[genderColorIndex])
                     });
                     genderColorIndex++;

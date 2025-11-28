@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using MauiApp1.Services;
 
-namespace Heicomp_2025_2.ViewModels.Dashboards
+namespace MauiApp1.ViewModels.Dashboards
 {
     public class RotatividadeViewModel : INotifyPropertyChanged
     {

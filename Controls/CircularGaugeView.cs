@@ -1,6 +1,6 @@
 using Microsoft.Maui.Graphics;
 
-namespace Heicomp_2025_2.Controls
+namespace MauiApp1.Controls
 {
     public class CircularGaugeView : GraphicsView
     {

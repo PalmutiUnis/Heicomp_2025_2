@@ -4,11 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp1"
-    xmlns:dashboards="clr-namespace:Heicomp_2025_2.Views.Dashboards"
-    xmlns:configuracoes="clr-namespace:Heicomp_2025_2.Views.Configuracoes"
-    xmlns:administrativa="clr-namespace:Heicomp_2025_2.Views.Administrativa"
+    xmlns:dashboards="clr-namespace:MauiApp1.Views.Dashboards"
+    xmlns:configuracoes="clr-namespace:MauiApp1.Views.Configuracoes"
+    xmlns:administrativa="clr-namespace:MauiApp1.Views.Administrativa"
     Shell.FlyoutBehavior="Flyout"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource AzulTemaClaro}, Dark={StaticResource Black}}"
+    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource CorHamburguer}, Dark={StaticResource CorHamburguer}}"
     Title="MauiApp1">
 
 
@@ -32,7 +33,7 @@
             Padding="10" Spacing="10"
             VerticalOptions="Center" 
             HorizontalOptions="Fill">
-            <Image Source="icone_capelo.png"
+            <Image Source="logoapp.png"
                VerticalOptions="Center" />
 
             <VerticalStackLayout VerticalOptions="Center" Spacing="4">
@@ -125,7 +126,7 @@
                 Icon="icone_usuario_admin_branco.png">
         <ShellContent
             Title="Área Administrativa"
-            ContentTemplate="{DataTemplate administrativa:AdminPage}"
+            ContentTemplate="{DataTemplate administrativa:AreaAdministrativaPage}"
             />
     </FlyoutItem>
 

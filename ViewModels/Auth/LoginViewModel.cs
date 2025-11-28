@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Heicomp_2025_2.ViewModels.Auth
+namespace MauiApp1.ViewModels.Auth
 {
     class LoginViewModel
     {

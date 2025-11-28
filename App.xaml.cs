@@ -1,4 +1,4 @@
-﻿using Heicomp_2025_2.Views.Auth;
+﻿using MauiApp1.Views.Auth;
 
 namespace MauiApp1
 {

@@ -1,0 +1,89 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels.Dashboards"
+             x:Class="MauiApp1.Views.Dashboards.ListaColaboradores.ListaColaboradoresPage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource FundoPaginaClaro},
+                                               Dark={StaticResource FundoPaginaEscuro}}"
+             Title="Lista de Colaboradores">
+
+    <ContentPage.BindingContext>
+        <viewmodels:ListaColaboradoresViewModel />
+    </ContentPage.BindingContext>
+
+    <!-- VerticalOptions preenchendo a área da página (importante para o CollectionView rolar) -->
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="10" VerticalOptions="FillAndExpand">
+        <SearchBar Placeholder="Buscar por nome, setor, cargo ou status"
+                   Text="{Binding Filtro}" 
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FundoCardClaro},
+                                                     Dark={StaticResource FundoCardEscuro}}"
+                   TextColor="HotPink"
+                   FontFamily="InterRegular"
+                   HeightRequest="45"
+                   Margin="0,0,0,10" />
+        <Button Text="Recarregar"
+                   Command="{Binding BuscarCommand}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro},
+                                                     Dark={StaticResource BotaoEscuro}}"
+                   TextColor="{AppThemeBinding Light={StaticResource CorTextoPreto},
+                                               Dark={StaticResource CorTextoBranco}}"
+                   FontFamily="InterSemiBold"
+                   CornerRadius="10"
+                   HeightRequest="40"
+                   Margin="0,0,0,10"/>
+
+        <!-- CollectionView tem espaço para rolar -->
+        <CollectionView ItemsSource="{Binding Colaboradores}"
+                        VerticalOptions="FillAndExpand"
+                        RemainingItemsThreshold="5"
+                        RemainingItemsThresholdReachedCommand="{Binding CarregarMaisCommand}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,5">
+                        <ImageButton Source="avatar_placeholder.png"
+                                     HeightRequest="40"
+                                     WidthRequest="40"
+                                     Aspect="AspectFill"
+                                     BackgroundColor="Transparent"
+                                     IsEnabled="False"
+                                     CornerRadius="20"
+                                     VerticalOptions="Center"/>
+                        <VerticalStackLayout Grid.Column="1" Margin="10,0">
+                            <Label Text="{Binding Nome}" FontFamily="InterSemiBold" FontSize="14"/>
+                            <Label Text="{Binding SetorCargo}" 
+                                   FontFamily="InterRegular" 
+                                   FontSize="12" 
+                                   TextColor="{AppThemeBinding Light={StaticResource CorTextoCinza},
+                                                               Dark={StaticResource CorTextoCinzaEscuro}}"/>
+                        </VerticalStackLayout>
+                        <Frame Grid.Column="2" Padding="6,2"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource LabelAzulClaro},
+                                                                 Dark={StaticResource LabelAzulEscuro}}"
+                               CornerRadius="10"
+                               HasShadow="False"
+                               VerticalOptions="Center">
+                            <Label 
+                                Text="{Binding Status}" 
+                                FontFamily="InterRegular" 
+                                FontSize="12" 
+                                TextColor="{AppThemeBinding Light={StaticResource TextoAzulClaro},
+                                                            Dark={StaticResource TextoAzulEscuro}}"/>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Carregar mais"
+                IsVisible="{Binding TemMais}"
+                Command="{Binding CarregarMaisCommand}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource BotaoClaro},
+                                                  Dark={StaticResource BotaoEscuro}}"
+                TextColor="White"
+                FontFamily="InterSemiBold"
+                CornerRadius="20"
+                HeightRequest="40"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

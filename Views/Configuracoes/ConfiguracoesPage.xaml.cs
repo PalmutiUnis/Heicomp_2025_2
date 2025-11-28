@@ -1,156 +1,138 @@
-namespace Heicomp_2025_2.Views.Configuracoes;
-
-using System.ComponentModel;
+Ôªøusing System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Plugin.LocalNotification;
+using Microsoft.Maui.Storage;
 
-public partial class ConfiguracoesPage : ContentPage
+namespace MauiApp1.Views.Configuracoes
 {
-    private bool _temaEscuroEnabled;
-
-    public bool TemaEscuroEnabled
+    // Adicionamos a interface INotifyPropertyChanged para o Binding funcionar 100%
+    public partial class ConfiguracoesPage : ContentPage, INotifyPropertyChanged
     {
-        get => _temaEscuroEnabled;
-        set
+        // Campos privados
+        private string _userName;
+        private string _userEmail;
+        private bool _temaEscuroEnabled;
+
+        // -----------------------------------------------------------
+        // 1. PROPRIEDADES P√öBLICAS (Com o nome EXATO do XAML)
+        // -----------------------------------------------------------
+        public string userName
         {
-            if (_temaEscuroEnabled != value)
+            get => _userName;
+            set
             {
-                _temaEscuroEnabled = value;
-                OnPropertyChanged(); // Notifica a UI que o valor mudou
-                AplicarTema(value); // Aplica o tema
+                _userName = value;
+                OnPropertyChanged(); // Avisa a tela que mudou!
             }
         }
-    }
 
-	public ConfiguracoesPage()
-	{
-		InitializeComponent();
-        LocalNotificationCenter.Current.RequestNotificationPermission();
-        // Carrega a preferÍncia salva e define o estado inicial do Switch
-        TemaEscuroEnabled = Preferences.Get("TemaEscuro", false);
-        BindingContext = this; // Conecta a UI (XAML) com este cÛdigo
-            
-	}
-
-    // Evento: Bot„o Voltar
-    private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//PainelGestaoPage");
-    }
-
-    // Evento: Salvar AlteraÁıes
-    private async void OnSalvarClicked(object sender, EventArgs e)
-    {
-        // Captura os valores dos outros switches
-        //    bool pushNotif = SwitchPushNotif.IsToggled;
-        //    bool emailNotif = SwitchEmailNotif.IsToggled;
-
-        // A lÛgica do tema escuro n„o È mais necess·ria aqui, pois È aplicada instantaneamente.
-
-        //    string mensagem = $"ConfiguraÁıes salvas!\n\n" +
-        //                     $"Push Notifications: {(pushNotif ? "Ativado" : "Desativado")}\n" +
-        //                     $"Email Notifications: {(emailNotif ? "Ativado" : "Desativado")}\n" +
-        //                     $"Tema Escuro: {(TemaEscuroEnabled ? "Ativado" : "Desativado")}";
-
-        //    await DisplayAlert("Sucesso", mensagem, "OK");
-    }
-
-    // *************************** Evento: Idioma ***************************
-    private async void OnIdiomaClicked(object sender, EventArgs e)
-    {
-        string resultado = await DisplayActionSheet(
-            "Selecione o Idioma",
-            "Cancelar",
-            null,
-            "PortuguÍs",
-            "English",
-            "EspaÒol"
-        );
-
-        if (resultado != null && resultado != "Cancelar")
+        public string userEmail
         {
-            await DisplayAlert("Idioma", $"Idioma selecionado: {resultado}", "OK");
-        }
-    }
-
-    // *************************** Evento: Ajuda e Suporte ***************************
-    private async void OnAjudaClicked(object sender, EventArgs e)
-    {
-        await DisplayAlert(
-            "Ajuda e Suporte",
-            "Entre em contato:\n\nEmail: suporte@heicomp.com\nTelefone: (35) 1234-5678",
-            "OK"
-        );
-    }
-
-    // *************************** Evento: Termos de Uso ***************************
-    private async void OnTermosClicked(object sender, EventArgs e)
-    {
-        await DisplayAlert(
-            "Termos de Uso",
-            "Ao usar este aplicativo, vocÍ concorda com nossos termos e polÌticas de privacidade.",
-            "Li e aceito"
-        );
-    }
-
-    // *************************** Evento: NotificaÁıes em Push ***************************
-    private async void OnPushNotificationsToggled(object sender, ToggledEventArgs e)
-    {
-        bool isEnabled = e.Value;
-        Preferences.Set("PushNotificationsEnabled", isEnabled);
-
-        // 4. Se o bot„o foi LIGADO, envia a notificaÁ„o
-        if (isEnabled)
-        {
-            // Cria a notificaÁ„o
-            var request = new NotificationRequest
+            get => _userEmail;
+            set
             {
-                NotificationId = 1337, // Um ID ˙nico para esta notificaÁ„o
-                Title = "NotificaÁıes Ativadas!",
-                Description = "VocÍ agora receber· alertas e promoÁıes.",
-                BadgeNumber = 1, // N˙mero que aparece no Ìcone do app
-                Schedule = new NotificationRequestSchedule
+                _userEmail = value;
+                OnPropertyChanged(); // Avisa a tela que mudou!
+            }
+        }
+
+        public bool TemaEscuroEnabled
+        {
+            get => _temaEscuroEnabled;
+            set
+            {
+                if (_temaEscuroEnabled != value)
                 {
-                    // Dispara a notificaÁ„o 1 segundo apÛs ligar o switch
-                    NotifyTime = DateTime.Now.AddSeconds(1)
+                    _temaEscuroEnabled = value;
+                    OnPropertyChanged();
+                    AplicarTema(value);
                 }
-            };
+            }
+        }
 
-            // Envia a notificaÁ„o
-            await LocalNotificationCenter.Current.Show(request);
+        public ConfiguracoesPage()
+        {
+            InitializeComponent();
+            LocalNotificationCenter.Current.RequestNotificationPermission();
+
+            // 2. Define o BindingContext ANTES de carregar
+            this.BindingContext = this;
+
+            // 3. Carrega os dados
+            CarregarDadosUsuario();
+
+            TemaEscuroEnabled = Preferences.Get("TemaEscuro", false);
+        }
+
+        private void CarregarDadosUsuario()
+        {
+            // Usa as MESMAS chaves do Login ("user_name" e "user_email")
+            userName = Preferences.Get("user_name", "Usu√°rio Visitante");
+            userEmail = Preferences.Get("user_email", "sem.email@unis.com");
+        }
+
+        // ... SEUS OUTROS M√âTODOS (Bot√µes, Switches) MANTIDOS IGUAIS ...
+
+        private async void BotaoVoltarPainelGestao(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//PainelGestaoPage");
+        }
+
+        private async void OnSalvarClicked(object sender, EventArgs e)
+        {
+            // Exemplo de leitura direta do componente (se tiver x:Name no XAML)
+            // Se n√£o tiver x:Name, use as prefer√™ncias salvas
+            bool isPushOn = Preferences.Get("PushNotificationsEnabled", false);
+
+            string statusPush = isPushOn ? "Ativado" : "Desativado";
+            string statusTema = TemaEscuroEnabled ? "Ativado" : "Desativado";
+
+            await DisplayAlert("Sucesso", $"Configura√ß√µes Salvas:\nPush: {statusPush}\nTema: {statusTema}", "OK");
+        }
+
+        private async void OnAjudaClicked(object sender, EventArgs e) => await DisplayAlert("Ajuda", "Contato: suporte@heicomp.com", "OK");
+
+        private async void OnTermosClicked(object sender, EventArgs e) => await DisplayAlert("Termos", "Termos de uso...", "OK");
+
+        private async void OnPushNotificationsToggled(object sender, ToggledEventArgs e)
+        {
+            bool isEnabled = e.Value;
+            Preferences.Set("PushNotificationsEnabled", isEnabled);
+
+            if (isEnabled)
+            {
+                var request = new NotificationRequest
+                {
+                    NotificationId = 1337, // Um ID unico para esta notificacao
+                    Title = "Notifica√ß√µes Ativadas!",
+                    Description = "Voc√™ agora receber√° alertas e promo√ß√µes.",
+                    BadgeNumber = 1, // NÔøΩmero que aparece no icone do app
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        // Dispara a notificacao 1 segundo apos ligar o switch
+                        NotifyTime = DateTime.Now.AddMilliseconds(300)
+                    }
+                };
+                await LocalNotificationCenter.Current.Show(request);
+            }
+        }
+
+        private void AplicarTema(bool temaEscuro)
+        {
+            try
+            {
+                AppTheme theme = temaEscuro ? AppTheme.Dark : AppTheme.Light;
+                Application.Current.UserAppTheme = theme;
+                Preferences.Set("TemaEscuro", temaEscuro);
+            }
+            catch { }
+        }
+
+        // Implementa√ß√£o Padr√£o do INotifyPropertyChanged
+        public new event PropertyChangedEventHandler PropertyChanged;
+        protected new void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
-
-    // Aplica o tema escuro ou claro
-    private void AplicarTema(bool temaEscuro)
-    {
-        try
-        {
-            AppTheme themeRequested = temaEscuro ? AppTheme.Dark : AppTheme.Light;
-
-            if (Application.Current.UserAppTheme == themeRequested)
-                return;
-
-            Application.Current.UserAppTheme = themeRequested;
-
-            // Salva a preferÍncia
-            Preferences.Set("TemaEscuro", temaEscuro);
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Erro ao aplicar tema: {ex.Message}");
-        }
-    }
-
-    // <summary>
-    // /#region INotifyPropertyChanged Implementation
-    // </summary>
-    // public event PropertyChangedEventHandler PropertyChanged;
-
-    //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    //{
-    //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    //}
-    //#endregion
 }
