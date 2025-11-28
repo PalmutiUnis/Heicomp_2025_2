@@ -77,6 +77,10 @@
     <!-- Texto secundário / detalhes em cinza -->
     <Color x:Key="CorTextoCinza">#6B7280</Color>
     <SolidColorBrush x:Key="BrushCorTextoCinza" Color="{StaticResource CorTextoCinza}" />
+    
+    <!-- Texto secundário para modo escuro -->
+    <Color x:Key="CorTextoCinzaEscuro">#919191</Color>
+    <SolidColorBrush x:Key="BrushCorTextoCinzaEscuro" Color="{StaticResource CorTextoCinzaEscuro}"/>
 
     <!-- =========================================================
          CARDS
@@ -185,12 +189,12 @@
     <Color x:Key="FundoPaginaEscuro">#0F172A</Color>
 
     <!-- Fundos de Cards -->
-    <Color x:Key="FundoCardClaro">#F3F4F6</Color>
+    <Color x:Key="FundoCardClaro">#e2e3e5</Color>
     <Color x:Key="FundoCardEscuro">#1E293B</Color>
 
     <!-- Headers -->
     <Color x:Key="HeaderClaro">#2B4C9E</Color>
-    <Color x:Key="HeaderEscuro">#1E293B</Color>
+    <Color x:Key="HeaderEscuro">#000000</Color>
 
     <!-- Textos Principais -->
     <Color x:Key="TextoPrincipalClaro">#111827</Color>
@@ -217,10 +221,12 @@
     <Color x:Key="TextoAzulClaro">#1E3A8A</Color>
     <Color x:Key="TextoAzulEscuro">#5780f7</Color>
     <Color x:Key="TextoColaboradores">#2c468f</Color>
+    <Color x:Key="TextoGruposAdm">#9946bd</Color>
     
     <!-- Labels Coloridas -->
     <Color x:Key="LabelAzulClaro">#251E3A8A</Color>
     <Color x:Key="LabelAzulEscuro">#253B82F6</Color>
+    <Color x:Key="LabelGruposAdm">#259946bd</Color>
     
     <!-- Fundos coloridos -->
     <Color x:Key="FundoImagemClaro">#27344a</Color>
@@ -239,5 +245,8 @@
     <!-- Cor Picker -->
     <Color x:Key="FundoPickerClaro">#E5E7EB</Color>
     <Color x:Key="FundoPickerEscuro">#334155</Color>
-
+    
+    <!-- Borda para botões -->
+    <Color x:Key="BordaBotaoClaro">#0F1D45</Color>
+    <Color x:Key="BordaBotaoEscuro">#1D4ED8</Color>
 </ResourceDictionary>
